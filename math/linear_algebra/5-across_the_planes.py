@@ -23,7 +23,7 @@ def add_matrices2D(mat1, mat2):
     if height != len(mat2[0]):
         return None
     nueva = [[0] * height for _ in range(width)]
-    for i in range(height):
-        for j in range(width):
+    for i in range(width):
+        for j in range(height):
             nueva[i][j] = mat1[i][j] + mat2[i][j]
     return nueva
