@@ -1,29 +1,24 @@
-#!/usr/bin/env python3
-"""
-
-ASDSADSADASDSA
-
-"""
-
-
-def add_matrices2D(mat1, mat2):
+def matrix_addition(mat1, mat2):
     """
-    Determines the shape (dimensions) of a given matrix.
+    Adds two matrices element-wise.
 
     Args:
-        matrix (list): A nested list representing the matrix.
+        mat1 (list): The first matrix.
+        mat2 (list): The second matrix.
 
     Returns:
-        list:
+        list: A new matrix that is the result of adding mat1 and mat2 element-wise.
+              Returns None if the matrices do not have the same dimensions.
     """
-    height = len(mat1)
-    width = len(mat1[0])
-    if height != len(mat2):
-        return None
-    if width != len(mat2[0]):
-        return None
-    nueva = [[0] * width for _ in range(height)]
-    for i in range(width):
-        for j in range(height):
-            nueva[i][j] = mat1[i][j] + mat2[i][j]
-    return nueva
+    rows = len(mat1)
+    cols = len(mat1[0])
+    if rows != len(mat2) or cols != len(mat2[0]):
+        return None 
+
+    result = [[0] * cols for _ in range(rows)]
+
+    for i in range(rows):
+        for j in range(cols):
+            result[i][j] = mat1[i][j] + mat2[i][j]
+
+    return result
