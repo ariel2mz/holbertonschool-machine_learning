@@ -25,7 +25,7 @@ def cat_matrices2D(mat1, mat2, axis=0):
         for fila2 in mat2:
             nuevo.append(fila2[:])
         return nuevo
-    
+
     if (axis == 1):
 
         if len(mat1) != len(mat2):
