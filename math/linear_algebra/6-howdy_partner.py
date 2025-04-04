@@ -17,7 +17,5 @@ def cat_arrays(arr1, arr2):
         list:
     """
 
-    lenarr1 = len(arr1)
-    lenarr2 = len(arr2)
     nuevo = arr1 + arr2
     return nuevo
