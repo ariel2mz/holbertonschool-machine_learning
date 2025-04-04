@@ -21,7 +21,7 @@ def mat_mul(mat1, mat2):
     ancho = len(mat2[0])
     alto = len(mat1)
     nuevo = [[0] * ancho for _ in range(alto)]
-    for x in range(len(mat2[0])):
+    for x in range(len(mat2)):
         for i in range(0,len(mat1)):
             numero = 0
             for j in range(len(mat1[0])):
