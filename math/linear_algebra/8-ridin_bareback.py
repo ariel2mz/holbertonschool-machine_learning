@@ -8,7 +8,9 @@ ASDSADSADASDSA
 
 def mat_mul(mat1, mat2):
     """
-
+    mat1 y mat2 son matrices
+    hay q ver si se pueden multiplicar
+    retorno la multiplicacion
 
     """
     if len(mat1[0]) != len(mat2):
