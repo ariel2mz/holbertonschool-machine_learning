@@ -1,14 +1,20 @@
 #!/usr/bin/env python3
+"""
+dale amigo es literal una sola linea de codigo
+"""
 import numpy as np
 import matplotlib.pyplot as plt
-"""
-sadsadsadsa
-"""
 
 
 def line():
     """
-    sadsadsadsa
+    Determines the shape (dimensions) of a given matrix.
+
+    Args:
+        matrix (list): A nested list representing the matrix.
+
+    Returns:
+        list:
     """
     y = np.arange(0, 11) ** 3
     plt.figure(figsize=(6.4, 4.8))
