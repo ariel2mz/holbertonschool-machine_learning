@@ -1,8 +1,22 @@
 #!/usr/bin/env python3
+"""
+ssadsadsadsa
+sadsadsadsa
+"""
 import numpy as np
 import matplotlib.pyplot as plt
 
+
 def scatter():
+    """
+    Determines the shape (dimensions) of a given matrix.
+
+    Args:
+        matrix (list): A nested list representing the matrix.
+
+    Returns:
+        list:
+    """
     mean = [69, 0]
     cov = [[15, 8], [8, 15]]
     np.random.seed(5)
