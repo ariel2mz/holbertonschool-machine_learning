@@ -15,6 +15,6 @@ def summation_i_squared(n):
         algo retorna, y si no retorna algo retorna none
     """
     if isinstance(n, int) and n > 0:
-        return n * (n + 1) * (2 * n + 1)
+        return n * (n + 1) * (2 * n + 1) // 6
     else:
         return None
