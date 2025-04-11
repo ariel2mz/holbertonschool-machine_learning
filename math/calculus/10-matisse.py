@@ -14,7 +14,11 @@ def poly_derivative(poly):
     Returns:
         algo retorna, y si no retorna algo retorna none
     """
+    if not isinstance(poly, list):
+        return None
+
     largo = len(poly)
+    
     if largo == 0:
         return None
     if largo == 1:
