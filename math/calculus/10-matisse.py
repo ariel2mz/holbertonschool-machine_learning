@@ -21,6 +21,7 @@ def poly_derivative(poly):
         return [0]
     
     nuevo = [0] * (largo - 1)
-    for i in range(0, largo - 1):
-        nuevo[i] = poly[i] - 1
+    i = 1
+    for i in range(0, largo):
+        nuevo[i - 1] = poly[i] * i
     return nuevo
