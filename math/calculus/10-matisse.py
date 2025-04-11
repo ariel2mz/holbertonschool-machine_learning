@@ -18,12 +18,12 @@ def poly_derivative(poly):
         return None
 
     largo = len(poly)
-    
+
     if largo == 0:
         return None
     if largo == 1:
         return [0]
-    
+
     nuevo = [0] * (largo - 1)
     i = 1
     for i in range(0, largo):
