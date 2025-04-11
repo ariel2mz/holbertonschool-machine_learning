@@ -14,8 +14,7 @@ def summation_i_squared(n):
     Returns:
         algo retorna, y si no retorna algo retorna none
     """
-    i = 1
-    numero = 0
-    for i in range(1,n):
-        numero = numero + (i * i)
-    return numero
+    if isinstance(n, int) and n > 0:
+        return n * (n + 1) * (2 * n + 1)
+    else:
+        return None
