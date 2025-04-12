@@ -18,7 +18,7 @@ def poly_integral(poly, C=0):
         return None
     if not isinstance(C, int):
         return None
-    
+
     largo = len(poly)
 
     if largo == 0:
@@ -26,7 +26,7 @@ def poly_integral(poly, C=0):
     if poly == [0]:
         nuevo = [C]
         return nuevo
-    
+
     nuevo = [0] * (largo + 1)
     i = 0
     nuevo[0] = C
@@ -41,7 +41,5 @@ def poly_integral(poly, C=0):
             nuevo[i] = int(nuevo[i])
         if nuevo[i] == 0.0:
             nuevo[i] = 0
-    
-        
 
     return nuevo
