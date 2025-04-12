@@ -27,17 +27,15 @@ def all_in_one():
     np.random.seed(5)
     student_grades = np.random.normal(68, 15, 50)
 
-    plt.figure(figsize=(15, 10))  # Make the figure larger for better clarity
+    plt.figure(figsize=(15, 10))
     plt.title("All in one")
 
-    # First subplot: Plot y0 (cubic curve)
     plt.subplot(3, 2, 1)
     plt.plot(np.arange(0, 11), y0, 'r-')
     plt.xlim(0, 10)
     plt.yticks([0, 500, 1000])
     plt.xticks([0, 2, 4, 6, 8, 10])
 
-    # Second subplot: Scatter plot for height vs weight
     plt.subplot(3, 2, 2)
     plt.scatter(x1, y1, color='magenta')
     plt.xlabel("Height (in)")
@@ -46,7 +44,6 @@ def all_in_one():
     plt.yticks([170, 180, 190])
     plt.xticks([60, 70, 80])
 
-    # Third subplot: Exponential decay of C-14
     plt.subplot(3, 2, 3)
     plt.plot(x2, y2)
     plt.xlabel("Time (years)")
@@ -56,7 +53,6 @@ def all_in_one():
     plt.xlim(0, 28650)
     plt.xticks([0, 10000, 20000])
 
-    # Fourth subplot: Exponential decay of Ra-226
     plt.subplot(3, 2, 4)
     plt.plot(x3, y31, linestyle='--', color="red", label="C-14")
     plt.plot(x3, y32, color="green", label="Ra-226")
@@ -69,7 +65,6 @@ def all_in_one():
     plt.legend(loc='upper right')
     plt.xticks([0, 5000, 10000, 15000, 20000])
 
-    # Fifth subplot: Histogram of student grades (spanning across two columns)
     plt.subplot(3, 2, (5, 6))
     bins = np.arange(0, 101, 10)
     plt.hist(student_grades, bins=bins, edgecolor='black')
@@ -80,12 +75,7 @@ def all_in_one():
     plt.xlim(0, 100)
     plt.yticks([0, 10, 20, 30])
     plt.xticks(np.arange(0, 101, 10))
-    
 
-    # Adjust layout to prevent overlap
     plt.tight_layout()
 
-    # Show the plot
     plt.show()
-
-
