@@ -23,8 +23,6 @@ def poly_integral(poly, C=0):
 
     if largo == 0:
         return None
-    if largo == 1:
-        return [0]
 
     nuevo = [0] * (largo + 1)
     i = 0
