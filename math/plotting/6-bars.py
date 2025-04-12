@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
+"""
+sadsadsadsa
+dsadsadsadsa
+"""
 import numpy as np
 import matplotlib.pyplot as plt
-"""
-sadsadsa
-"""
 
 
 def bars():
@@ -30,8 +31,8 @@ def bars():
 
     for i in range(fruit.shape[0]):
         plt.bar(persons, fruit[i],
-                 width, bottom=bottom, 
-                 color=colors[i], label=labels[i])
+                width, bottom=bottom,
+                color=colors[i], label=labels[i])
         bottom += fruit[i]
 
     plt.ylabel("Quantity of Fruit")
