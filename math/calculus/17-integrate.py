@@ -39,4 +39,3 @@ def poly_integral(poly, C=0):
             i = int(i)
     
     return nuevo
-    
