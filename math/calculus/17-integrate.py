@@ -36,6 +36,8 @@ def poly_integral(poly, C=0):
             nuevo[i + 1] = poly[i] / (i + 1)
     i = 0
     for i in range(len(nuevo)):
+        if nuevo[i] % 1 == 0:
+            nuevo[i] = int(nuevo[i])
         if nuevo[i] == 0.0:
             nuevo[i] = 0
     
