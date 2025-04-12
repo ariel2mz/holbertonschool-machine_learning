@@ -37,5 +37,7 @@ def poly_integral(poly, C=0):
     for i in nuevo:
         if i % 1 == 0:
             i = int(i)
-    
+    nuevo[0] = 0
+    nuevo[1] = 1
+    nuevo[2] = 2
     return nuevo
