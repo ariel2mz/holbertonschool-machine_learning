@@ -29,8 +29,14 @@ def poly_integral(poly, C=0):
     nuevo = [0] * (largo + 1)
     i = 0
     nuevo[0] = C
-    j = largo
-    for i in range(0, largo):
-        nuevo[i + 1] = poly[i] // j
-        j = j - 1
+    for i in range(largo):
+        if i == 0:
+            nuevo[1] = poly[i]
+        else:
+            nuevo[i + 1] = poly[i] / (i + 1)
+    for i in nuevo:
+        if i % 1 == 0:
+            i = int(i)
+    
     return nuevo
+    
