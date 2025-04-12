@@ -28,12 +28,14 @@ def all_in_one():
     student_grades = np.random.normal(68, 15, 50)
 
     plt.figure(figsize=(15, 10))  # Make the figure larger for better clarity
+    plt.title("All in one")
 
     # First subplot: Plot y0 (cubic curve)
     plt.subplot(3, 2, 1)
     plt.plot(np.arange(0, 11), y0, 'r-')
     plt.xlim(0, 10)
-    plt.title("Cubic Growth")
+    plt.yticks([0, 500, 1000])
+    plt.xticks([0, 2, 4, 6, 8, 10])
 
     # Second subplot: Scatter plot for height vs weight
     plt.subplot(3, 2, 2)
@@ -41,6 +43,8 @@ def all_in_one():
     plt.xlabel("Height (in)")
     plt.ylabel("Weight (lbs)")
     plt.title("Men's Height vs Weight")
+    plt.yticks([170, 180, 190])
+    plt.xticks([60, 70, 80])
 
     # Third subplot: Exponential decay of C-14
     plt.subplot(3, 2, 3)
@@ -50,6 +54,7 @@ def all_in_one():
     plt.title("Exponential Decay of C-14")
     plt.yscale('log')
     plt.xlim(0, 28650)
+    plt.xticks([0, 10000, 20000])
 
     # Fourth subplot: Exponential decay of Ra-226
     plt.subplot(3, 2, 4)
@@ -60,7 +65,9 @@ def all_in_one():
     plt.title("Exponential Decay of Radioactive Elements")
     plt.xlim(0, 20000)
     plt.ylim(0, 1)
+    plt.yticks([0.0, 0.5, 1.0])
     plt.legend(loc='upper right')
+    plt.xticks([0, 5000, 10000, 15000, 20000])
 
     # Fifth subplot: Histogram of student grades (spanning across two columns)
     plt.subplot(3, 2, (5, 6))
@@ -71,7 +78,9 @@ def all_in_one():
     plt.title("Project A")
     plt.ylim(0, 30)
     plt.xlim(0, 100)
+    plt.yticks([0, 10, 20, 30])
     plt.xticks(np.arange(0, 101, 10))
+    
 
     # Adjust layout to prevent overlap
     plt.tight_layout()
