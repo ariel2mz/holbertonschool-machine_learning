@@ -11,6 +11,7 @@ basic supervised learning problems.
 class Node:
     def __init__(self, feature=None, threshold=None, left_child=None,
                  right_child=None, is_root=False, depth=0):
+        """Returns the max depth of the tree."""
         self.feature = feature
         self.threshold = threshold
         self.left_child = left_child
@@ -51,6 +52,7 @@ class Node:
 
 class Leaf(Node):
     def __init__(self, value, depth=None):
+        """Returns the max depth of the tree."""
         super().__init__()
         self.value = value
         self.is_leaf = True
@@ -68,6 +70,7 @@ class Leaf(Node):
 class Decision_Tree:
     def __init__(self, max_depth=10, min_pop=1, seed=0,
                  split_criterion="random", root=None):
+        """Returns the max depth of the tree."""
         self.rng = np.random.default_rng(seed)
         self.root = root if root else Node(is_root=True)
         self.explanatory = None
