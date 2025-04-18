@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 import numpy as np
-"""
-        Recursively counts nodes in the subtree.
-        If only_leaves=True, only counts leaf nodes.
+"""Decision Tree implementation.
+
+This module defines the structure of a Decision Tree with Node and Leaf classes,
+including methods for measuring depth and counting nodes. Intended for use in
+basic supervised learning problems.
 """
 
 
