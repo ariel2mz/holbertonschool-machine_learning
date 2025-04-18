@@ -2,8 +2,8 @@
 import numpy as np
 """Decision Tree implementation.
 
-This module defines the structure of a Decision Tree with Node and Leaf classes,
-including methods for measuring depth and counting nodes. Intended for use in
+This module defines the structure of
+including methods for measuring depth
 basic supervised learning problems.
 """
 
