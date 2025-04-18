@@ -1,16 +1,14 @@
 #!/usr/bin/env python3
 """
-Decision Tree Module
+Basic Decision Tree implementation capable of using different
+split strategies, limiting tree depth, and setting a minimum
+node sample size for splitting.
 
-This module provides a basic implementation of a decision tree structure
-with internal decision nodes (`Node`) and terminal leaf nodes (`Leaf`). 
-It includes methods to compute the depth of the tree, count the number
-of nodes or leaf nodes, and represent the tree structure visually.
+Contains `Node` and `Leaf` classes for representing tree structure,
+and a `Decision_Tree` class to manage the construction and configuration.
 
-Classes:
-    - Node
-    - Leaf
-    - Decision_Tree
+Requirements:
+- numpy
 """
 
 import numpy as np
@@ -18,31 +16,31 @@ import numpy as np
 
 class Node:
     """
-    Represents an internal node in the decision tree.
+    Defines an internal node in a decision tree.
 
     Attributes:
-        feature (int): The index of the feature used for splitting.
-        threshold (float): The threshold used for the split.
-        left_child (Node): Left child node.
-        right_child (Node): Right child node.
-        is_leaf (bool): Whether this node is a leaf.
-        is_root (bool): Whether this node is the root.
-        sub_population (array): Optional population data at this node.
-        depth (int): Depth of the node within the tree.
+        feature (int): Index of the feature used for splitting.
+        threshold (float): Value used to divide the dataset.
+        left_child (Node): Reference to the left branch node.
+        right_child (Node): Reference to the right branch node.
+        is_leaf (bool): True if the node is a terminal leaf.
+        is_root (bool): True if the node is the root of the tree.
+        sub_population (list): Subset of data at this node (optional).
+        depth (int): Level of the node within the tree.
     """
 
     def __init__(self, feature=None, threshold=None,
                  left_child=None, right_child=None, is_root=False, depth=0):
         """
-        Initialize a Node object.
+        Constructs a Node object.
 
         Args:
-            feature (int): Feature index to split on.
-            threshold (float): Threshold value to split.
-            left_child (Node): Left child node.
-            right_child (Node): Right child node.
-            is_root (bool): Whether the node is the root.
-            depth (int): Depth of this node in the tree.
+            feature (int): Index of the splitting feature.
+            threshold (float): Value for decision split.
+            left_child (Node): Node on the left after the split.
+            right_child (Node): Node on the right after the split.
+            is_root (bool): Flag for root node.
+            depth (int): Distance from the root node.
         """
         self.feature = feature
         self.threshold = threshold
@@ -55,63 +53,43 @@ class Node:
 
     def max_depth_below(self):
         """
-        Compute the maximum depth below this node.
+        Computes the deepest level beneath the current node.
 
         Returns:
-            int: The maximum depth in the subtree.
+            int: Depth of the deepest descendant node.
         """
-        if self.is_leaf:
-            return self.depth
-        left_depth = self.left_child.max_depth_below() if self.left_child else 0
-        right_depth = self.right_child.max_depth_below() if self.right_child else 0
-        return max(left_depth, right_depth)
+        left = self.left_child.max_depth_below()
+        right = self.right_child.max_depth_below()
+        return max(left, right)
 
     def count_nodes_below(self, only_leaves=False):
         """
-        Count the number of nodes in the subtree.
+        Calculates the number of child nodes under this node.
 
         Args:
-            only_leaves (bool): If True, only count leaf nodes.
+            only_leaves (bool): If True, count only the leaf nodes.
 
         Returns:
-            int: The number of nodes or leaves below this node.
+            int: Total count of nodes (or leaves if specified).
         """
-        if self.is_leaf:
-            return 1
-        if only_leaves:
-            left_leaves = self.left_child.count_nodes_below(True) if self.left_child else 0
-            right_leaves = self.right_child.count_nodes_below(True) if self.right_child else 0
-            return left_leaves + right_leaves
-        else:
-            left_nodes = self.left_child.count_nodes_below() if self.left_child else 0
-            right_nodes = self.right_child.count_nodes_below() if self.right_child else 0
-            return 1 + left_nodes + right_nodes
-
-    def left_child_add_prefix(self, text):
-        """
-        Add prefix formatting for left child in visual tree display.
-
-        Args:
-            text (str): Subtree string representation.
-
-        Returns:
-            str: Formatted string for left child.
-        """
-        lines = text.split("\n")
-        new_text = "    +--" + lines[0] + "\n"
-        for x in lines[1:]:
-            new_text += "    |  " + x + "\n"
-        return new_text
+        count = 0
+        if not only_leaves:
+            count += 1
+        if self.left_child:
+            count += self.left_child.count_nodes_below(only_leaves)
+        if self.right_child:
+            count += self.right_child.count_nodes_below(only_leaves)
+        return count
 
     def right_child_add_prefix(self, text):
         """
-        Add prefix formatting for right child in visual tree display.
+        Helper for visual formatting of the right child node.
 
         Args:
-            text (str): Subtree string representation.
+            text (str): Text representation of the right subtree.
 
         Returns:
-            str: Formatted string for right child.
+            str: Formatted right subtree with indentation.
         """
         lines = text.split("\n")
         new_text = "    +--" + lines[0] + "\n"
@@ -119,37 +97,60 @@ class Node:
             new_text += "       " + x + "\n"
         return new_text
 
-    def __str__(self):
+    def left_child_add_prefix(self, text):
         """
-        Generate a readable string representation of the tree from this node.
+        Helper for visual formatting of the left child node.
+
+        Args:
+            text (str): Text representation of the left subtree.
 
         Returns:
-            str: A formatted tree structure string.
+            str: Formatted left subtree with indentation.
         """
-        result = f"{'root' if self.is_root else '-> node'} [feature={self.feature}, threshold={self.threshold}]\n"
+        lines = text.split("\n")
+        new_text = "    +--" + lines[0] + "\n"
+        for x in lines[1:]:
+            new_text += "    |  " + x + "\n"
+        return new_text
+
+    def __str__(self):
+        """
+        Generates a readable string of the node and its subtree.
+
+        Returns:
+            str: Textual structure of the subtree from this node.
+        """
+        result = (
+            f"{'root' if self.is_root else '-> node'} "
+            f"[feature={self.feature}, threshold={self.threshold}]\n"
+        )
         if self.left_child:
-            result += self.left_child_add_prefix(self.left_child.__str__().strip())
+            result += self.left_child_add_prefix(
+                self.left_child.__str__().strip()
+            )
         if self.right_child:
-            result += self.right_child_add_prefix(self.right_child.__str__().strip())
+            result += self.right_child_add_prefix(
+                self.right_child.__str__().strip()
+            )
         return result
 
 
 class Leaf(Node):
     """
-    Represents a leaf node in the decision tree.
+    Terminal node that holds the predicted outcome.
 
     Attributes:
-        value (any): The value or class label at this leaf.
-        depth (int): Depth of the leaf in the tree.
+        value (any): Value or label this leaf represents.
+        depth (int): Position of this node in the tree.
     """
 
     def __init__(self, value, depth=None):
         """
-        Initialize a Leaf node.
+        Creates a Leaf node.
 
         Args:
-            value (any): Output/class value for the leaf.
-            depth (int): Depth of the leaf.
+            value (any): Prediction result for this leaf.
+            depth (int): Level of the node within the tree.
         """
         super().__init__()
         self.value = value
@@ -158,49 +159,61 @@ class Leaf(Node):
 
     def max_depth_below(self):
         """
-        Returns the depth of the leaf.
+        Simply returns the current depth, as it is a leaf.
 
         Returns:
-            int: Depth value.
+            int: Node depth.
         """
         return self.depth
 
     def count_nodes_below(self, only_leaves=False):
         """
-        Returns 1 since this is a leaf node.
+        A leaf is counted as one node (or one leaf).
 
         Args:
-            only_leaves (bool): Ignored.
+            only_leaves (bool): Ignored for leaf nodes.
 
         Returns:
-            int: Always 1.
+            int: Always returns 1.
         """
         return 1
+
+    def __str__(self):
+        """
+        Produces a string showing the leaf's value.
+
+        Returns:
+            str: Description of the leaf.
+        """
+        return f"-> leaf [value={self.value}]"
 
 
 class Decision_Tree:
     """
-    Main class representing the Decision Tree structure.
+    Basic classifier using a decision tree structure.
 
     Attributes:
-        max_depth (int): Maximum depth of the tree.
-        min_pop (int): Minimum samples to split a node.
-        seed (int): Seed for reproducible randomness.
-        split_criterion (str): Splitting strategy used.
-        root (Node): Root node of the tree.
+        max_depth (int): Max number of levels allowed in the tree.
+        min_pop (int): Minimum samples required to perform a split.
+        seed (int): Seed value for reproducible randomness.
+        split_criterion (str): Method used to choose splits (e.g., "random").
+        root (Node): Entry point to the decision tree.
+        explanatory (ndarray): Feature matrix (assigned later).
+        target (ndarray): Target vector (assigned later).
+        predict (callable): Prediction logic (to be implemented).
     """
 
-    def __init__(self, max_depth=10, min_pop=1, seed=0,
-                 split_criterion="random", root=None):
+    def __init__(self, max_depth=10, min_pop=1,
+                 seed=0, split_criterion="random", root=None):
         """
-        Initialize a Decision_Tree object.
+        Builds a new decision tree instance.
 
         Args:
-            max_depth (int): Maximum tree depth.
-            min_pop (int): Minimum samples for a split.
-            seed (int): Random seed.
-            split_criterion (str): Splitting strategy.
-            root (Node): Optional root node.
+            max_depth (int): Limit for tree depth.
+            min_pop (int): Minimum group size needed to split.
+            seed (int): Random number seed.
+            split_criterion (str): Rule for choosing how to split.
+            root (Node): Optional custom root node.
         """
         self.rng = np.random.default_rng(seed)
         self.root = root if root else Node(is_root=True)
@@ -213,21 +226,30 @@ class Decision_Tree:
 
     def depth(self):
         """
-        Get the depth of the tree.
+        Calculates how deep the tree goes.
 
         Returns:
-            int: Maximum depth.
+            int: Tree height from root to deepest leaf.
         """
         return self.root.max_depth_below()
 
     def count_nodes(self, only_leaves=False):
         """
-        Count the number of nodes in the tree.
+        Counts total nodes or just leaves in the tree.
 
         Args:
-            only_leaves (bool): If True, only count leaf nodes.
+            only_leaves (bool): Whether to count only leaf nodes.
 
         Returns:
             int: Number of nodes or leaves.
         """
         return self.root.count_nodes_below(only_leaves=only_leaves)
+
+    def __str__(self):
+        """
+        Converts the entire tree into a formatted string.
+
+        Returns:
+            str: Text representation of the tree structure.
+        """
+        return self.root.__str__()
