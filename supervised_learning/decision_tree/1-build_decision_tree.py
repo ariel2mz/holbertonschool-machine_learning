@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
 import numpy as np
+"""
+        Recursively counts nodes in the subtree.
+        If only_leaves=True, only counts leaf nodes.
+"""
 
 
 class Node:
