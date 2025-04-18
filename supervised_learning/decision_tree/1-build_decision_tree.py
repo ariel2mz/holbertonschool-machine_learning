@@ -2,9 +2,9 @@
 """
 Decision Tree implementation module.
 
-This module contains the implementation of a basic Decision Tree data structure
-for supervised learning. It includes the definition of internal nodes, leaf nodes,
-and the overall tree structure. The tree supports functionality to compute its depth
+This module contains the implementation of a basic Decision
+for supervised learning. It includes the definition of intern
+and the overall tree structure. The tree supports
 and count the number of nodes or leaf nodes.
 
 Classes:
