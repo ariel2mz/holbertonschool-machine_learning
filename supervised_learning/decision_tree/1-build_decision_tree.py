@@ -18,8 +18,14 @@ class Node:
         """Recursively returns the maximum depth below the current node."""
         if self.is_leaf:
             return self.depth
-        left_depth = self.left_child.max_depth_below() if self.left_child else 0
-        right_depth = self.right_child.max_depth_below() if self.right_child else 0
+        if self.left_child:
+            left_depth = self.left_child.max_depth_below()
+        else:
+            left_depth = 0
+        if self.right_child:
+            right_depth = self.right_child.max_depth_below()
+        else:
+            right_depth = 0
         return max(left_depth, right_depth)
 
     def count_nodes_below(self, only_leaves=False):
