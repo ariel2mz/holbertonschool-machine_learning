@@ -23,6 +23,7 @@ class Neuron:
         a (A): asdasdsadsa dsadsadsa
     """
     def __init__(self, nx):
+        """neuron."""
         if not isinstance(nx, int):
             raise TypeError("nx must be an integer")
         if nx < 1:
