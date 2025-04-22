@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import numpy as np
 """
 Decision Tree implementation module.
 
@@ -16,9 +17,6 @@ Methods provided:
     - max_depth_below: Recursively determines the maximum depth.
     - count_nodes_below: Recursively counts nodes or leaves.
 """
-
-import numpy as np
-import matplotlib.pyplot as plt
 
 
 class Neuron:
