@@ -39,3 +39,33 @@ class Neuron:
         self.__W = np.random.randn(1, nx)
         self.__b = 0
         self.__A = 0
+
+    @property
+    def W(self):
+        """
+        Get the weights vector of the neuron.
+
+        Returns:
+            numpy.ndarray: The weights vector.
+        """
+        return self.__W
+
+    @property
+    def b(self):
+        """
+        Get the bias of the neuron.
+
+        Returns:
+            float: The bias value.
+        """
+        return self.__b
+
+    @property
+    def A(self):
+        """
+        Get the activated output of the neuron.
+
+        Returns:
+            float: The activated output.
+        """
+        return self.__A
