@@ -17,7 +17,7 @@ class Neuron:
         W (numpy.ndarray): The weights vector for the neuron,
                            initialized using a random normal distribution.
         b (float): The bias for the neuron, initialized to 0.
-        A (float): The activated output (prediction) of the neuron, initialized to 0.
+        A (float): The activated output (prediction) of the neuron.
     """
 
     def __init__(self, nx):
