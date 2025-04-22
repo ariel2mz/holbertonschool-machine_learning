@@ -109,7 +109,7 @@ class Neuron:
 
         Returns:
             tuple: (predictions, cost)
-                - predictions is a numpy.ndarray with predicted labels (0 or 1).
+                - predictions is a numpy.ndarray with labels (0 or 1).
                 - cost is the logistic regression cost.
         """
         A = self.forward_prop(X)
