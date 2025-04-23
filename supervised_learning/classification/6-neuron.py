@@ -59,20 +59,30 @@ class Neuron:
         self.__b -= alpha * db
 
     def train(self, X, Y, iterations=5000, alpha=0.05):
-        """Trains the neuron"""
+        """
+        Trains the neuron.
 
-        # Argument validation
+        Args:
+            X (numpy.ndarray): Input data of shape (nx, m).
+            Y (numpy.ndarray): Correct labels of shape (1, m).
+            iterations (int): Number of iterations to train over.
+            alpha (float): Learning rate.
+
+        Returns:
+            tuple: (predictions, cost) after training.
+        """
+        # Argument checks
         if not isinstance(iterations, int):
             raise TypeError("iterations must be an integer")
         if iterations <= 0:
             raise ValueError("iterations must be a positive integer")
-
         if not isinstance(alpha, float):
             raise TypeError("alpha must be a float")
         if alpha <= 0:
             raise ValueError("alpha must be positive")
 
-        for i in range(iterations):
+        # Training loop
+        for _ in range(iterations):
             A = self.forward_prop(X)
             self.gradient_descent(X, Y, A, alpha)
 
