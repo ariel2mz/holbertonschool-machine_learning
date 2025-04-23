@@ -71,7 +71,6 @@ class Neuron:
         Returns:
             tuple: (predictions, cost) after training.
         """
-        # Argument checks
         if not isinstance(iterations, int):
             raise TypeError("iterations must be an integer")
         if iterations <= 0:
@@ -81,9 +80,10 @@ class Neuron:
         if alpha <= 0:
             raise ValueError("alpha must be positive")
 
-        # Training loop
-        for _ in range(iterations):
+        for i in range(iterations):
             A = self.forward_prop(X)
+            if i % 100 == 0 or i == iterations - 1:
+                print("Cost after {} iterations: {}".format(i, self.cost(Y, A)))
             self.gradient_descent(X, Y, A, alpha)
 
         return self.evaluate(X, Y)
