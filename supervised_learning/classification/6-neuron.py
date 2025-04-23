@@ -1,36 +1,12 @@
 #!/usr/bin/env python3
-"""
-Neuron implementation module.
-
-This module defines a Neuron class used for binary classification,
-including initialization of weights, bias, and activated output.
-"""
-
+"""Neuron module"""
 import numpy as np
 
 
 class Neuron:
-    """
-    Represents a single neuron performing binary classification.
-
-    Attributes:
-        W (numpy.ndarray): The weights vector for the neuron,
-                           initialized using a random normal distribution.
-        b (float): The bias for the neuron, initialized to 0.
-        A (float): The activated output (prediction) of the neuron.
-    """
+    """Neuron for binary classification"""
 
     def __init__(self, nx):
-        """
-        Initialize a Neuron instance.
-
-        Args:
-            nx (int): The number of input features to the neuron.
-
-        Raises:
-            TypeError: If nx is not an integer.
-            ValueError: If nx is less than 1.
-        """
         if not isinstance(nx, int):
             raise TypeError("nx must be an integer")
         if nx < 1:
@@ -42,126 +18,55 @@ class Neuron:
 
     @property
     def W(self):
-        """
-        Get the weights vector of the neuron.
-
-        Returns:
-            numpy.ndarray: The weights vector.
-        """
         return self.__W
 
     @property
     def b(self):
-        """
-        Get the bias of the neuron.
-
-        Returns:
-            float: The bias value.
-        """
         return self.__b
 
     @property
     def A(self):
-        """
-        Get the activated output of the neuron.
-
-        Returns:
-            float: The activated output.
-        """
         return self.__A
 
     def forward_prop(self, X):
-        """
-    Calculate the forward propagation of the neuron.
-
-    Args:
-        X (numpy.ndarray): Input data of shape (nx, m).
-
-    Returns:
-        numpy.ndarray: The activated output (prediction) for each example.
-        """
+        """Forward propagation"""
         Z = np.dot(self.__W, X) + self.__b
         self.__A = 1 / (1 + np.exp(-Z))
         return self.__A
 
     def cost(self, Y, A):
-        """
-        Calculate the cost using logistic regression.
-
-        Args:
-            Y (numpy.ndarray): Correct labels of shape (1, m).
-            A (numpy.ndarray): Activated outputs of shape (1, m).
-
-        Returns:
-            float: The cost.
-        """
+        """Cost function (log loss)"""
         m = Y.shape[1]
-        cost = -1 / m * np.sum(Y * np.log(A) + (1 - Y) * np.log(1.0000001 - A))
+        cost = -1 / m * np.sum(
+            Y * np.log(A + 1e-8) + (1 - Y) * np.log(1.0000001 - A)
+        )
         return cost
 
     def evaluate(self, X, Y):
-        """
-        Evaluate the neuron’s predictions.
-
-        Args:
-            X (numpy.ndarray): Input data of shape (nx, m).
-            Y (numpy.ndarray): Correct labels of shape (1, m).
-
-        Returns:
-            tuple: (predictions, cost)
-                - predictions is a numpy.ndarray with labels (0 or 1).
-                - cost is the logistic regression cost.
-        """
+        """Evaluates the neuron’s predictions"""
         A = self.forward_prop(X)
         cost = self.cost(Y, A)
-        predictions = np.where(A >= 0.5, 1, 0)
-        return predictions, cost
+        prediction = np.where(A >= 0.5, 1, 0)
+        return prediction, cost
 
     def gradient_descent(self, X, Y, A, alpha=0.05):
-        """
-        Performs one pass of gradient descent on the neuron.
-
-        Args:
-            X (numpy.ndarray): Input data of shape (nx, m).
-            Y (numpy.ndarray): True labels of shape (1, m).
-            A (numpy.ndarray): Activated outputs of shape (1, m).
-            alpha (float): Learning rate.
-
-        Updates:
-            __W and __b with the gradient descent step.
-        """
+        """Performs one pass of gradient descent"""
         m = Y.shape[1]
-
         dZ = A - Y
-        dW = np.dot(dZ, X.T) / m
-        db = np.sum(dZ) / m
-
+        dW = (1 / m) * np.dot(dZ, X.T)
+        db = (1 / m) * np.sum(dZ)
         self.__W -= alpha * dW
         self.__b -= alpha * db
 
     def train(self, X, Y, iterations=5000, alpha=0.05):
-        """
-        Trains the neuron by performing gradient descent.
+        """Trains the neuron"""
 
-        Args:
-            X (numpy.ndarray): Input data (nx, m).
-            Y (numpy.ndarray): Correct labels (1, m).
-            iterations (int): Number of iterations to train over.
-            alpha (float): Learning rate.
-
-        Raises:
-            TypeError: If iterations is not an integer.
-            ValueError: If iterations is not positive.
-            TypeError: If alpha is not a float.
-            ValueError: If alpha is not positive.
-
-        Returns:
-            tuple: The evaluation of the training data after training.
-        """
+        # Argument validation
         if not isinstance(iterations, int):
             raise TypeError("iterations must be an integer")
         if iterations <= 0:
             raise ValueError("iterations must be a positive integer")
+
         if not isinstance(alpha, float):
             raise TypeError("alpha must be a float")
         if alpha <= 0:
@@ -169,6 +74,6 @@ class Neuron:
 
         for i in range(iterations):
             A = self.forward_prop(X)
-        self.gradient_descent(X, Y, A, alpha)
+            self.gradient_descent(X, Y, A, alpha)
 
         return self.evaluate(X, Y)
