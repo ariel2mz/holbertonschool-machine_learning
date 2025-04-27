@@ -73,18 +73,17 @@ class NeuralNetwork:
         cost = self.cost(Y, A[1])
         prediction = np.where(A[1] >= 0.5, 1, 0)
         return prediction, cost
-    
+
     def gradient_descent(self, X, Y, A1, A2, alpha=0.05):
         """Performs one pass of gradient descent"""
         m = Y.shape[1]
-        dW1 = (1 / m) * np.dot(A1 - Y, X.T)
-        db1 = (1 / m) * np.sum(A1 - Y)
+        dW2 = (1 / m) * np.matmul(A2 - Y, A1.T)
+        db2 = (1 / m) * np.sum(A2 - Y)
+        dZ1 = np.matmul(self.W2.T, A2 - Y) * A1 * (1 - A1)
+        dW1 = (1 / m) * np.matmul(dZ1, X.T)
+        db1 = (1 / m) * np.sum(dZ1, axis=1, keepdims=True)
+
         self.__W1 -= alpha * dW1
         self.__b1 -= alpha * db1
-
-        m = Y.shape[1]
-        dW2 = (1 / m) * np.dot(A2 - Y, X.T)
-        db2 = (1 / m) * np.sum(A2 - Y)
         self.__W2 -= alpha * dW2
         self.__b2 -= alpha * db2
-        
