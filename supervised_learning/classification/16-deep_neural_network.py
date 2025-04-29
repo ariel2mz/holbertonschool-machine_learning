@@ -17,11 +17,11 @@ class DeepNeuralNetwork:
 
         Parámetros:
         - nx (int): Cantidad de características de entrada (features)
-        - layers (list): Lista que representa el número de nodos en cada capa de la red
+        - layers (list): Lista que representa el número de nodos
 
         Atributos:
         - L (int): Número de capas en la red neuronal
-        - cache (dict): Almacena todos los valores intermedios del modelo durante la propagación hacia adelante
+        - cache (dict): Almacena todos los valores intermedios
         - weights (dict): Almacena los pesos y sesgos (biases) de la red
 
         Excepciones:
@@ -41,15 +41,15 @@ class DeepNeuralNetwork:
         self.cache = {}
         self.weights = {}
 
-        prev_nodes = nx
+        prev = nx
 
         for i in range(self.L):
             if not isinstance(layers[i], int) or layers[i] < 1:
-                raise TypeError("layers debe ser una lista de enteros positivos")
+                raise TypeError("layers must be a list of positive integers")
 
-            #He et al
+            # He et al
             self.weights[f"W{i + 1}"] = (
-                np.random.randn(layers[i], prev_nodes) * np.sqrt(2 / prev_nodes)
+                np.random.randn(layers[i], prev) * np.sqrt(2 / prev)
             )
             self.weights[f"b{i + 1}"] = np.zeros((layers[i], 1))
-            prev_nodes = layers[i]
+            prev = layers[i]
