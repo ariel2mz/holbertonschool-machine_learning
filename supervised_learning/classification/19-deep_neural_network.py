@@ -92,6 +92,7 @@ class DeepNeuralNetwork:
             self.cache[f"A{indice}"] = Al
 
         return Al, self.cache
+
     def cost(self, Y, A):
         """
         Calcula el costo de la red neuronal usando la función log loss
@@ -104,9 +105,10 @@ class DeepNeuralNetwork:
         - cost: el valor del costo
         """
         m = Y.shape[1]
-        cost = - (1 / m) * np.sum(Y * np.log(A) + (1 - Y) * np.log(1.0000001 - A))
+        zz = 1.0000001 - A
+        cost = - (1 / m) * np.sum(Y * np.log(A) + (1 - Y) * np.log(zz))
         return cost
-    
+
     def evaluate(self, X, Y):
         """
         Evalúa el rendimiento de la red neuronal
