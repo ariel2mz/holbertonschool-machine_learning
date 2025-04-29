@@ -10,8 +10,6 @@ class DeepNeuralNetwork:
     sadsadsadsa
     """
 
-import numpy as np
-
 class DeepNeuralNetwork:
     """Deep neural network class for binary classification"""
 
