@@ -4,12 +4,6 @@ import numpy as np
 sadsadsa
 """
 
-
-class DeepNeuralNetwork:
-    """
-    sadsadsadsa
-    """
-
 class DeepNeuralNetwork:
     """Deep neural network class for binary classification"""
 
