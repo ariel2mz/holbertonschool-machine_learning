@@ -121,13 +121,13 @@ class NeuralNetwork:
         cost = []
         numiteration = []
         for _ in range(iterations):
-            A = self.forward_prop(X)
-            cost.append(self.cost(Y, A))
+            A1, A2 = self.forward_prop(X)
+            cost.append(self.cost(Y, A1))
             numiteration.append(i)
             if verbose and (i % step == 0 or i == 0 or i == iterations - 1):
                 print("Cost after", numiteration[i], "iterations:", cost[i])
             i = i + 1
-            self.gradient_descent(X, Y, A, alpha)
+            self.gradient_descent(X, Y, A1, A2, alpha)
 
         x = numiteration
         y = cost
