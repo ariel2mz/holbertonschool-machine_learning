@@ -1,32 +1,59 @@
 #!/usr/bin/env python3
+"""
+Define una red neuronal profunda para clasificación binaria
+"""
+
 import numpy as np
 
+
 class DeepNeuralNetwork:
-    """Deep neural network class for binary classification"""
+    """
+    Clase que define una red neuronal profunda para clasificación binaria
+    """
 
     def __init__(self, nx, layers):
-        # Validate nx
+        """
+        Constructor de la clase
+
+        Parámetros:
+        - nx (int): Cantidad de características de entrada (features)
+        - layers (list): Lista que representa el número de nodos en cada capa de la red
+
+        Atributos:
+        - L (int): Número de capas en la red neuronal
+        - cache (dict): Almacena todos los valores intermedios del modelo durante la propagación hacia adelante
+        - weights (dict): Almacena los pesos y sesgos (biases) de la red
+
+        Excepciones:
+        - TypeError: Si nx no es un entero
+        - ValueError: Si nx es menor que 1
+        - TypeError: Si layers no es una lista de enteros positivos
+        """
         if not isinstance(nx, int):
-            raise TypeError("nx must be an integer")
+            raise TypeError("nx debe ser un entero")
         if nx < 1:
-            raise ValueError("nx must be a positive integer")
+            raise ValueError("nx debe ser un entero positivo")
 
-        # Validate layers
         if not isinstance(layers, list) or len(layers) == 0:
-            raise TypeError("layers must be a list of positive integers")
-        if not all(isinstance(n, int) and n > 0 for n in layers):
-            raise TypeError("layers must be a list of positive integers")
+            raise TypeError("layers debe ser una lista de enteros positivos")
 
-        self.L = len(layers)            # Number of layers
-        self.cache = {}                 # To store forward prop values
-        self.weights = {}               # To store weights and biases
+        self.L = len(layers)
+        self.cache = {}
+        self.weights = {}
 
-        l = 0
-        while l < self.L:
-            layer_input_size = nx if l == 0 else layers[l - 1]
-            self.weights[f'W{l + 1}'] = (
-                np.random.randn(layers[l], layer_input_size) *
-                np.sqrt(2 / layer_input_size)
+        prev_nodes = nx
+
+        for i in range(self.L):
+            if not isinstance(layers[i], int) or layers[i] < 1:
+                raise TypeError("layers debe ser una lista de enteros positivos")
+
+            # Inicialización de pesos con el método de He et al.
+            self.weights[f"W{i + 1}"] = (
+                np.random.randn(layers[i], prev_nodes) * np.sqrt(2 / prev_nodes)
             )
-            self.weights[f'b{l + 1}'] = np.zeros((layers[l], 1))
-            l += 1
+
+            # Inicialización de sesgos en cero
+            self.weights[f"b{i + 1}"] = np.zeros((layers[i], 1))
+
+            # Actualizar para la siguiente capa
+            prev_nodes = layers[i]
