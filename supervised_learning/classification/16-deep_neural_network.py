@@ -1,8 +1,5 @@
 #!/usr/bin/env python3
 import numpy as np
-"""
-sadsadsa
-"""
 
 class DeepNeuralNetwork:
     """Deep neural network class for binary classification"""
@@ -20,14 +17,16 @@ class DeepNeuralNetwork:
         if not all(isinstance(n, int) and n > 0 for n in layers):
             raise TypeError("layers must be a list of positive integers")
 
-        self.L = len(layers)
-        self.cache = {}
-        self.weights = {}
+        self.L = len(layers)            # Number of layers
+        self.cache = {}                 # To store forward prop values
+        self.weights = {}               # To store weights and biases
 
-        for l in range(1, self.L + 1):
-            layer_input_size = nx if l == 1 else layers[l - 2]
-            self.weights[f'W{l}'] = (
-                np.random.randn(layers[l - 1], layer_input_size) *
+        l = 0
+        while l < self.L:
+            layer_input_size = nx if l == 0 else layers[l - 1]
+            self.weights[f'W{l + 1}'] = (
+                np.random.randn(layers[l], layer_input_size) *
                 np.sqrt(2 / layer_input_size)
             )
-            self.weights[f'b{l}'] = np.zeros((layers[l - 1], 1))
+            self.weights[f'b{l + 1}'] = np.zeros((layers[l], 1))
+            l += 1
