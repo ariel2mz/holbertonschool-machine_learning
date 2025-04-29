@@ -1,23 +1,13 @@
 #!/usr/bin/env python3
-"""
-Neuron implementation module.
-
-This module defines a Neuron class used for binary classification,
-including initialization of weights, bias, and activated output.
-"""
-
 import numpy as np
+"""
+sadsadsa
+"""
 
 
 class DeepNeuralNetwork:
     """
-    Represents a single neuron performing binary classification.
-
-    Attributes:
-        W (numpy.ndarray): The weights vector for the neuron,
-                           initialized using a random normal distribution.
-        b (float): The bias for the neuron, initialized to 0.
-        A (float): The activated output (prediction) of the neuron.
+    sadsadsadsa
     """
 
 import numpy as np
