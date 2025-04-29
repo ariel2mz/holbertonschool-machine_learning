@@ -65,7 +65,7 @@ class DeepNeuralNetwork:
     @property
     def weights(self):
         return self.__weights
-    
+
     def forward_prop(self, X):
         """
         Calcula la propagación hacia adelante de la red neuronal
@@ -81,14 +81,14 @@ class DeepNeuralNetwork:
         """
         self.cache["A0"] = X
 
-        for l in range(1, self.L + 1):
-            Wl = self.weights[f"W{l}"]
-            bl = self.weights[f"b{l}"]
-            A_prev = self.cache[f"A{l - 1}"]
+        for indice in range(1, self.L + 1):
+            Wl = self.weights[f"W{indice}"]
+            bl = self.weights[f"b{indice}"]
+            A_prev = self.cache[f"A{indice - 1}"]
 
             Zl = np.matmul(Wl, A_prev) + bl
             Al = 1 / (1 + np.exp(-Zl))  # Función sigmoide
 
-            self.cache[f"A{l}"] = Al
+            self.cache[f"A{indice}"] = Al
 
         return Al, self.cache
