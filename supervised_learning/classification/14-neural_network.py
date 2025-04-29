@@ -78,7 +78,7 @@ class NeuralNetwork:
         """Performs one pass of gradient descent"""
         m = Y.shape[1]
         dW2 = (1 / m) * np.matmul(A2 - Y, A1.T)
-        db2 = (1 / m) * np.sum(A2 - Y)
+        db2 = (1 / m) * np.sum(A2 - Y, axis=1, keepdims=True)
         dZ1 = np.matmul(self.W2.T, A2 - Y) * A1 * (1 - A1)
         dW1 = (1 / m) * np.matmul(dZ1, X.T)
         db1 = (1 / m) * np.sum(dZ1, axis=1, keepdims=True)
