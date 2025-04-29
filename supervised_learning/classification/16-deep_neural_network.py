@@ -47,13 +47,9 @@ class DeepNeuralNetwork:
             if not isinstance(layers[i], int) or layers[i] < 1:
                 raise TypeError("layers debe ser una lista de enteros positivos")
 
-            # Inicialización de pesos con el método de He et al.
+            #He et al
             self.weights[f"W{i + 1}"] = (
                 np.random.randn(layers[i], prev_nodes) * np.sqrt(2 / prev_nodes)
             )
-
-            # Inicialización de sesgos en cero
             self.weights[f"b{i + 1}"] = np.zeros((layers[i], 1))
-
-            # Actualizar para la siguiente capa
             prev_nodes = layers[i]
