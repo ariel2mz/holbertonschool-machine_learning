@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 import pickle
 import os
 
+
 class DeepNeuralNetwork:
     """
     Clase que define una red neuronal profunda para clasificación binaria
@@ -67,7 +68,7 @@ class DeepNeuralNetwork:
     @property
     def weights(self):
         return self.__weights
-    
+
     def save(self, filename):
         """Guarda el objeto de la instancia en un archivo en formato pickle"""
         if not filename.endswith(".pkl"):
@@ -82,7 +83,7 @@ class DeepNeuralNetwork:
             return None
         with open(filename, "rb") as f:
             return pickle.load(f)
-    
+
     def forward_prop(self, X):
         """
         Calcula la propagación hacia adelante de la red neuronal
