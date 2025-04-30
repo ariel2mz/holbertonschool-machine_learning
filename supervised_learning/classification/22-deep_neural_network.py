@@ -158,6 +158,7 @@ class DeepNeuralNetwork:
 
             self.weights["W" + str(lar)] -= alpha * dW
             self.weights["b" + str(lar)] -= alpha * db
+
     def train(self, X, Y, iterations=5000, alpha=0.05):
         """
         Entrena la red neuronal profunda

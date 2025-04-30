@@ -4,6 +4,7 @@ Define una red neuronal profunda para clasificación binaria
 """
 
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 class DeepNeuralNetwork:
@@ -158,18 +159,23 @@ class DeepNeuralNetwork:
 
             self.weights["W" + str(lar)] -= alpha * dW
             self.weights["b" + str(lar)] -= alpha * db
-    def train(self, X, Y, iterations=5000, alpha=0.05):
+
+    def train(self, X, Y, iterations=5000,
+              alpha=0.05, verbose=True, graph=True, step=100):
         """
-        Entrena la red neuronal profunda
+        Entrena e imprimir y graficar el costo.
 
         Parámetros:
-        - X: numpy.ndarray de forma (nx, m) con los datos de entrada
-        - Y: numpy.ndarray de forma (1, m) con las etiquetas correctas
-        - iterations: número de iteraciones para entrenar
+        - X: np.ndarray (nx, m) con datos de entrada
+        - Y: np.ndarray (1, m) con etiquetas correctas
+        - iterations: número de iteraciones
         - alpha: tasa de aprendizaje
+        - verbose: si es True, imprime el costo cada 'step' iteraciones
+        - graph: si es True, grafica el costo al final
+        - step: intervalo para imprimir/graficar
 
         Retorna:
-        - Predicciones y costo después del entrenamiento
+        - Evaluación del modelo tras el entrenamiento
         """
 
         # Validaciones
@@ -182,8 +188,33 @@ class DeepNeuralNetwork:
         if alpha <= 0:
             raise ValueError("alpha must be positive")
 
-        for i in range(iterations):
+        if verbose or graph:
+            if not isinstance(step, int):
+                raise TypeError("step must be an integer")
+            if step <= 0 or step > iterations:
+                raise ValueError("step must be positive and <= iterations")
+
+        costs = []
+        steps = []
+
+        for i in range(iterations + 1):
             AL, cache = self.forward_prop(X)
-            self.gradient_descent(Y, cache, alpha)
+            cost = self.cost(Y, AL)
+
+            if (verbose and i % step == 0) or i == iterations:
+                print(f"Cost after {i} iterations: {cost}")
+            if (graph and i % step == 0) or i == iterations:
+                costs.append(cost)
+                steps.append(i)
+
+            if i < iterations:
+                self.gradient_descent(Y, cache, alpha)
+
+        if graph:
+            plt.plot(steps, costs, 'b-')
+            plt.xlabel("iteration")
+            plt.ylabel("cost")
+            plt.title("Training Cost")
+            plt.show()
 
         return self.evaluate(X, Y)
