@@ -3,6 +3,7 @@
 
 import numpy as np
 
+
 def one_hot_encode(Y, classes):
     """
     Convierte un vector de etiquetas numéricas en una matriz one-hot.

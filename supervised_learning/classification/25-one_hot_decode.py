@@ -3,6 +3,7 @@
 
 import numpy as np
 
+
 def one_hot_decode(one_hot):
     """
     Convierte una matriz one-hot en un vector de etiquetas numéricas.
