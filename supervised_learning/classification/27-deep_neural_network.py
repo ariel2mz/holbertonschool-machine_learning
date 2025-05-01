@@ -71,10 +71,11 @@ class DeepNeuralNetwork:
     def evaluate(self, X, Y):
         """Evalúa el modelo"""
         A, _ = self.forward_prop(X)
-        prediction = np.argmax(A, axis=0)
+        prediction = np.where(A >= 0.5, 1, 0)
         Y_labels = np.argmax(Y, axis=0)
         cost = self.cost(Y, A)
         return prediction, cost
+
 
     def gradient_descent(self, Y, cache, alpha=0.05):
         """Descenso del gradiente para clasificación multiclase"""
