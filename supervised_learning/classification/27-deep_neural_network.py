@@ -41,7 +41,7 @@ class DeepNeuralNetwork:
         return self.__weights
 
     def forward_prop(self, X):
-        """Propagación hacia adelante (softmax en la última capa)"""
+        """Propagación hacia adelante (ReLU + softmax en la última capa)"""
         self.cache["A0"] = X
 
         for i in range(1, self.L + 1):
@@ -52,35 +52,37 @@ class DeepNeuralNetwork:
             Z = np.matmul(W, A_prev) + b
 
             if i == self.L:
-                # softmax
-                exp_Z = np.exp(Z - np.max(Z, axis=0, keepdims=True))
+                exp_Z = np.exp(Z - np.max(Z, axis=0, keepdims=True))  # softmax
                 A = exp_Z / np.sum(exp_Z, axis=0, keepdims=True)
             else:
-                A = 1 / (1 + np.exp(-Z))  # sigmoid
+                A = np.maximum(0, Z)  # ReLU
 
             self.cache[f"A{i}"] = A
 
         return A, self.cache
 
     def cost(self, Y, A):
+        """Costo con entropía cruzada para softmax"""
         m = Y.shape[1]
-        cost = -np.sum(Y * np.log(A) + (1 - Y) * np.log(1.0000001 - A)) / m
+        cost = -np.sum(Y * np.log(A + 1e-8)) / m
         return cost
 
     def evaluate(self, X, Y):
         """Evalúa el modelo"""
         A, _ = self.forward_prop(X)
-        prediction = np.where(A >= 0.5, 1, 0)
-        Y_labels = np.argmax(Y, axis=0)
+        prediction = np.argmax(A, axis=0)
+        labels = np.argmax(Y, axis=0)
         cost = self.cost(Y, A)
+        accuracy = np.mean(prediction == labels)
+        print(f"Cost: {cost:.4f}, Accuracy: {accuracy:.2%}")
         return prediction, cost
 
-
     def gradient_descent(self, Y, cache, alpha=0.05):
-        """Descenso del gradiente para clasificación multiclase"""
+        """Descenso del gradiente (con softmax y ReLU)"""
         m = Y.shape[1]
         weights = self.weights.copy()
         L = self.L
+        dA = None
 
         for i in reversed(range(1, L + 1)):
             A = cache[f"A{i}"]
@@ -90,7 +92,7 @@ class DeepNeuralNetwork:
             if i == L:
                 dZ = A - Y
             else:
-                dZ = dA * (A * (1 - A))  # sigmoid derivative
+                dZ = dA * (A > 0)  # ReLU derivative
 
             dW = (1 / m) * np.matmul(dZ, A_prev.T)
             db = (1 / m) * np.sum(dZ, axis=1, keepdims=True)
@@ -101,7 +103,6 @@ class DeepNeuralNetwork:
 
     def train(self, X, Y, iterations=5000, alpha=0.05, verbose=True, graph=True, step=100):
         """Entrena la red neuronal"""
-
         if not isinstance(iterations, int):
             raise TypeError("iterations must be an integer")
         if iterations <= 0:
@@ -126,6 +127,8 @@ class DeepNeuralNetwork:
             if (graph and i % step == 0) or i == iterations:
                 costs.append(cost)
                 steps.append(i)
+                if verbose:
+                    print(f"Cost after {i} iterations: {cost:.4f}")
 
             if i < iterations:
                 self.gradient_descent(Y, cache, alpha)
