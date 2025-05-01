@@ -63,11 +63,8 @@ class DeepNeuralNetwork:
         return A, self.cache
 
     def cost(self, Y, A):
-        """Costo usando softmax cross-entropy con ajuste requerido por el test"""
         m = Y.shape[1]
-        cost = (-1 / m) * np.sum(
-            Y * np.log(A) + (1 - Y) * np.log(1.0000001 - A)
-        )
+        cost = -np.sum(Y * np.log(A) + (1 - Y) * np.log(1.0000001 - A)) / m
         return cost
 
     def evaluate(self, X, Y):
