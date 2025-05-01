@@ -16,15 +16,18 @@ def build_model(nx, layers, activations, lambtha, keep_prob):
     """
     model = K.Sequential()
 
+    # Add the first layer with L2 regularization and dropout
     model.add(K.layers.Dense(layers[0], input_dim=nx, activation=activations[0],
                              kernel_regularizer=K.regularizers.l2(lambtha)))
     model.add(K.layers.Dropout(1 - keep_prob))
 
+    # Add subsequent layers
     for i in range(1, len(layers)):
         model.add(K.layers.Dense(layers[i], activation=activations[i],
                                  kernel_regularizer=K.regularizers.l2(lambtha)))
         model.add(K.layers.Dropout(1 - keep_prob))
 
+    # Compile the model
     model.compile(optimizer='adam', loss='categorical_crossentropy',
                   metrics=['accuracy'])
 
