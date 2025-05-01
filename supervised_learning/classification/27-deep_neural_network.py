@@ -124,8 +124,6 @@ class DeepNeuralNetwork:
             A, cache = self.forward_prop(X)
             cost = self.cost(Y, A)
 
-            if (verbose and i % step == 0) or i == iterations:
-                print(f"Cost after {i} iterations: {cost}")
             if (graph and i % step == 0) or i == iterations:
                 costs.append(cost)
                 steps.append(i)
