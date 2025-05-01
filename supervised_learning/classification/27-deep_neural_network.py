@@ -40,25 +40,18 @@ class DeepNeuralNetwork:
     def weights(self):
         return self.__weights
 
+    def sigmoid(self, Z):
+        return 1 / (1 + np.exp(-Z))
+
     def forward_prop(self, X):
-        """Propagación hacia adelante (ReLU + softmax en la última capa)"""
-        self.cache["A0"] = X
-
-        for i in range(1, self.L + 1):
-            W = self.weights[f"W{i}"]
-            b = self.weights[f"b{i}"]
-            A_prev = self.cache[f"A{i-1}"]
-
+        self.cache['A0'] = X
+        for l in range(1, self.L + 1):
+            W = self.weights[f'W{l}']
+            b = self.weights[f'b{l}']
+            A_prev = self.cache[f'A{l - 1}']
             Z = np.matmul(W, A_prev) + b
-
-            if i == self.L:
-                exp_Z = np.exp(Z - np.max(Z, axis=0, keepdims=True))  # softmax
-                A = exp_Z / np.sum(exp_Z, axis=0, keepdims=True)
-            else:
-                A = np.maximum(0, Z)  # ReLU
-
-            self.cache[f"A{i}"] = A
-
+            A = self.sigmoid(Z)
+            self.cache[f'A{l}'] = A
         return A, self.cache
 
     def cost(self, Y, A):
