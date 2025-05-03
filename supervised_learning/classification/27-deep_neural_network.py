@@ -78,7 +78,8 @@ class DeepNeuralNetwork:
         Cálculo del costo usando cross-entropy para clasificación multiclase
         """
         m = Y.shape[1]
-        return -np.sum(Y * np.log(A + 0.0000001)) / m
+        cost = -np.sum(Y * np.log(A)) / m
+        return cost
 
     def evaluate(self, X, Y):
         """
