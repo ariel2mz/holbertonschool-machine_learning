@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
-
-import tensorflow.keras as K
 """
 Module that defines a function to build
 a Keras model with dropout and L2 regularization.
 Module that defines a function to build a
 Keras model with dropout and L2 regularization.
 """
+import tensorflow.keras as K
 
 
 def build_model(nx, layers, activations, lambtha, keep_prob):

@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
-
-import tensorflow.keras as K
 """
 This module builds a neural network using the Functional API in Keras.
 """
+import tensorflow.keras as K
 
 
 def build_model(nx, layers, activations, lambtha, keep_prob):
