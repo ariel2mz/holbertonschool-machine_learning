@@ -16,10 +16,21 @@ class DeepNeuralNetwork:
 
     def __init__(self, nx, layers):
         """
-        Constructor
+        Constructor de la clase
 
-        nx: número de características de entrada
-        layers: lista con el número de nodos por capa
+        Parámetros:
+        - nx (int): Cantidad de características de entrada (features)
+        - layers (list): Lista que representa el número de nodos
+
+        Atributos:
+        - L (int): Número de capas en la red neuronal
+        - cache (dict): Almacena todos los valores intermedios
+        - weights (dict): Almacena los pesos y sesgos (biases) de la red
+
+        Excepciones:
+        - TypeError: Si nx no es un entero
+        - ValueError: Si nx es menor que 1
+        - TypeError: Si layers no es una lista de enteros positivos
         """
         if not isinstance(nx, int):
             raise TypeError("nx must be an integer")
@@ -34,10 +45,17 @@ class DeepNeuralNetwork:
         self.__weights = {}
 
         prev = nx
-        for i, nodes in enumerate(layers, 1):
-            self.__weights[f"W{i}"] = np.random.randn(nodes, prev) * np.sqrt(2 / prev)
-            self.__weights[f"b{i}"] = np.zeros((nodes, 1))
-            prev = nodes
+
+        for i in range(self.__L):
+            if not isinstance(layers[i], int) or layers[i] < 1:
+                raise TypeError("layers must be a list of positive integers")
+
+            # He et al
+            self.__weights[f"W{i + 1}"] = (
+                np.random.randn(layers[i], prev) * np.sqrt(2 / prev)
+            )
+            self.__weights[f"b{i + 1}"] = np.zeros((layers[i], 1))
+            prev = layers[i]
 
     @property
     def L(self):
