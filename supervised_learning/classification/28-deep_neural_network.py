@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 import numpy as np
 import matplotlib.pyplot as plt
 import pickle
@@ -16,13 +15,14 @@ class DeepNeuralNetwork:
 
         if not isinstance(layers, list) or len(layers) == 0:
             raise TypeError("layers must be a list of positive integers")
+        
         if activation not in ('sig', 'tanh'):
             raise ValueError("activation must be 'sig' or 'tanh'")
-
+        
         self.__L = len(layers)
         self.__cache = {}
         self.__weights = {}
-        self.__activation = activation
+        self.__activation = activation  # Store the activation function choice
 
         prev = nx
         for i in range(self.__L):
