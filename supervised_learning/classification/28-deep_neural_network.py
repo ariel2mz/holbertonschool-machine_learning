@@ -1,3 +1,8 @@
+#!/usr/bin/env python3
+"""
+Define una red neuronal profunda para clasificación multiclase
+"""
+
 import numpy as np
 import matplotlib.pyplot as plt
 import pickle
