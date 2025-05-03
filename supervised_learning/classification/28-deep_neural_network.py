@@ -87,16 +87,17 @@ class DeepNeuralNetwork:
     def cost(self, Y, A):
         """Costo usando cross-entropy multiclase"""
         m = Y.shape[1]
-        cost = -np.sum(Y * np.log(A + 1e-8)) / m
+        cost = -np.sum(Y * np.log(A)) / m
         return cost
 
     def evaluate(self, X, Y):
-        """Evalúa el modelo"""
+        """
+        Evalúa el rendimiento de la red neuronal
+        """
         A, _ = self.forward_prop(X)
-        prediction = np.argmax(A, axis=0)
-        Y_labels = np.argmax(Y, axis=0)
+        predictions = np.where(A >= 0.5, 1, 0)
         cost = self.cost(Y, A)
-        return prediction, cost
+        return predictions, cost
 
     def gradient_descent(self, Y, cache, alpha=0.05):
         """Descenso del gradiente con activación elegida en capas ocultas"""
@@ -143,8 +144,6 @@ class DeepNeuralNetwork:
             A, cache = self.forward_prop(X)
             cost = self.cost(Y, A)
 
-            if (verbose and i % step == 0) or i == iterations:
-                print(f"Cost after {i} iterations: {cost}")
             if (graph and i % step == 0) or i == iterations:
                 costs.append(cost)
                 steps.append(i)
