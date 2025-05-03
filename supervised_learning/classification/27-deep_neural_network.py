@@ -124,7 +124,6 @@ class DeepNeuralNetwork:
         A, _ = self.forward_prop(X)
         cost = self.cost(Y, A)
         predictions = np.argmax(A, axis=0)
-        labels = np.argmax(Y, axis=0)
         return predictions, cost
 
     def gradient_descent(self, Y, cache, alpha=0.05):
