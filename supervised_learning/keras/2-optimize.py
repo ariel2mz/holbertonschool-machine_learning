@@ -15,11 +15,8 @@ def optimize_model(network, alpha, beta1, beta2):
     - alpha: asdsadsa asdas
     - beta1: asdsad sadsa
     - beta2: asdsadsad asddsa
-
-    Returns:
-    - A compiled Keras model.
     """
     adam = K.optimizers.Adam(alpha, beta1, beta2)
     network.compile(optimizer=adam,
-                  loss='categorical_crossentropy',
-                  metrics=['accuracy'])
+                    loss='categorical_crossentropy',
+                    metrics=['accuracy'])
