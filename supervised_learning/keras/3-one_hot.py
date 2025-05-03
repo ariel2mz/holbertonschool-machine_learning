@@ -1,20 +1,17 @@
 #!/usr/bin/env python3
-"""
-This module builds a neural network using the Functional API in Keras.
-"""
+import numpy as np
 
 def one_hot(labels, classes=None):
     """
-    sadsadsadsa
+    Converts a label vector into a one-hot matrix.
+    
+    Parameters:
+    - labels: np.ndarray of shape (m,) containing the class labels
+    - classes: total number of classes. If None, inferred from labels
+    
+    Returns:
+    - A one-hot encoded matrix of shape (m, classes)
     """
-    leng = max(labels)
-    matrix = []
-
-    for i in range(0, len(labels)):
-        row = []
-        for x in range(0, leng):
-            if labels[i] == x:
-                row.append(1)
-            else:
-                row.append(0)
-        matrix.append(row)
+    if classes is None:
+        classes = np.max(labels) + 1
+    return np.eye(classes)[labels]
