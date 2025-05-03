@@ -2,7 +2,10 @@
 
 import tensorflow.keras as K
 """
-sasdsadsa
+Module that defines a function to build
+a Keras model with dropout and L2 regularization.
+Module that defines a function to build a
+Keras model with dropout and L2 regularization.
 """
 
 
@@ -13,9 +16,9 @@ def build_model(nx, layers, activations, lambtha, keep_prob):
     Args:
         nx (int): Number of input features.
         layers (list): List containing the number of nodes in each layer.
-        activations (list): List of activation functions to be used for each layer.
+        activations (list): List of activation functions.
         lambtha (float): L2 regularization parameter.
-        keep_prob (float): Probability of keeping a node active during dropout (between 0 and 1).
+        keep_prob (float): Probability of keeping a node active during.
 
     Returns:
         keras.Model: A compiled Keras model.
