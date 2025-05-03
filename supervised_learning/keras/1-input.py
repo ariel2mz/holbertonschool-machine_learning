@@ -5,6 +5,7 @@ import tensorflow.keras as K
 This module builds a neural network using the Functional API in Keras.
 """
 
+
 def build_model(nx, layers, activations, lambtha, keep_prob):
     """
     Builds a neural network model using the Keras Functional API.
