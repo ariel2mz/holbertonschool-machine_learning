@@ -8,8 +8,17 @@ sasdsadsa
 
 def build_model(nx, layers, activations, lambtha, keep_prob):
     """
-    hace un modelo con keras
-    Returns: sadsadsadsa
+    Builds a neural network model using Keras.
+
+    Args:
+        nx (int): Number of input features.
+        layers (list): List containing the number of nodes in each layer.
+        activations (list): List of activation functions to be used for each layer.
+        lambtha (float): L2 regularization parameter.
+        keep_prob (float): Probability of keeping a node active during dropout (between 0 and 1).
+
+    Returns:
+        keras.Model: A compiled Keras model.
     """
     model = K.Sequential()
 
