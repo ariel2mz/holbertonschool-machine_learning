@@ -11,7 +11,7 @@ def build_model(nx, layers, activations, lambtha, keep_prob):
     hace un modelo con keras
     Returns: sadsadsadsa
     """
-    model = K.Sequential()
+    model = K.Model()
 
     model.add(K.layers.Dense(layers[0], input_dim=nx,
                              activation=activations[0],
