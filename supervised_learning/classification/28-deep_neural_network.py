@@ -113,8 +113,7 @@ class DeepNeuralNetwork:
         - A: predicted output
         """
         m = Y.shape[1]
-        epsilon = 1e-8
-        return -np.sum(Y * np.log(A + epsilon)) / m
+        return -np.sum(Y * np.log(A)) / m
 
     def evaluate(self, X, Y):
         """
