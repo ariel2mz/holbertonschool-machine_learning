@@ -48,7 +48,6 @@ def train_model(network, data, labels, batch_size, epochs,
     if learning_rate_decay and validation_data is not None:
         def lr_schedule(epoch):
             lr = alpha / (1 + decay_rate * epoch)
-            print(f"Epoch {epoch + 1}: Learning rate is {lr:.5f}")
             return lr
 
         callbacks.append(K.callbacks.LearningRateScheduler(
