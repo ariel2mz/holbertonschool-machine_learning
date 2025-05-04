@@ -123,7 +123,8 @@ class DeepNeuralNetwork:
 
             dW = np.matmul(dZ, A_prev.T) / m
             db = np.sum(dZ, axis=1, keepdims=True) / m
-            dA = np.matmul(W.T, dZ)
+            if i > 1:
+                dA = np.matmul(W.T, dZ)
 
             self.__weights[f"W{i}"] -= alpha * dW
             self.__weights[f"b{i}"] -= alpha * db
