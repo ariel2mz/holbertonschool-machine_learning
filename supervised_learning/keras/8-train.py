@@ -61,7 +61,7 @@ def train_model(network, data, labels, batch_size, epochs,
             monitor='val_loss',
             save_best_only=True,
             save_weights_only=False,
-            verbose=1
+            verbose=0
         ))
 
     return network.fit(data, labels,
