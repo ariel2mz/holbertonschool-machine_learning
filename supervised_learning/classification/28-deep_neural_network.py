@@ -88,7 +88,6 @@ class DeepNeuralNetwork:
         labels = np.argmax(Y, axis=0)
         cost = self.cost(Y, A)
 
-        # Convert predictions to one-hot
         one_hot = np.zeros_like(A)
         one_hot[predictions, np.arange(A.shape[1])] = 1
 
