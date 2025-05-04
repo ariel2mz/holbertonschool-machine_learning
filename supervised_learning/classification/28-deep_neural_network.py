@@ -10,9 +10,17 @@ import os
 
 
 class DeepNeuralNetwork:
-    """Defines a deep neural network performing multiclass classification."""
+    """Defines a deep neural network for multiclass classification."""
 
     def __init__(self, nx, layers, activation='sig'):
+        """
+        Constructor for the deep neural network.
+
+        Parameters:
+        - nx: number of input features
+        - layers: list of nodes in each layer
+        - activation: activation function ('sig' or 'tanh')
+        """
         if not isinstance(nx, int):
             raise TypeError("nx must be an integer")
         if nx < 1:
@@ -28,33 +36,44 @@ class DeepNeuralNetwork:
         self.__activation = activation
 
         for i in range(self.L):
-            l_s = layers[i]
-            if not isinstance(l_s, int) or l_s < 1:
+            layer_size = layers[i]
+            if not isinstance(layer_size, int) or layer_size < 1:
                 raise TypeError("layers must be a list of positive integers")
 
             prev_size = nx if i == 0 else layers[i - 1]
-            ab = np.sqrt(2 / prev_size)
-            self.__weights[f"W{i + 1}"] = np.random.randn(l_s, prev_size) * ab
-            self.__weights[f"b{i + 1}"] = np.zeros((l_s, 1))
+            self.__weights[f"W{i + 1}"] = np.random.randn(
+                layer_size, prev_size) * np.sqrt(2 / prev_size)
+            self.__weights[f"b{i + 1}"] = np.zeros((layer_size, 1))
 
     @property
     def L(self):
+        """Returns number of layers."""
         return self.__L
 
     @property
     def cache(self):
+        """Returns intermediate values (cache)."""
         return self.__cache
 
     @property
     def weights(self):
+        """Returns weights and biases."""
         return self.__weights
 
     @property
     def activation(self):
+        """Returns activation function name."""
         return self.__activation
 
     @staticmethod
     def activation_function(Z, activation='sig'):
+        """
+        Applies activation function to input Z.
+
+        Parameters:
+        - Z: linear input
+        - activation: type of activation ('sig', 'tanh', 'softmax')
+        """
         if activation == 'sig':
             return 1 / (1 + np.exp(-Z))
         elif activation == 'tanh':
@@ -64,6 +83,12 @@ class DeepNeuralNetwork:
             return e_Z / np.sum(e_Z, axis=0, keepdims=True)
 
     def forward_prop(self, X):
+        """
+        Performs forward propagation.
+
+        Parameters:
+        - X: input data of shape (nx, m)
+        """
         self.__cache = {"A0": X}
         for i in range(1, self.L + 1):
             W = self.weights[f"W{i}"]
@@ -80,10 +105,25 @@ class DeepNeuralNetwork:
         return A, self.__cache
 
     def cost(self, Y, A):
+        """
+        Computes cost using cross-entropy loss.
+
+        Parameters:
+        - Y: true labels (one-hot)
+        - A: predicted output
+        """
         m = Y.shape[1]
-        return -np.sum(Y * np.log(A)) / m
+        epsilon = 1e-8
+        return -np.sum(Y * np.log(A + epsilon)) / m
 
     def evaluate(self, X, Y):
+        """
+        Evaluates predictions and cost.
+
+        Parameters:
+        - X: input data
+        - Y: true labels
+        """
         A, _ = self.forward_prop(X)
         predictions = np.argmax(A, axis=0)
         labels = np.argmax(Y, axis=0)
@@ -95,10 +135,17 @@ class DeepNeuralNetwork:
         return one_hot, cost
 
     def gradient_descent(self, Y, cache, alpha=0.05):
+        """
+        Updates weights using gradient descent.
+
+        Parameters:
+        - Y: true labels
+        - cache: cached values from forward prop
+        - alpha: learning rate
+        """
         m = Y.shape[1]
         L = self.L
         weights = self.weights
-
         A_L = cache[f"A{L}"]
         dZ = A_L - Y
 
@@ -121,6 +168,18 @@ class DeepNeuralNetwork:
 
     def train(self, X, Y, iterations=5000, alpha=0.05,
               verbose=True, graph=True, step=100):
+        """
+        Trains the deep neural network.
+
+        Parameters:
+        - X: input data
+        - Y: true labels
+        - iterations: number of iterations
+        - alpha: learning rate
+        - verbose: prints cost every 'step'
+        - graph: plots cost over iterations
+        - step: step interval for verbose/graph
+        """
         if not isinstance(iterations, int) or iterations <= 0:
             raise ValueError("iterations must be a positive integer")
         if not isinstance(alpha, float) or alpha <= 0:
@@ -156,6 +215,12 @@ class DeepNeuralNetwork:
         return self.evaluate(X, Y)
 
     def save(self, filename):
+        """
+        Saves the instance to a file.
+
+        Parameters:
+        - filename: name of the file to save to
+        """
         if not filename.endswith(".pkl"):
             filename += ".pkl"
         with open(filename, "wb") as f:
@@ -163,6 +228,12 @@ class DeepNeuralNetwork:
 
     @staticmethod
     def load(filename):
+        """
+        Loads a saved instance.
+
+        Parameters:
+        - filename: file to load from
+        """
         if not os.path.exists(filename):
             return None
         with open(filename, "rb") as f:
