@@ -80,8 +80,7 @@ class DeepNeuralNetwork:
 
     def cost(self, Y, A):
         m = Y.shape[1]
-        epsilon = 1e-8
-        return -np.sum(Y * np.log(A + epsilon)) / m
+        return -np.sum(Y * np.log(A)) / m
 
     def evaluate(self, X, Y):
         A, _ = self.forward_prop(X)
