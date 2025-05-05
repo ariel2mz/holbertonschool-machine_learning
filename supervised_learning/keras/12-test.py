@@ -7,15 +7,15 @@ import tensorflow.keras as K
 
 def test_model(network, data, labels, verbose=True):
     """
-    Tests a Keras neural network.
+    test.
 
     Args:
-        network: The Keras model to test.
-        data: Input data to test the model with.
-        labels: One-hot encoded correct labels for the data.
-        verbose: Boolean indicating if output should be printed during testing.
+        network: el modelo
+        data: data de entrenamiento
+        labels: onehot encoded
+        verbose: print si o no.
 
     Returns:
-        A tuple (loss, accuracy) from evaluating the model.
+        perdida precision
     """
     return network.evaluate(data, labels, verbose=verbose)
