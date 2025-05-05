@@ -7,14 +7,14 @@ import tensorflow.keras as K
 
 def predict(network, data, verbose=False):
     """
-    Makes a prediction using a Keras neural network.
+    predice.
 
     Args:
-        network: The Keras model to make the prediction with.
-        data: The input data to predict.
-        verbose: Boolean to control output verbosity during prediction.
+        network: modelo.
+        data: la data mano vpi.
+        verbose: boleano d iporimir!.
 
     Returns:
-        The prediction for the input data (as a NumPy array).
+        array d data.
     """
     return network.predict(data, verbose=verbose)
