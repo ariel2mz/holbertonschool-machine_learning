@@ -1,7 +1,16 @@
 #!/usr/bin/env python3
+"""
+no se amigo recien empiezo el codigo
+"""
 import numpy as np
 
+
 def normalization_constants(X):
+    """
+    X: matriz
+
+    Returns: los vectores con los datos
+    """
     vcolum = 0
     pcolum = []
     stdcolum = []
