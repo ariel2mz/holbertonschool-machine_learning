@@ -31,4 +31,4 @@ def normalization_constants(X):
         stdcolum.append(float(desviacion))
         suma_cuadrados = 0
 
-    return pcolum, stdcolum
+    return np.array(pcolum), np.array(stdcolum)
