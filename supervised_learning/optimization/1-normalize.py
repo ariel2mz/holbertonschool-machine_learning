@@ -16,5 +16,5 @@ def normalize(X, m, s):
     for i in range(0, len(X)):
         for j in range(0, len(X[0])):
             X[i][j] = (X[i][j] - m[j]) / s[j]
-    
+
     return X
