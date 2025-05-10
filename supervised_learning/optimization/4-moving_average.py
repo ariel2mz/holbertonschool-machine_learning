@@ -17,7 +17,7 @@ def moving_average(data, beta):
     - list of moving averages with bias correction
     """
     averages = []
-    v = 0 
+    v = 0
     for i, x in enumerate(data):
         v = beta * v + (1 - beta) * x
         bias_corrected = v / (1 - beta ** (i + 1))
