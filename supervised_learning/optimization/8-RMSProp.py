@@ -6,6 +6,12 @@ import tensorflow as tf
 
 
 def create_RMSProp_op(alpha, beta2, epsilon):
-    # Set up the RMSProp optimizer
-    optimizer = tf.optimizers.RMSprop(learning_rate=alpha, rho=beta2, epsilon=epsilon)
-    return optimizer
+    """
+    alpha: el learning rate
+    beta2: el peso q se descuenta o algo asi
+    epsilon: numero chiquito
+
+    returns: op
+    """
+    op = tf.optimizers.RMSprop(learning_rate=alpha, rho=beta2, epsilon=epsilon)
+    return op
