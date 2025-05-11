@@ -6,6 +6,10 @@ import tensorflow as tf
 
 
 def learning_rate_decay(alpha, decay_rate, decay_step):
+    """
+    asadasdsa
+    asdasdasa
+    """
     learning_rate = tf.keras.optimizers.schedules.InverseTimeDecay(
         initial_learning_rate=alpha,
         decay_steps=decay_step,
