@@ -18,16 +18,16 @@ def create_batch_norm_layer(prev, n, activation):
     - tensor, activated output for the layer
     """
 
-    dense = tf.keras.layers.Dense(
-        units=n,
-        kernel_initializer=tf.keras.initializers.VarianceScaling(mode='fan_avg')
-    )(prev)
+    initializer = tf.keras.initializers.VarianceScaling(mode='fan_avg')
+    den = tf.keras.layers.Dense(units=n, kernel_initializer=initializer)(prev)
 
-    gam = tf.Variable(initial_value=tf.ones([n]), trainable=True)
-    beta = tf.Variable(initial_value=tf.zeros([n]), trainable=True)
-    eps = 1e-7
+    batch_norm = tf.keras.layers.BatchNormalization(
+        axis=-1,
+        momentum=0.99,
+        epsilon=1e-7,
+        center=True,
+        scale=True
+    )(den, training=True)
 
-    mean, var = tf.nn.moments(dense, axes=[0])
-    bn = tf.nn.batch_normalization(dense, mean, var, beta, gam, eps)
-
+    # Activation function
     return activation(batch_norm)
