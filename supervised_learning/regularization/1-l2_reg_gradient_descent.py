@@ -5,14 +5,14 @@ no se amigo recien empiezo el codigo
 import numpy as np
 
 
-def l2_reg_gradient_descent(Y, weights, cache, alpha, lambtha, L):
+def gradient_descent(Y, weights, cache, alpha, lambtha, L):
     """
-    sadasdasdas
-    sadasdasdsa
+    Performs one pass of gradient descent on the neural network
+    with L2 regularization.
+    """
+    import numpy as np
+    np.set_printoptions(precision=8, suppress=False, floatmode='maxprec_equal')
 
-    asdsadsa
-    sadas
-    """
     m = Y.shape[1]
     dz = cache['A' + str(L)] - Y
 
@@ -21,11 +21,13 @@ def l2_reg_gradient_descent(Y, weights, cache, alpha, lambtha, L):
         W = weights['W' + str(l)]
         b = weights['b' + str(l)]
 
-        dw = (1 / m) * np.matmul(dz, A_prev.T) + (lambtha / m) * W
+        dW = (1 / m) * np.matmul(dz, A_prev.T) + (lambtha / m) * W
         db = (1 / m) * np.sum(dz, axis=1, keepdims=True)
 
-        weights['W' + str(l)] -= alpha * dw
-        weights['b' + str(l)] -= alpha * db
+        # Update weights and biases
+        weights['W' + str(l)] = W - alpha * dW
+        weights['b' + str(l)] = b - alpha * db
 
         if l > 1:
-            dz = np.matmul(W.T, dz) * (1 - A_prev ** 2)
+            dz_prev = np.matmul(W.T, dz) * (1 - A_prev ** 2)
+            dz = dz_prev
