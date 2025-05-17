@@ -10,7 +10,6 @@ def gradient_descent(Y, weights, cache, alpha, lambtha, L):
     Performs one pass of gradient descent on the neural network
     with L2 regularization.
     """
-    import numpy as np
     np.set_printoptions(precision=8, suppress=False, floatmode='maxprec_equal')
 
     m = Y.shape[1]
