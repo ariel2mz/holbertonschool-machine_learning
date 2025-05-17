@@ -7,23 +7,18 @@ import tensorflow as tf
 
 def l2_reg_create_layer(prev, n, activation, lambtha):
     """
-    Creates a neural network layer in TensorFlow with L2 regularization.
-
-    Parameters:
-    prev -- tensor containing the output of the previous layer
-    n -- number of nodes the new layer should contain
-    activation -- activation function to be used on the layer
-    lambtha -- L2 regularization parameter
-
-    Returns:
-    The output of the new layer
+    sadsasadsa
+    sadsadsa
     """
-    l2_regularizer = tf.keras.regularizers.L2(l2=lambtha)
+    regularizer = tf.keras.regularizers.L2(lambtha)
 
     layer = tf.keras.layers.Dense(
-        units=n,
+        n,
         activation=activation,
-        kernel_regularizer=l2_regularizer
-    )(prev)
+        kernel_initializer=tf.keras.initializers.VarianceScaling(
+            scale=2.0,
+            mode='fan_avg'),
+        kernel_regularizer=regularizer
+    )
 
-    return layer
+    return layer(prev)
