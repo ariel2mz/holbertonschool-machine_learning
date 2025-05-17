@@ -5,7 +5,7 @@ no se amigo recien empiezo el codigo
 import numpy as np
 
 
-def gradient_descent(Y, weights, cache, alpha, lambtha, L):
+def l2_reg_gradient_descent(Y, weights, cache, alpha, lambtha, L):
     """
     Performs one pass of gradient descent on the neural network
     with L2 regularization.
