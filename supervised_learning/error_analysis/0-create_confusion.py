@@ -14,7 +14,6 @@ def create_confusion_matrix(labels, logits):
     Returns:
         np.ndarray: Confusion matrix of shape (classes, classes)
     """
-    # Convert one-hot to class indices
     true = np.argmax(labels, axis=1)
     pred = np.argmax(logits, axis=1)
 
