@@ -7,7 +7,7 @@ import numpy as np
 
 def l2_reg_gradient_descent(Y, weights, cache, alpha, lambtha, L):
     """
-    Updates the weights of a NN using GD with L2 regularization.
+    Updates the weights of a NN using GD with L2
 
     Parameters:
     Y -- one-hot numpy.ndarray of shape (classes, m) with correct labels
@@ -24,7 +24,6 @@ def l2_reg_gradient_descent(Y, weights, cache, alpha, lambtha, L):
 
     for i in range(L, 0, -1):
         A_prev = cache['A' + str(i-1)]
-
         corto = np.dot(dZ, A_prev.T) + (lambtha / m) * weights['W' + str(i)]
         dW = (1 / m) * corto
         db = (1 / m) * np.sum(dZ, axis=1, keepdims=True)
