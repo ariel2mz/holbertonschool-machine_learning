@@ -19,12 +19,12 @@ def l2_reg_gradient_descent(Y, weights, cache, alpha, lambtha, L):
     """
     m = Y.shape[1]
     grads = {}
-
+    lm = lambtha
     dZ = cache['A' + str(L)] - Y
 
     for i in range(L, 0, -1):
         A_prev = cache['A' + str(i-1)]
-        dW = (1 / m) * np.dot(dZ, A_prev.T) + (lambtha / m) * weights['W' + str(i)]
+        dW = (1 / m) * np.dot(dZ, A_prev.T) + (lm / m) * weights['W' + str(i)]
         db = (1 / m) * np.sum(dZ, axis=1, keepdims=True)
 
         grads['dW' + str(i)] = dW
