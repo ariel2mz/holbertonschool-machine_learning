@@ -15,7 +15,7 @@ def l2_reg_cost(cost, lambtha, weights, L, m):
     - weights: dict, contains weights and biases of the network)
     - L: int, number of layers
     - m: int, number of data points
-    
+
     Returns:
     total: float, the cost including L2 regularization
     """
