@@ -19,7 +19,7 @@ def create_confusion_matrix(labels, logits):
     pred = np.argmax(logits, axis=1)
 
     classes = labels.shape[1]
-    conf = np.zeros((classes, classes), dtype=np.int64)
+    conf = np.zeros((classes, classes), dtype=np.float64)
 
     for t, p in zip(true, pred):
         conf[t, p] += 1
