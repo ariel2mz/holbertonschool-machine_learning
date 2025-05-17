@@ -20,4 +20,4 @@ def l2_reg_cost(cost, model):
             if layer.kernel_regularizer is not None:
                 l2_loss += layer.kernel_regularizer(layer.kernel)
 
-    return cost + l2_loss
+    return tf.convert_to_tensor(cost + l2_loss)
