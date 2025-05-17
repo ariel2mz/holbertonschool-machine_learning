@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 """asdasdasdsadsa"""
-
 import numpy as np
+
 
 def create_confusion_matrix(labels, logits):
     """
     Creates a confusion matrix from one-hot encoded labels and predictions.
 
     Args:
-        labels (np.ndarray): One-hot encoded true labels, shape (m, classes)
-        logits (np.ndarray): One-hot encoded predicted labels, shape (m, classes)
+        labels (np.ndarray): Onehot encoded true labels
+        logits (np.ndarray): Onehot encoded predicted labels
 
     Returns:
         np.ndarray: Confusion matrix of shape (classes, classes)
