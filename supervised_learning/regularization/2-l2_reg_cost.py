@@ -14,14 +14,14 @@ def l2_reg_cost(cost, model):
     model -- Keras model that includes layers with L2 regularization
     
     Returns:
-    A tensor containing the total cost for each layer of the network, accounting for L2 regularization
+    el costo de cada layer con l2 aplciada 
     """
-
     l2_cost = tf.zeros_like(cost)
     for layer in model.layers:
-        l2 = layer.kernel_regularizer.l2
-        weights = layer.kernel
-        l2_cost += l2 * tf.nn.l2_loss(weights)
+        if hasattr(layer, 'kernel_regularizer') and layer.kernel_regularizer is not None:
+            l2 = layer.kernel_regularizer.l2
+            weights = layer.kernel
+            l2_cost += l2 * tf.nn.l2_loss(weights)
     total_cost = cost + l2_cost
 
     return total_cost
