@@ -7,25 +7,36 @@ import numpy as np
 
 def l2_reg_gradient_descent(Y, weights, cache, alpha, lambtha, L):
     """
-    Performs one pass of gradient descent on the neural network
-    with L2 regularization.
+    Updates the weights and biases of a neural network using gradient descent with L2 regularization.
+
+    Parameters:
+    Y -- one-hot numpy.ndarray of shape (classes, m) with correct labels
+    weights -- dictionary of weights and biases
+    cache -- dictionary of outputs of each layer
+    alpha -- learning rate
+    lambtha -- L2 regularization parameter
+    L -- number of layers in the network
     """
-    np.set_printoptions(precision=8, suppress=False, floatmode='maxprec_equal')
-
     m = Y.shape[1]
-    dz = cache['A' + str(L)] - Y
+    grads = {}
 
-    for l in reversed(range(1, L + 1)):
-        A_prev = cache['A' + str(l - 1)]
-        W = weights['W' + str(l)]
-        b = weights['b' + str(l)]
+    dZ = cache['A' + str(L)] - Y
 
-        dW = (1 / m) * np.matmul(dz, A_prev.T) + (lambtha / m) * W
-        db = (1 / m) * np.sum(dz, axis=1, keepdims=True)
+    for l in range(L, 0, -1):
+        A_prev = cache['A' + str(l-1)]
 
-        weights['W' + str(l)] = W - alpha * dW
-        weights['b' + str(l)] = b - alpha * db
-
+        dW = (1 / m) * np.dot(dZ, A_prev.T) + (lambtha / m) * weights['W' + str(l)]
+        db = (1 / m) * np.sum(dZ, axis=1, keepdims=True)
+        
+        grads['dW' + str(l)] = dW
+        grads['db' + str(l)] = db
+        
         if l > 1:
-            dz_prev = np.matmul(W.T, dz) * (1 - A_prev ** 2)
-            dz = dz_prev
+            W = weights['W' + str(l)]
+            dA_prev = np.dot(W.T, dZ)
+            tanh_derivative = 1 - np.power(A_prev, 2)
+            dZ = dA_prev * tanh_derivative
+
+    for l in range(1, L+1):
+        weights['W' + str(l)] -= alpha * grads['dW' + str(l)]
+        weights['b' + str(l)] -= alpha * grads['db' + str(l)]
