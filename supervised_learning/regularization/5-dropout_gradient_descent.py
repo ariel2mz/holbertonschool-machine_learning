@@ -19,7 +19,7 @@ def dropout_gradient_descent(Y, weights, cache, alpha, keep_prob, L):
         A_prev = cache['A' + str(i-1)]
         grds['db' + str(i)] = np.sum(dZ, axis=1, keepdims=True) / m
         grds['dW' + str(i)] = np.dot(dZ, A_prev.T) / m
-    
+
         if i != 1:
             dA = np.matmul(weights['W' + str(i)].T, dZ)
             dA *= cache['D' + str(i-1)]
