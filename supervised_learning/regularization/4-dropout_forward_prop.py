@@ -9,7 +9,8 @@ def dropout_forward_prop(X, weights, L, keep_prob):
     """
     Forward propagation with Dropout regularization.
     """
-    cache = {'A0': X}
+    cache = {}
+    cache['A0'] = X
 
     for i in range(1, L + 1):
         W = weights['W' + str(i)]
