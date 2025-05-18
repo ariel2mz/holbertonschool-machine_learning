@@ -1,40 +1,30 @@
 #!/usr/bin/env python3
-"""Gradient descent with inverted dropout regularization"""
+"""
+sadasdasdsad
+"""
 import numpy as np
+
 
 def dropout_gradient_descent(Y, weights, cache, alpha, keep_prob, L):
     """
-    Updates weights in-place using gradient descent with inverted dropout.
-
-    Args:
-        Y (np.ndarray): One-hot labels of shape (classes, m).
-        weights (dict): Contains 'W1'..'WL', 'b1'..'bL'.
-        cache (dict): Contains 'A0'..'AL' and 'D1'..'DL-1'.
-        alpha (float): Learning rate.
-        keep_prob (float): Probability a node is kept during dropout.
-        L (int): Number of layers.
+    updates the weights of a neural network with Dropout regularization
+    using gradient descent:
     """
-    m = Y.shape[1]  # Number of examples
-    dZ = cache[f"A{L}"] - Y  # Output layer gradient (softmax + cross-entropy)
+    grds = {}
+    m = Y.shape[1]
+    A_output = cache['A' + str(L)]
+    dZ = A_output - Y 
 
-    for layer in range(L, 0, -1):
-        A_prev = cache[f"A{layer - 1}"]
+    for i in range(L, 0, -1):
+        A_prev = cache['A' + str(i-1)]
+        grds['db' + str(i)] = np.sum(dZ, axis=1, keepdims=True) / m
+        grds['dW' + str(i)] = np.dot(dZ, A_prev.T) / m
 
-        # Compute gradients
-        dW = (1 / m) * np.dot(dZ, A_prev.T)
-        db = (1 / m) * np.sum(dZ, axis=1, keepdims=True)
+        if i != 1: 
+            dA = np.matmul(weights['W' + str(i)].T, dZ)
+            dA *= cache['D' + str(i-1)]
+            dA /= keep_prob
+            dZ = dA * (1 - np.power(A_prev, 2))
 
-        # Update weights with learning rate
-        weights[f"W{layer}"] -= alpha * dW
-        weights[f"b{layer}"] -= alpha * db
-
-        if layer > 1:  # If not the input layer
-            # Backpropagate through dropout and tanh
-            dA_prev = np.dot(weights[f"W{layer}"].T, dZ)
-            dA_prev *= cache[f"D{layer - 1}"]   
-            dA_prev /= keep_prob  # Scale to maintain expected value
-
-            # Derivative of tanh activation: (1 - A^2)
-            dZ = dA_prev * (1 - np.power(A_prev, 2))
-
-    return weights  # Return updated weights
+        weights['b' + str(i)] -= alpha * grds['db' + str(i)]
+        weights['W' + str(i)] -= alpha * grds['dW' + str(i)]
