@@ -27,10 +27,10 @@ def dropout_create_layer(prev, n, activation, keep_prob, training=True):
         kernel_initializer=initializer
     )
 
-    layer_output = dense_layer(prev)
+    retorno = dense_layer(prev)
     
     # aca esta el fukin dropout
     if training and keep_prob < 1:
-        layer_output = tf.nn.dropout(layer_output, rate=1 - keep_prob)
+        retorno = tf.nn.dropout(retorno, rate=1 - keep_prob)
 
-    return layer_output
+    return retorno
