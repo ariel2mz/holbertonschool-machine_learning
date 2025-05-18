@@ -36,8 +36,8 @@ def dropout_forward_prop(X, weights, L, keep_prob):
             probabilidades.
             atentamente: chat gepete
             """
-            A = np.exp(Z - np.max(Z, axis=0, keepdims=True))
-            A = A / np.sum(A, axis=0, keepdims=True)
+            exp_Z = np.exp(Z - np.max(Z, axis=0, keepdims=True))
+            A = exp_Z / np.sum(exp_Z, axis=0, keepdims=True)
         else:
             A = np.tanh(Z)
             D = np.random.rand(A.shape[0], A.shape[1]) < keep_prob
