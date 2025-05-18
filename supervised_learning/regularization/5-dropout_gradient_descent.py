@@ -16,24 +16,23 @@ def dropout_gradient_descent(Y, weights, cache, alpha, keep_prob, L):
         L (int): Number of layers.
     """
     m = Y.shape[1]  # Number of examples
-    dZ = cache[f"A{L}"] - Y  # Output layer gradient (softmax + cross-entropy)
+    A_output = cache['A' + str(L)]
+    dZ = A_output - Y  # Gradient for the output layer (softmax + cross-entropy)
 
-    for l in range(L, 0, -1):
-        A_prev = cache[f"A{l-1}"]
+    for i in range(L, 0, -1):
+        A_prev = cache['A' + str(i - 1)]
         
-        # Compute gradients
-        dW = (1/m) * np.dot(dZ, A_prev.T)
-        db = (1/m) * np.sum(dZ, axis=1, keepdims=True)
+        # Compute gradients for weights and biases
+        dW = np.dot(dZ, A_prev.T) / m
+        db = np.sum(dZ, axis=1, keepdims=True) / m
 
-        # Update weights with learning rate
-        weights[f"W{l}"] -= alpha * dW
-        weights[f"b{l}"] -= alpha * db
+        # Update weights using the learning rate
+        weights['W' + str(i)] -= alpha * dW
+        weights['b' + str(i)] -= alpha * db
 
-        if l == 1:  # No layer before input
-            break
-
-        # Backpropagate through dropout and tanh
-        dA_prev = np.dot(weights[f"W{l}"].T, dZ)
-        dA_prev = dA_prev * cache[f"D{l-1}"]  # Apply dropout mask
-        dA_prev = dA_prev / keep_prob  # Inverted dropout scaling
-        dZ = dA_prev * (1 - np.power(A_prev, 2))  # tanh derivative
+        if i > 1:  # If not the input layer
+            # Backpropagate through the layer
+            dA = np.dot(weights['W' + str(i)].T, dZ)
+            dA *= cache['D' + str(i - 1)]  # Apply dropout mask
+            dA /= keep_prob  # Scale to maintain expected value
+            dZ = dA * (1 - np.power(A_prev, 2))  # Derivative of tanh
