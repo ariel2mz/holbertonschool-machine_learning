@@ -5,7 +5,7 @@ import numpy as np
 def dropout_forward_prop(X, weights, L, keep_prob):
     """
     Conduct forward propagation using Dropout.
-    
+
     Parameters:
     - X: input data (nx, m)
     - weights: dictionary of weights and biases
@@ -31,7 +31,8 @@ def dropout_forward_prop(X, weights, L, keep_prob):
             La función softmax transforma un vector de valores reales
             (por ejemplo, las salidas de la última capa de una red neuronal)
             en una distribución de probabilidad. Es decir, convierte
-            esos valores en números entre 0 y 1 que suman 1 y pueden interpretarse como
+            esos valores en números entre 0 y 1 que suman 1 y
+            pueden interpretarse como
             probabilidades.
             atentamente: chat gepete
             """
@@ -39,7 +40,7 @@ def dropout_forward_prop(X, weights, L, keep_prob):
             A = A / np.sum(A, axis=0, keepdims=True)
         else:
             A = np.tanh(Z)
-            D = np.random.rand(*A.shape) < keep_prob
+            D = np.random.rand(A.shape[0], A.shape[1]) < keep_prob
             A *= D
             A /= keep_prob
             cache['D' + str(i)] = D
