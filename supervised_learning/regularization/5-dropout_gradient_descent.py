@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""asdsadas adss"""
+"""Gradient descent with inverted dropout regularization"""
 import numpy as np
 
 
@@ -15,20 +15,25 @@ def dropout_gradient_descent(Y, weights, cache, alpha, keep_prob, L):
         keep_prob (float): Probability a node is kept during dropout.
         L (int): Number of layers.
     """
-    m = Y.shape[1]
-    dZ = cache[f"A{L}"] - Y
+    m = Y.shape[1]  # Number of examples
+    dZ = cache[f"A{L}"] - Y  # Output layer gradient (softmax + cross-entropy)
 
-    for i in range(L, 0, -1):
-        A_prev = cache[f"A{i-1}"]
+    for l in range(L, 0, -1):
+        A_prev = cache[f"A{l-1}"]
+        
+        # Compute gradients
+        dW = (1/m) * np.dot(dZ, A_prev.T)
+        db = (1/m) * np.sum(dZ, axis=1, keepdims=True)
 
-        dW = np.dot(dZ, A_prev.T) / m
-        db = np.sum(dZ, axis=1, keepdims=True) / m
+        # Update weights with learning rate
+        weights[f"W{l}"] -= alpha * dW
+        weights[f"b{l}"] -= alpha * db
 
-        weights[f"W{i}"] -= alpha * dW
-        weights[f"b{i}"] -= alpha * db
+        if l == 1:  # No layer before input
+            break
 
-        if i > 1:
-            dA_prev = np.dot(weights[f"W{i}"].T, dZ)
-            dA_prev = dA_prev * cache[f"D{i-1}"] / keep_prob
-
-            dZ = dA_prev * (1 - np.power(A_prev, 2))
+        # Backpropagate through dropout and tanh
+        dA_prev = np.dot(weights[f"W{l}"].T, dZ)
+        dA_prev = dA_prev * cache[f"D{l-1}"]  # Apply dropout mask
+        dA_prev = dA_prev / keep_prob  # Inverted dropout scaling
+        dZ = dA_prev * (1 - np.power(A_prev, 2))  # tanh derivative
