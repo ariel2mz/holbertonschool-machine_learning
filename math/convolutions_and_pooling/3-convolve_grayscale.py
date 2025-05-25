@@ -46,7 +46,11 @@ def convolve_grayscale(images, kernel, padding='same', stride=(1, 1)):
         padded_images = images
         nuevoh = (h - kh) // sh + 1
         nuevow = (w - kw) // sw + 1
-
+        for i in range(nuevoh):
+            for j in range(nuevow):
+                porcion = images[:, i * sh:i * sh + kh, j * sw:j * sw + kw]
+                nuevo[:, i, j] = np.sum(porcion * kernel, axis=(1, 2))
+        return nuevo
     else:
         # customizado
         ph, pw = padding
