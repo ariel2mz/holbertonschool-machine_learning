@@ -45,8 +45,8 @@ def convolve_grayscale(images, kernel, padding='same', stride=(1, 1)):
     # sin
     elif padding == 'valid':
         padded_images = images
-        nuevoh = (h - kh) // sh + 1
-        nuevow = (w - kw) // sw + 1
+        nuevoh = (h + 2 * 0 - kh) // sh + 1
+        nuevow = (w + 2 * 0 - kw) // sw + 1
 
     else:
         # customizado
