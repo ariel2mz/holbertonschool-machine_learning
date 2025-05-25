@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """
-stride es los pasos, tipo si va de uno en uno
+m ayudo deepseek porque mi codigo no
+andaba el 'valid' no se por que literal
+no tengo ni idea
 """
 import numpy as np
 
@@ -18,63 +20,26 @@ def convolve_grayscale(images, kernel, padding='same', stride=(1, 1)):
     Returns:
     - np.ndarray of shape (m, out_h, out_w) with convolved images
     """
-    m = len(images)
-    h = len(images[0])
-    w = len(images[0][0])
-    kh = len(kernel)
-    kw = len(kernel[0])
-
+    m, h, w = images.shape
+    kh, kw = kernel.shape
     sh, sw = stride
 
     if padding == 'same':
-        # mantener el mismo tamaño
-        padt = kh // 2
+        padt = (kh - 1) // 2
         padb = kh - 1 - padt
-        padl = kw // 2
+        padl = (kw - 1) // 2
         padr = kw - 1 - padl
-
         padded_images = np.pad(
             images,
             pad_width=((0, 0), (padt, padb), (padl, padr)),
             mode='constant',
             constant_values=0
         )
-
-        nuevoh = (h + padt + padb - kh) // sh + 1
-        nuevow = (w + padl + padr - kw) // sw + 1
-    
-    # sin
     elif padding == 'valid':
-
-        """
-        saque un codigo de google porque
-        no me andaba antes y no se por q
-        porque literal no tiene ninguna
-        ciencia
-        """
-        ph = 0
-        pw = 0
-        padded_images = np.pad(
-        images,
-        ((0, 0), (ph, ph), (pw, pw)),
-        mode='constant')
-        nuevoh = (h + 2 * ph - kh) // sh + 1
-        nuevow = (w + 2 * pw - kw) // sw + 1
-        nuevo = np.zeros((m, nuevoh, nuevow))
-        for i in range(nuevoh):
-            for j in range(nuevow):
-                starth = i * sh
-                startw = j * sw
-                finh = starth + kh
-                finw = startw + kw
-                nuevo[:, i, j] = np.sum(
-                    padded_images[:, starth:finh, startw:finw] * kernel,
-                    axis=(1, 2)
-                )
-        return nuevo
-    
+        # No padding
+        padded_images = images
     else:
-        # customizado
+        # Custom padding
         ph, pw = padding
         padded_images = np.pad(
             images,
@@ -82,16 +47,21 @@ def convolve_grayscale(images, kernel, padding='same', stride=(1, 1)):
             mode='constant',
             constant_values=0
         )
-        nuevoh = (h + 2 * ph - kh) // sh + 1
-        nuevow = (w + 2 * pw - kw) // sw + 1
 
-    nuevo = np.zeros((m, nuevoh, nuevow))
+    padded_h = padded_images.shape[1]
+    padded_w = padded_images.shape[2]
+    out_h = (padded_h - kh) // sh + 1
+    out_w = (padded_w - kw) // sw + 1
 
-    for i in range(nuevoh):
-        for j in range(nuevow):
-            stai = i * sh
-            staj = j * sw
-            porcion = padded_images[:, stai:stai+kh, staj:staj+kw]
-            nuevo[:, i, j] = np.sum(porcion * kernel, axis=(1, 2))
+    output = np.zeros((m, out_h, out_w))
 
-    return nuevo
+    for i in range(out_h):
+        for j in range(out_w):
+            vert_start = i * sh
+            vert_end = vert_start + kh
+            horiz_start = j * sw
+            horiz_end = horiz_start + kw
+            patch = padded_images[:, vert_start:vert_end, horiz_start:horiz_end]
+            output[:, i, j] = np.sum(patch * kernel, axis=(1, 2))
+
+    return output
