@@ -4,6 +4,10 @@ le pedi a deepseek q me lo haga mejor
 porque mi codigo estaba todo bien
 menos el valid que me daba un output distinto
 y no encontraba que era el error
+(mi codigo era bastante distinto a este
+en cada if hacia cada output con 0s pero
+las ias no lograban decirme que estaba mal
+asiq lo hice de cero)
 """
 import numpy as np
 
