@@ -63,8 +63,8 @@ def convolve_grayscale(images, kernel, padding='same', stride=(1, 1)):
 
             # Extract current receptive field
             region = padd[:,
-                        hstart:hstart+kh, 
-                        wstart:wstart+kw]
+                          hstart:hstart+kh,
+                          wstart:wstart+kw]
 
             # Compute convolution result
             nuevo[:, i, j] = np.sum(region * kernel, axis=(1, 2))
