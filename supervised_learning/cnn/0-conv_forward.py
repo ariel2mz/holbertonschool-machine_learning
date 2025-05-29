@@ -25,8 +25,7 @@ def conv_forward(A_prev, W, b, activation, padding="same", stride=(1, 1)):
 
     nuevoh = int((h_prev + 2 * ph - kh) / sh) + 1
     nuevow = int((w_prev + 2 * pw - kw) / sw) + 1
-    
-    
+
     padd = np.pad(
         A_prev,
         pad_width=((0, 0), (ph, ph), (pw, pw), (0, 0)),
@@ -42,6 +41,7 @@ def conv_forward(A_prev, W, b, activation, padding="same", stride=(1, 1)):
             for j in range(nuevow):
                 wstart = j * sw
                 region = padd[:, hstart:hstart+kh, wstart:wstart+kw, :]
-                nuevo[:, i, j, k] = np.sum(region * W[..., k], axis=(1, 2, 3)) + b[..., k]
+                nuevo[:, i, j, k] = np.sum(region * W[..., k], axis=(1, 2, 3))
+                nuevo[:, i, j, k] = nuevo[:, i, j, k] + b[..., k]
 
     return activation(nuevo)
