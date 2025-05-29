@@ -1,6 +1,16 @@
+#!/usr/bin/env python3
+"""
+asdsadsadsadsadsa sadsada
+"""
 import numpy as np
 
+
 def conv_forward(A_prev, W, b, activation, padding="same", stride=(1, 1)):
+    """
+    sadsadsadsa
+    sadsadsa
+    asdsads
+    """
     m, h_prev, w_prev, c_prev = A_prev.shape
     kh, kw, _, c_new = W.shape
     sh, sw = stride
