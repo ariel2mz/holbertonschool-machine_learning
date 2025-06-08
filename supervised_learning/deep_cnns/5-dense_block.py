@@ -5,7 +5,7 @@ from tensorflow import keras as K
 
 def dense_block(X, nb_filters, growth_rate, layers):
     """
-    s  adadasd 
+    s  adadasda
     asdsadsa
     """
     init = K.initializers.HeNormal(seed=0)
