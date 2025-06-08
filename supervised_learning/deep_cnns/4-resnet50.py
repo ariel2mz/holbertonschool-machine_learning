@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Builds the ResNet-50 architecture using Keras"""
-import tensorflow.keras as K
+from tensorflow import keras as K
 
 identity_block = __import__('2-identity_block').identity_block
 projection_block = __import__('3-projection_block').projection_block
