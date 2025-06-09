@@ -12,7 +12,7 @@ def densenet121(growth_rate=32, compression=1.0):
     init = K.initializers.HeNormal(seed=0)
     input = K.Input(shape=(224, 224, 3))
 
-    bn = K.layers.BatchNormalization(axis=-1)(input)
+    bn = K.layers.BatchNormalization(axis=-3)(input)
     relu = K.layers.Activation('relu')(bn)
     conv = K.layers.Conv2D(
         64, (7, 7), strides=2, padding='same',
@@ -34,16 +34,12 @@ def densenet121(growth_rate=32, compression=1.0):
 
     X, nb_filters = dense_block(X, nb_filters, growth_rate, 16)
 
-    bnfinal = K.layers.BatchNormalization(axis=-1)(X)
-    relufinal = K.layers.Activation('relu')(bnfinal)
-    avg_pool = K.layers.AveragePooling2D(pool_size=7,
-                                         strides=1,
-                                         padding='valid')(relufinal)
+    X = K.layers.AveragePooling2D(pool_size=(7, 7))(X)
 
     out = K.layers.Dense(
         1000, activation='softmax',
         kernel_initializer=init
-    )(avg_pool)
+    )(X)
 
     model = K.Model(inputs=input, outputs=out)
     return model
