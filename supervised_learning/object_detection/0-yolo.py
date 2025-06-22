@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
+"""asdfgfdsasdf"""
 import tensorflow as tf
 import numpy as np
-
 K = tf.keras
 
+
 class Yolo:
-    """asdsadasdasdsa"""
+    """asdsadasdasds jkjkjkjka"""
 
     def __init__(self, model_path, classes_path, class_t, nms_t, anchors):
         """
