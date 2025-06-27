@@ -41,8 +41,10 @@ class Yolo:
         for i, output in enumerate(outputs):
 
             grid_h, grid_w, num_anchors, _ = output.shape
-            grid_y = np.arange(grid_h).reshape(grid_h, 1, 1, 1)
-            grid_x = np.arange(grid_w).reshape(1, grid_w, 1, 1)
+            grid_y = np.tile(np.arange(grid_h).reshape(grid_h, 1, 1),
+                         (1, grid_w, num_anchors)).reshape(grid_h, grid_w, num_anchors, 1)
+            grid_x = np.tile(np.arange(grid_w).reshape(1, grid_w, 1),
+                    (grid_h, 1, num_anchors)).reshape(grid_h, grid_w, num_anchors, 1)
 
             tx = output[..., 0:1]
             ty = output[..., 1:2]
