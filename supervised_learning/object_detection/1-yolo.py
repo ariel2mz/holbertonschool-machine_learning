@@ -56,7 +56,7 @@ class Yolo:
             ty = output[..., 1]
             tw = output[..., 2]
             th = output[..., 3]
-            conf = output[..., 4]
+            boxconf = output[..., 4]
             class_probs = output[..., 5:]
 
             anchor_w = self.anchors[i, :, 0].reshape(1, 1, anchors)
@@ -79,7 +79,7 @@ class Yolo:
             )
             boxes.append(box)
 
-            conf.append(1 / (1 + np.exp(-conf)))
+            boxconf.append(1 / (1 + np.exp(-conf)))
             prob.append(1 / (1 + np.exp(-class_probs)))
 
         return boxes, conf, prob
