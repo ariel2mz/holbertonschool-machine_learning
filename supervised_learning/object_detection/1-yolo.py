@@ -45,8 +45,8 @@ class Yolo:
         image_h, image_w = image_size
 
         for i, output in enumerate(outputs):
-            grid_h, grid_w, anchors, _ = output.shape
 
+            grid_h, grid_w, anchors, _ = output.shape
             grid_y = np.arange(grid_h).reshape(grid_h, 1, 1, 1)
             grid_x = np.arange(grid_w).reshape(1, grid_w, 1, 1)
 
@@ -54,7 +54,7 @@ class Yolo:
             ty = output[..., 1]
             tw = output[..., 2]
             th = output[..., 3]
-            box_confidence = output[..., 4]
+            conf = output[..., 4]
             class_probs = output[..., 5:]
 
             anchor_w = self.anchors[i, :, 0].reshape(1, 1, anchors, 1)
