@@ -49,8 +49,7 @@ class Yolo:
 
         for i, output in enumerate(outputs):
             grid_h, grid_w, anchors, _ = output.shape
-            
-            # Create grid coordinates
+
             grid_y = np.arange(grid_h).reshape(grid_h, 1, 1)
             grid_x = np.arange(grid_w).reshape(1, grid_w, 1)
 
@@ -58,34 +57,32 @@ class Yolo:
             ty = output[..., 1]
             tw = output[..., 2]
             th = output[..., 3]
-            conf = output[..., 4]  # Renamed to avoid conflict
-            probs = output[..., 5:]  # Renamed for clarity
+            conf = output[..., 4]
+            probs = output[..., 5:]
 
-            # Reshape anchors to match output dimensions
             anchor_w = self.anchors[i, :, 0].reshape(1, 1, anchors)
             anchor_h = self.anchors[i, :, 1].reshape(1, 1, anchors)
 
-            # Calculate box coordinates
-            bx = (1 / (1 + np.exp(-tx)) + grid_x) / grid_w
-            by = (1 / (1 + np.exp(-ty)) + grid_y) / grid_h
+            bx = (self.sigmoide(tx) + grid_x) / grid_w
+            by = (self.sigmoide(ty) + grid_y) / grid_h
             bw = (np.exp(tw) * anchor_w) / self.input_width
             bh = (np.exp(th) * anchor_h) / self.input_height
 
-            # Convert to image coordinates
             x1 = (bx - bw / 2) * image_w
             y1 = (by - bh / 2) * image_h
             x2 = (bx + bw / 2) * image_w
             y2 = (by + bh / 2) * image_h
 
-            # Stack coordinates
             box = np.concatenate(
                 [x1[..., np.newaxis], y1[..., np.newaxis], 
                 x2[..., np.newaxis], y2[..., np.newaxis]], axis=-1
             )
             boxes.append(box)
-            
-            # Apply sigmoid and store results
-            boxconf.append(1 / (1 + np.exp(-conf)))
-            boxprobs.append(1 / (1 + np.exp(-probs)))
+
+            boxconf.append(self.sigmoide(conf))
+            boxprobs.append(self.sigmoide(probs))
 
         return boxes, boxconf, boxprobs
+    def sigmoide(self, x):
+        """dsadsadsan"""
+        return 1 / (1 + np.exp(-x))
