@@ -40,11 +40,9 @@ class Yolo:
 
         for i, output in enumerate(outputs):
 
-            grid_h, grid_w, num_anchors, _ = output.shape
-            grid_y = np.tile(np.arange(grid_h).reshape(grid_h, 1, 1),
-                         (1, grid_w, num_anchors)).reshape(grid_h, grid_w, num_anchors, 1)
-            grid_x = np.tile(np.arange(grid_w).reshape(1, grid_w, 1),
-                    (grid_h, 1, num_anchors)).reshape(grid_h, grid_w, num_anchors, 1)
+            grid_h, grid_w, anchors, _ = output.shape
+            grid_y = np.arange(grid_h).reshape(grid_h, 1, 1, 1)
+            grid_x = np.arange(grid_w).reshape(1, grid_w, 1, 1)
 
             tx = output[..., 0:1]
             ty = output[..., 1:2]
@@ -53,8 +51,8 @@ class Yolo:
             box_conf = output[..., 4:5]
             class_probs = output[..., 5:]
 
-            anchor_w = self.anchors[i, :, 0].reshape(1, 1, num_anchors, 1)
-            anchor_h = self.anchors[i, :, 1].reshape(1, 1, num_anchors, 1)
+            anchor_w = self.anchors[i, :, 0].reshape(1, 1, anchors, 1)
+            anchor_h = self.anchors[i, :, 1].reshape(1, 1, anchors, 1)
 
             bx = (1 / (1 + np.exp(-tx)) + grid_x) / grid_w
             by = (1 / (1 + np.exp(-ty)) + grid_y) / grid_h
