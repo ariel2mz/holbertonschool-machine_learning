@@ -44,11 +44,13 @@ class Yolo:
         prob = []
         image_h, image_w = image_size
 
-        for i, output in enumerate(outputs):
+        self.input_height, self.input_width = self.model.input.shape[1:3]
 
+        for i, output in enumerate(outputs):
             grid_h, grid_w, anchors, _ = output.shape
-            grid_y = np.arange(grid_h).reshape(grid_h, 1, 1, 1)
-            grid_x = np.arange(grid_w).reshape(1, grid_w, 1, 1)
+
+            grid_y = np.arange(grid_h).reshape(grid_h, 1, 1)
+            grid_x = np.arange(grid_w).reshape(1, grid_w, 1)
 
             tx = output[..., 0]
             ty = output[..., 1]
@@ -57,20 +59,26 @@ class Yolo:
             conf = output[..., 4]
             class_probs = output[..., 5:]
 
-            anchor_w = self.anchors[i, :, 0].reshape(1, 1, anchors, 1)
-            anchor_h = self.anchors[i, :, 1].reshape(1, 1, anchors, 1)
+            anchor_w = self.anchors[i, :, 0].reshape(1, 1, anchors)
+            anchor_h = self.anchors[i, :, 1].reshape(1, 1, anchors)
+
             bx = (1 / (1 + np.exp(-tx)) + grid_x) / grid_w
             by = (1 / (1 + np.exp(-ty)) + grid_y) / grid_h
             bw = (np.exp(tw) * anchor_w) / self.input_width
             bh = (np.exp(th) * anchor_h) / self.input_height
 
-            x2 = (bx + bw / 2) * image_w
-            y2 = (by + bh / 2) * image_h
             x1 = (bx - bw / 2) * image_w
             y1 = (by - bh / 2) * image_h
+            x2 = (bx + bw / 2) * image_w
+            y2 = (by + bh / 2) * image_h
 
-            box = np.concatenate((x1, y1, x2, y2), axis=-1)
+            # Stack coordinates
+            box = np.concatenate(
+                [x1[..., np.newaxis], y1[..., np.newaxis], 
+                x2[..., np.newaxis], y2[..., np.newaxis]], axis=-1
+            )
             boxes.append(box)
+
             conf.append(1 / (1 + np.exp(-conf)))
             prob.append(1 / (1 + np.exp(-class_probs)))
 
