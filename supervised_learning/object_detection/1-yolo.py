@@ -57,8 +57,10 @@ class Yolo:
 
             bx = (1 / (1 + np.exp(-t_x)) + col) / grid_w
             by = (1 / (1 + np.exp(-t_y)) + row) / grid_h
-            bw = anchors[..., 0] * np.exp(t_w) / self.model.input.shape[1].value
-            bh = anchors[..., 1] * np.exp(t_h) / self.model.input.shape[2].value
+            input_w = self.model.input.shape[1]
+            input_h = self.model.input.shape[2]
+            bw = anchors[..., 0] * np.exp(t_w) / input_w
+            bh = anchors[..., 1] * np.exp(t_h) / input_h
 
             x1 = (bx - bw / 2) * image_w
             y1 = (by - bh / 2) * image_h
