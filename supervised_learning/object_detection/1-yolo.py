@@ -30,27 +30,29 @@ class Yolo:
 
     def process_outputs(self, outputs, image_size):
         """
-        asdasdssadsa
+        Process Darknet model outputs with deterministic operations.
+        Args:
+            adsadsdsa
+        Returns:
+            Tuple of (boxes, box_confidences, box_class_probs)
         """
         boxes = []
         box_confidences = []
         box_class_probs = []
-        net_height, net_width = self.model.input_shape[1:3]
         image_h, image_w = image_size
+        input_h, input_w = self.model.input.shape[1:3]
 
         for i, output in enumerate(outputs):
-
             grid_h, grid_w, num_anchors, _ = output.shape
-            grid_y = np.tile(np.arange(grid_h).reshape(grid_h, 1, 1),
-                         (1, grid_w, num_anchors)).reshape(grid_h, grid_w, num_anchors, 1)
-            grid_x = np.tile(np.arange(grid_w).reshape(1, grid_w, 1),
-                    (grid_h, 1, num_anchors)).reshape(grid_h, grid_w, num_anchors, 1)
+
+            grid_y = np.arange(grid_h).reshape(grid_h, 1, 1, 1)
+            grid_x = np.arange(grid_w).reshape(1, grid_w, 1, 1)
 
             tx = output[..., 0:1]
             ty = output[..., 1:2]
             tw = output[..., 2:3]
             th = output[..., 3:4]
-            box_conf = output[..., 4:5]
+            box_confidence = output[..., 4:5]
             class_probs = output[..., 5:]
 
             anchor_w = self.anchors[i, :, 0].reshape(1, 1, num_anchors, 1)
@@ -58,17 +60,18 @@ class Yolo:
 
             bx = (1 / (1 + np.exp(-tx)) + grid_x) / grid_w
             by = (1 / (1 + np.exp(-ty)) + grid_y) / grid_h
-            bw = (np.exp(tw) * anchor_w) / net_width
-            bh = (np.exp(th) * anchor_h) / net_height
+            bw = (np.exp(tw) * anchor_w) / input_w
+            bh = (np.exp(th) * anchor_h) / input_h
 
             x1 = (bx - bw / 2) * image_w
             y1 = (by - bh / 2) * image_h
             x2 = (bx + bw / 2) * image_w
             y2 = (by + bh / 2) * image_h
+
             box = np.concatenate((x1, y1, x2, y2), axis=-1)
 
             boxes.append(box)
-            box_confidences.append(1 / (1 + np.exp(-box_conf)))
+            box_confidences.append(1 / (1 + np.exp(-box_confidence)))
             box_class_probs.append(1 / (1 + np.exp(-class_probs)))
 
         return boxes, box_confidences, box_class_probs
