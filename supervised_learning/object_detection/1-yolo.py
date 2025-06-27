@@ -48,7 +48,7 @@ class Yolo:
             ty = output[..., 1:2]
             tw = output[..., 2:3]
             th = output[..., 3:4]
-            box_confidence = output[..., 4:5]
+            box_conf = output[..., 4:5]
             class_probs = output[..., 5:]
 
             anchor_w = self.anchors[i, :, 0].reshape(1, 1, num_anchors, 1)
@@ -66,7 +66,7 @@ class Yolo:
             box = np.concatenate((x1, y1, x2, y2), axis=-1)
 
             boxes.append(box)
-            box_confidences.append(self.sigmoid(box_confidence))
-            box_class_probs.append(self.sigmoid(class_probs))
+            box_confidences.append(1 / (1 + np.exp(-box_conf)))
+            box_class_probs.append(1 / (1 + np.exp(-class_probs)))
 
         return boxes, box_confidences, box_class_probs
