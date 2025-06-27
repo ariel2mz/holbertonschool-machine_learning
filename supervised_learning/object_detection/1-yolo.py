@@ -27,6 +27,7 @@ class Yolo:
         self.class_t = class_t
         self.nms_t = nms_t
         self.anchors = anchors
+        _, self.input_width, self.input_height, _ = self.model.input.shape
 
     def process_outputs(self, outputs, image_size):
         """
@@ -35,7 +36,6 @@ class Yolo:
         boxes = []
         box_confidences = []
         box_class_probs = []
-        net_height, net_width = self.model.input_shape[1:3]
         image_h, image_w = image_size
 
         for i, output in enumerate(outputs):
@@ -58,8 +58,8 @@ class Yolo:
 
             bx = (1 / (1 + np.exp(-tx)) + grid_x) / grid_w
             by = (1 / (1 + np.exp(-ty)) + grid_y) / grid_h
-            bw = (np.exp(tw) * anchor_w) / net_width
-            bh = (np.exp(th) * anchor_h) / net_height
+            bw = (np.exp(tw) * anchor_w) / self.input_width
+            bh = (np.exp(th) * anchor_h) / self.input_height
 
             x1 = (bx - bw / 2) * image_w
             y1 = (by - bh / 2) * image_h
