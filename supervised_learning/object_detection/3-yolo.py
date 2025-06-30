@@ -120,8 +120,8 @@ class Yolo:
                 inter = interW * interH
 
                 area1 = (best[0][2] - best[0][0]) * (best[0][3] - best[0][1])
-                area2 = (cls_bxs[1:, 2] - cls_bxs[1:, 0]) * (cls_bxs[1:, 3] - cls_bxs[1:, 1])
-                union = area1 + area2 - inter
+                a2 = (cls_bxs[1:, 2] - cls_bxs[1:, 0]) * (cls_bxs[1:, 3] - cls_bxs[1:, 1])
+                union = area1 + a2 - inter
                 iou = inter / union
 
                 keep = np.where(iou < self.nms_t)
