@@ -31,17 +31,22 @@ class Poisson:
     def pmf(self, k):
         """
         Parameters:
-        - k (int): Number of "successes"
+        - k (int or float): Number of successes
 
         Returns:
-        - PMF value for k (float)
+        - PMF value (float)
         """
         if not isinstance(k, int):
             k = int(k)
         if k < 0:
             return 0
 
-        e = math.exp(-self.lambtha)
-        fac = math.factorial(k)
+        e = 2.7182818285
+
+        factorial = 1
+        for i in range(1, k + 1):
+            factorial *= i
+
         lambthak = self.lambtha ** k
-        return (lambthak * e) / fac
+        equis = e ** (-self.lambtha)
+        return (lambthak * equis) / factorial
