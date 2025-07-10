@@ -3,7 +3,6 @@
 sadsadsadsa
 dsadsadsadsa
 """
-import math
 
 
 class Poisson:
