@@ -42,10 +42,31 @@ class Poisson:
 
         e = 2.7182818285
 
-        factorial = 1
+        fac = 1
         for i in range(1, k + 1):
-            factorial *= i
+            fac *= i
 
         lambthak = self.lambtha ** k
         equis = e ** (-self.lambtha)
-        return (lambthak * equis) / factorial
+        return (lambthak * equis) / fac
+
+    def cdf(self, k):
+        """
+        Calculates the CDF (Cumulative Distribution Function) for k successes.
+        """
+        if not isinstance(k, int):
+            k = int(k)
+        if k < 0:
+            return 0
+
+        e = 2.7182818285
+        cdfsum = 0
+
+        for i in range(k + 1):
+            fac = 1
+            for j in range(1, i + 1):
+                fac *= j
+            cdfsum += (self.lambtha ** i) / fac
+
+        equis = e ** (-self.lambtha)
+        return equis * cdfsum
