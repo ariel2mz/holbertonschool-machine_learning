@@ -56,10 +56,21 @@ class Normal:
         return p1 * p2
 
     def cdf(self, x):
-        """gghhkgfgghj"""
-        pi = 3.1415926536
-        e = 2.7182818285
+        """Calculates the value of the CDF for a given x-value"""
         z = (x - self.mean) / (self.stddev * (2 ** 0.5))
-        t = z
-        erf = (2 / (pi ** 0.5)) * (t - (t ** 3) / 3 + (t ** 5) / 10)
-        return 0.5 * (1 + erf)
+
+        # Constants for the approximation
+        t = 1 / (1 + 0.3275911 * abs(z))
+        a1 = 0.254829592
+        a2 = -0.284496736
+        a3 = 1.421413741
+        a4 = -1.453152027
+        a5 = 1.061405429
+        e = 2.7182818285
+
+        erf_approx = 1 - (a1 * t + a2 * t**2 + a3 * t**3 + a4 * t**4 + a5 * t**5) * (e ** (-z**2))
+
+        if z >= 0:
+            return 0.5 * (1 + erf_approx)
+        else:
+            return 0.5 * (1 - erf_approx)
