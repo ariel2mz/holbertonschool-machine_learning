@@ -44,6 +44,7 @@ class Normal:
         asdsadasdsa
         """
         return self.mean + z * self.stddev
+
     def pdf(self, x):
         """
         ASDFGHJKLKHGF
