@@ -44,3 +44,22 @@ class Normal:
         asdsadasdsa
         """
         return self.mean + z * self.stddev
+    def pdf(self, x):
+        """
+        ASDFGHJKLKHGF
+        """
+        pi = 3.1415926536
+        e = 2.7182818285
+        p1 = 1 / (self.stddev * (2 * pi) ** 0.5)
+        exp = -0.5 * ((x - self.mean) / self.stddev) ** 2
+        p2 = e ** exp
+        return p1 * p2
+
+    def cdf(self, x):
+        """gghhkgfgghj"""
+        pi = 3.1415926536
+        e = 2.7182818285
+        z = (x - self.mean) / (self.stddev * (2 ** 0.5))
+        t = z
+        erf = (2 / (pi ** 0.5)) * (t - (t ** 3) / 3 + (t ** 5) / 10)
+        return 0.5 * (1 + erf)
