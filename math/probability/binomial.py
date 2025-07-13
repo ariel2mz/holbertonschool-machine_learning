@@ -4,6 +4,7 @@ sadsadsadsa
 dsadsadsadsa
 """
 
+
 class Binomial:
     """asdsadas"""
 
@@ -57,7 +58,7 @@ class Binomial:
         qt = (1 - self.p) ** (self.n - k)
 
         return comb * pt * qt
-    
+
     def cdf(self, k):
         """asdsadsadsa"""
         if not isinstance(k, int):
