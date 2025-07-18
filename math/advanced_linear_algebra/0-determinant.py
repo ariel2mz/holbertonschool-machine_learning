@@ -4,8 +4,11 @@ sadsadsadsa
 dsadsadsadsa
 """
 
+
 def determinant(matrix):
-    if not isinstance(matrix, list) or not all(isinstance(row, list) for row in matrix):
+    if not isinstance(matrix, list):
+        raise TypeError("matrix must be a list of lists")
+    if not all(isinstance(row, list) for row in matrix):
         raise TypeError("matrix must be a list of lists")
 
     if matrix == [[]]:
@@ -15,7 +18,6 @@ def determinant(matrix):
     # tiene q ser cuadrada para poder hallar determinante
     if not all(len(row) == n for row in matrix):
         raise ValueError("matrix must be a square matrix")
-
 
     if n == 1:
         return matrix[0][0]
