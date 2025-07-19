@@ -77,6 +77,7 @@ def minor(matrix):
     # se puede formar una nueva matriz minorm
     return minorm
 
+
 def cofactor(matrix):
     """
     sadsadasdas
