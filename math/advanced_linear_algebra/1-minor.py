@@ -58,7 +58,7 @@ def minor(matrix):
         return [[1]]
     if n == 1:
         return [[1]]
-    
+
     minorm = []
     for i in range(n):
         row = []
@@ -69,8 +69,8 @@ def minor(matrix):
             ]
             row.append(determinant(subm))
         minorm.append(row)
-    # un numero menor es 
-    # determinante de la submatriz que se obtiene al 
+    # un numero menor es
+    # determinante de la submatriz que se obtiene al
     # eliminar la fila y la columna del elemento en cuestión
 
     # repitiendo este proceso por cada numero de la matriz
