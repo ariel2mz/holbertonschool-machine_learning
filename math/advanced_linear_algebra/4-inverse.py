@@ -125,3 +125,35 @@ def adjugate(matrix):
     ]
 
     return adjugate_matrix
+
+
+def inverse(matrix):
+    """
+    matrizinversa = ( 1 / det(matriz) ) . matrizadjunta
+    """
+    if not isinstance(matrix, list):
+        raise TypeError("matrix must be a list of lists")
+    if not all(isinstance(row, list) for row in matrix):
+        raise TypeError("matrix must be a list of lists")
+    if len(matrix) == 0: 
+        raise ValueError("matrix must be a non-empty square matrix")
+    if any(len(row) != len(matrix) for row in matrix):
+        raise ValueError("matrix must be a non-empty square matrix")
+
+    det = determinant(matrix)
+    if det == 0:
+        return None
+
+    adj = adjugate(matrix)
+
+    inversa = []
+
+    for row in adj:
+        array = []
+
+        for elemadj in row:
+            result = elemadj / det
+            array.append(result)
+        inversa.append(array)
+        
+    return inversa
