@@ -56,7 +56,7 @@ def minor(matrix):
     n = len(matrix)
     if matrix == [[]]:
         return [[1]]
-    if matrix == [[1]]:
+    if n == 1:
         return [[1]]
     
     minorm = []
