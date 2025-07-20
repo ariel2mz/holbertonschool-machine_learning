@@ -171,6 +171,9 @@ def definiteness(matrix):
     # Check if matrix is square
     if len(matrix.shape) != 2 or matrix.shape[0] != matrix.shape[1]:
         return None
+    
+    if not np.allclose(matrix, matrix.T):
+        return None
 
     try:
         ev = np.linalg.eigvalsh(matrix)
