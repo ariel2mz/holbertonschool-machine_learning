@@ -159,6 +159,7 @@ def inverse(matrix):
 
     return inversa
 
+
 def definiteness(matrix):
     """
     asdsadsa
@@ -167,11 +168,11 @@ def definiteness(matrix):
     """
     if not isinstance(matrix, np.ndarray):
         raise TypeError("matrix must be a numpy.ndarray")
-    
-    # Check if matrix is square
+
+
     if len(matrix.shape) != 2 or matrix.shape[0] != matrix.shape[1]:
         return None
-    
+
     if not np.allclose(matrix, matrix.T):
         return None
 
