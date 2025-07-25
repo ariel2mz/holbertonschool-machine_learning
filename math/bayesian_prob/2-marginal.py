@@ -53,6 +53,7 @@ def intersection(x, n, P, Pr):
     inter = lihood * Pr
     return inter
 
+
 def marginal(x, n, P, Pr):
     """
     sdsfsd
@@ -73,7 +74,7 @@ def marginal(x, n, P, Pr):
         raise ValueError("All values in Pr must be in the range [0, 1]")
     if not np.isclose(Pr.sum(), 1):
         raise ValueError("Pr must sum to 1")
-    
+
     inter = intersection(x, n, P, Pr)
     marginal = np.sum(inter)
 
