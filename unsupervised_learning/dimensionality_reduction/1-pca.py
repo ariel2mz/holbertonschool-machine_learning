@@ -5,14 +5,7 @@ import numpy as np
 
 def pca(X, ndim):
     """
-    Transforms data into ndim dimensions using PCA
-    
-    Args:
-        X: Input data matrix of shape (n, d)
-        ndim: Target number of dimensions (must be <= d)
-    
-    Returns:
-        Transformed data matrix of shape (n, ndim)
+    asdfghjkl
     """
 
     X_centered = X - np.mean(X, axis=0)
