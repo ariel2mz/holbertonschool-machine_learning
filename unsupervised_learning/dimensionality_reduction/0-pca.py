@@ -17,7 +17,7 @@ def pca(X, var=0.95):
 
     cuvar = np.cumsum(eivals) / np.sum(eivals)
 
-    nd = np.searchsorted(cuvar, var)
+    nd = np.searchsorted(cuvar, var) + 2
     W = eivecs[:, :nd]
 
     return W
