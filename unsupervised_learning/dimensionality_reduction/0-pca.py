@@ -16,4 +16,4 @@ def pca(X, var=0.95):
 
     n = np.argmax(cumvar >= var) + 1
 
-    return Vt[:n].T
+    return rsv[:n].T
