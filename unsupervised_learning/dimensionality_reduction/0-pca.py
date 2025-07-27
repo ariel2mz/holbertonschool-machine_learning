@@ -1,19 +1,19 @@
 #!/usr/bin/env python3
-"""sadsadsadasdsa"""
+"""sadasdsadsa"""
 import numpy as np
 
 
 def pca(X, var=0.95):
     """
-    dasdsadsa
+    sadadsada
     """
     X_centered = X - np.mean(X, axis=0)
-    covm = np.cov(X_centered, rowvar=False)
-    eivals, eivecs = np.linalg.eigh(covm)
-    sortedidx = np.argsort(eivals)[::-1]
-    eivals = eivals[sortedidx]
-    eivecs = eivecs[:, sortedidx]
-    cuvar = np.cumsum(eivals) / np.sum(eivals)
-    nd = np.argmax(cuvar >= var) + 1
+    no, sv, rsv = np.linalg.svd(X_centered, full_matrices=False)
 
-    return eivecs[:, :nd]
+    expvar = (sv ** 2) / (X_centered.shape[0] - 1)
+    totvar = np.sum(expvar)
+    cumvar = np.cumsum(expvar) / totvar
+
+    n = np.argmax(cumvar >= var) + 1
+
+    return Vt[:n].T
