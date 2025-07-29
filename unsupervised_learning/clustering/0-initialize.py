@@ -19,6 +19,6 @@ def initialize(X, k):
     try:
         cent = np.random.uniform(low=min, high=max, size=(k, d))
         return cent
-    
+
     except Exception:
         return None
