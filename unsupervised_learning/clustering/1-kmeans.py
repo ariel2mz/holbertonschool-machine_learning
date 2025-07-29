@@ -24,23 +24,6 @@ def initialize(X, k):
         return None
 
 
-# el checker decia que estaba mal se lo pase a la IA
-# dice que los cluster mios estan en distinto orden,
-# me dio esta funcion que los ordena
-def sort_centroids_and_labels(centroids, labels):
-    # Step 1: Sort centroids by their coordinates (e.g., lexsort by all dimensions)
-    sorted_indices = np.lexsort(centroids.T)
-    sorted_centroids = centroids[sorted_indices]
-
-    # Step 2: Create a mapping from old index to new index (inverse sort)
-    inverse_map = np.zeros_like(sorted_indices)
-    inverse_map[sorted_indices] = np.arange(len(sorted_indices))
-
-    # Step 3: Remap labels using the inverse map
-    new_labels = inverse_map[labels]
-
-    return sorted_centroids, new_labels
-
 
 def kmeans(X, k, iterations=1000):
     """
@@ -93,6 +76,4 @@ def kmeans(X, k, iterations=1000):
         if np.allclose(centsrespaldo, cents):
             break
 
-    # la IA me dio esta funcion para ordenar los centroids para el checker
-    sorted_centroids, new_labels = sort_centroids_and_labels(cents, clss)
-    return sorted_centroids, new_labels
+    return cents, clss
