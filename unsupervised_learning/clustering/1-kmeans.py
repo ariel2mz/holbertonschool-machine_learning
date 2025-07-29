@@ -74,5 +74,6 @@ def kmeans(X, k, iterations=1000):
         # si ningun centro cambio, paras la  iteracion porque no tiene sentido
         if np.array_equal(cents, nuevocents):
             break
+        cents = nuevocents
 
     return cents, clss
