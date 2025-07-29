@@ -47,18 +47,11 @@ def kmeans(X, k, iterations=1000):
 
     for i in range(iterations):
 
-        # ===== NEW DISTANCE CALCULATION =====
-        # Expand dimensions properly
-        # la IA me dio este calculo distinto
-        X_expanded = np.repeat(X[:, np.newaxis], k, axis=1)
-        centroids_expanded = np.tile(cents, (n, 1)).reshape(n, k, d)
-        
-        # Calculate Euclidean distances
-        distances = np.linalg.norm(X_expanded - centroids_expanded, axis=2)
-        # ====================================
+        diff = X[:, np.newaxis, :] - cents
+        distances = np.sum(diff**2, axis=2)
 
         # asigna a cada dato cual es el cluster mas cercano que tiene
-        clss = np.argmin(distances ** 2, axis=1)
+        clss = np.argmin(distances, axis=1)
 
         # guarda el clustering para comparar si cambio, para cortar
         # la iteracion antes de tiempo
@@ -77,7 +70,7 @@ def kmeans(X, k, iterations=1000):
             else:
 
                 # reinicia el cluster a otro lado si no tiene puntos asignados
-                nuevocents[j] = initialize(X, 1)
+                nuevocents[j] = initialize(X, 1)[0]
 
         # si ningun centro cambio, paras la  iteracion porque no tiene sentido
         if np.all(cents == nuevocents):
