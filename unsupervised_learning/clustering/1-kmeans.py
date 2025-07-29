@@ -22,20 +22,25 @@ def initialize(X, k):
 
     except Exception:
         return None
-    
+
+
 # el checker decia que estaba mal se lo pase a la IA
 # dice que los cluster mios estan en distinto orden,
 # me dio esta funcion que los ordena
-def sort_centroids_and_labels(centroids, labels):
-    # Sort centroids and get original index
-    sorted_idx = np.lexsort(centroids.T)
-    sorted_centroids = centroids[sorted_idx]
+def sort_centroids_and_labels_no_loops(centroids, labels):
+    # Step 1: Sort centroids by their coordinates (e.g., lexsort by all dimensions)
+    sorted_indices = np.lexsort(centroids.T)
+    sorted_centroids = centroids[sorted_indices]
 
-    # Create a mapping from old index to new index
-    mapping = {old: new for new, old in enumerate(sorted_idx)}
-    new_labels = np.array([mapping[label] for label in labels])
+    # Step 2: Create a mapping from old index to new index (inverse sort)
+    inverse_map = np.zeros_like(sorted_indices)
+    inverse_map[sorted_indices] = np.arange(len(sorted_indices))
+
+    # Step 3: Remap labels using the inverse map
+    new_labels = inverse_map[labels]
 
     return sorted_centroids, new_labels
+
 
 def kmeans(X, k, iterations=1000):
     """
