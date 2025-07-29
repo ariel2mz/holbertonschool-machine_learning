@@ -70,15 +70,11 @@ def kmeans(X, k, iterations=1000):
             else:
 
                 # reinicia el cluster a otro lado si no tiene puntos asignados
-                nuevocents[j] = initialize(X, 1)[0]
+                nuevocents[j] = initialize(X, 1)
 
         # si ningun centro cambio, paras la  iteracion porque no tiene sentido
         if np.all(cents == nuevocents):
             break
-
-        # Final cluster assignment
-    diff = X[:, np.newaxis, :] - cents
-    distances = np.sum(diff**2, axis=2)
-    clss = np.argmin(distances, axis=1)
+        cents = nuevocents
 
     return cents, clss
