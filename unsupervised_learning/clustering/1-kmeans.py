@@ -46,8 +46,8 @@ def kmeans(X, k, iterations=1000):
 
     for i in range(iterations):
 
-        # calcula la distancia de cada dato a cada cluster
-        distances = np.sum((X[:, np.newaxis] - cents) ** 2, axis=2)
+        diff = X[:, np.newaxis, :] - cents
+        distances = np.sum(diff**2, axis=2)
 
         # asigna a cada dato cual es el cluster mas cercano que tiene
         clss = np.argmin(distances, axis=1)
