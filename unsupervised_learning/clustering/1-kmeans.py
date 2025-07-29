@@ -27,7 +27,7 @@ def initialize(X, k):
 # el checker decia que estaba mal se lo pase a la IA
 # dice que los cluster mios estan en distinto orden,
 # me dio esta funcion que los ordena
-def sort_centroids_and_labels_no_loops(centroids, labels):
+def sort_centroids_and_labels(centroids, labels):
     # Step 1: Sort centroids by their coordinates (e.g., lexsort by all dimensions)
     sorted_indices = np.lexsort(centroids.T)
     sorted_centroids = centroids[sorted_indices]
