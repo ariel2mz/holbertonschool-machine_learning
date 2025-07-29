@@ -13,11 +13,11 @@ def initialize(X, k):
         return None
 
     no, d = X.shape
-    min = np.min(X, axis=0)
-    max = np.max(X, axis=0)
+    minvals = np.min(X, axis=0)
+    maxvals = np.max(X, axis=0)
 
     try:
-        cent = np.random.uniform(low=min, high=max, size=(k, d))
+        cent = np.random.uniform(low=minvals, high=maxvals, size=(k, d))
         return cent
 
     except Exception:
@@ -33,8 +33,8 @@ def kmeans(X, k, iterations=1000):
         not isinstance(iterations, int) or iterations <= 0):
         return None, None
     
-    min_vals = np.min(X, axis=0)
-    max_vals = np.max(X, axis=0)
+    minvals = np.min(X, axis=0)
+    maxvals = np.max(X, axis=0)
 
     # inicializo el centroid con la funcion anterior
     # y si la funcion falla retorna none entonces coso pum
@@ -68,7 +68,7 @@ def kmeans(X, k, iterations=1000):
             else:
 
                 # reinicia el cluster a otro lado si no tiene puntos asignados
-                cents[j] = np.random.uniform(low=min_vals, high=max_vals)
+                cents[j] = np.random.uniform(low=minvals, high=maxvals)
 
         # si ningun centro cambio, paras la  iteracion porque no tiene sentido
         if np.allclose(centsrespaldo, cents):
