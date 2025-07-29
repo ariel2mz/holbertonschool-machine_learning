@@ -34,7 +34,8 @@ def kmeans(X, k, iterations=1000):
         not isinstance(k, int) or k <= 0 or
         not isinstance(iterations, int) or iterations <= 0):
         return None, None
-    
+
+    n, d = X.shape
     minvals = np.min(X, axis=0)
     maxvals = np.max(X, axis=0)
 
@@ -46,8 +47,15 @@ def kmeans(X, k, iterations=1000):
 
     for i in range(iterations):
 
-        diff = X[:, np.newaxis, :] - cents
-        distances = np.sum(diff**2, axis=2)
+        # ===== NEW DISTANCE CALCULATION =====
+        # Expand dimensions properly
+        # la IA me dio este calculo distinto
+        X_expanded = np.repeat(X[:, np.newaxis], k, axis=1)
+        centroids_expanded = np.tile(cents, (n, 1)).reshape(n, k, d)
+        
+        # Calculate Euclidean distances
+        distances = np.linalg.norm(X_expanded - centroids_expanded, axis=2)
+        # ====================================
 
         # asigna a cada dato cual es el cluster mas cercano que tiene
         clss = np.argmin(distances, axis=1)
