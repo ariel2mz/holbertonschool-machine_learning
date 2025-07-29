@@ -1,53 +1,79 @@
 #!/usr/bin/env python3
-"""Performs K-means clustering on a dataset."""
+"""sadasdsadsa"""
 import numpy as np
 
 
 def initialize(X, k):
-    """Initializes cluster centroids."""
+    """
+    resumen en la cuadernola
+    """
     if not isinstance(X, np.ndarray) or len(X.shape) != 2:
         return None
     if not isinstance(k, int) or k <= 0:
         return None
 
-    n, d = X.shape
-    min_vals = np.min(X, axis=0)
-    max_vals = np.max(X, axis=0)
+    no, d = X.shape
+    minvals = np.min(X, axis=0)
+    maxvals = np.max(X, axis=0)
 
-    centroids = np.random.uniform(low=min_vals, high=max_vals, size=(k, d))
-    return centroids
+    try:
+        cent = np.random.uniform(low=minvals, high=maxvals, size=(k, d))
+        return cent
+
+    except Exception:
+        return None
+
 
 
 def kmeans(X, k, iterations=1000):
-    """Performs K-means clustering."""
-
+    """
+    sadsadadsads
+    """
+    # clasico check
     if (not isinstance(X, np.ndarray) or len(X.shape) != 2 or
         not isinstance(k, int) or k <= 0 or
         not isinstance(iterations, int) or iterations <= 0):
         return None, None
+    
+    minvals = np.min(X, axis=0)
+    maxvals = np.max(X, axis=0)
 
-    centroids = initialize(X, k)
-    if centroids is None:
+    # inicializo el centroid con la funcion anterior
+    # y si la funcion falla retorna none entonces coso pum
+    cents = initialize(X, k)
+    if cents is None:
         return None, None
 
-    n, d = X.shape
-    min_vals = np.min(X, axis=0)
-    max_vals = np.max(X, axis=0)
+    for i in range(iterations):
 
-    for _ in range(iterations):
-        distances = np.linalg.norm(X[:, np.newaxis] - centroids, axis=2)
+        diff = X[:, np.newaxis, :] - cents
+        distances = np.sum(diff**2, axis=2)
+
+        # asigna a cada dato cual es el cluster mas cercano que tiene
         clss = np.argmin(distances, axis=1)
 
-        new_centroids = np.zeros_like(centroids)
+        # guarda el clustering para comparar si cambio, para cortar
+        # la iteracion antes de tiempo
+        nuevocents = np.zeros_like(cents)
+
+        # recorre cada centro (cluster)
         for j in range(k):
-            cluster_points = X[clss == j]
-            if cluster_points.size > 0:
-                new_centroids[j] = np.mean(cluster_points, axis=0)
+
+            # guarda en points todos los puntos del centro actual j
+            points = X[clss == j]
+
+            if points.shape[0] > 0:
+                # pone el centro en el medio de todos los puntos
+                nuevocents[j] = np.mean(points, axis=0)
+
             else:
-                new_centroids[j] = np.random.uniform(low=min_vals, high=max_vals)
 
-        if np.array_equal(centroids, new_centroids):
+                # reinicia el cluster a otro lado si no tiene puntos asignados
+                nuevocents[j] = np.random.uniform(low=minvals, high=maxvals)
+
+        # si ningun centro cambio, paras la  iteracion porque no tiene sentido
+        if np.array_equal(cents, nuevocents):
             break
-        centroids = new_centroids
+        cents = nuevocents
 
-    return centroids, clss
+    return cents, clss
