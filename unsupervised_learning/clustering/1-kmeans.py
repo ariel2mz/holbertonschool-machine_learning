@@ -54,7 +54,7 @@ def kmeans(X, k, iterations=1000):
 
         # guarda el clustering para comparar si cambio, para cortar
         # la iteracion antes de tiempo
-        centsrespaldo = cents.copy()
+        nuevocents = np.zeros_like(cents)
 
         # recorre cada centro (cluster)
         for j in range(k):
@@ -63,17 +63,16 @@ def kmeans(X, k, iterations=1000):
             points = X[clss == j]
 
             if points.shape[0] > 0:
-
                 # pone el centro en el medio de todos los puntos
-                cents[j] = np.mean(points, axis=0)
+                nuevocents[j] = np.mean(points, axis=0)
 
             else:
 
                 # reinicia el cluster a otro lado si no tiene puntos asignados
-                cents[j] = np.random.uniform(low=minvals, high=maxvals)
+                nuevocents[j] = np.random.uniform(low=minvals, high=maxvals)
 
         # si ningun centro cambio, paras la  iteracion porque no tiene sentido
-        if np.allclose(centsrespaldo, cents):
+        if np.array_equal(cents, nuevocents):
             break
 
     return cents, clss
