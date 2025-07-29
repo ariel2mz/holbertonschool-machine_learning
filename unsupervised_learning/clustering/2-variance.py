@@ -18,10 +18,10 @@ def variance(X, C):
     if X.size == 0 or C.size == 0:
         return None
 
-    distances = np.sum((X[:, np.newaxis, :] - C[np.newaxis, :, :]) ** 2, axis=2)
+    dists = np.sum((X[:, np.newaxis, :] - C[np.newaxis, :, :]) ** 2, axis=2)
 
-    mindis = np.min(distances, axis=1)
+    mindis = np.min(dists, axis=1)
 
     total = np.sum(mindis)
-    
+
     return total
