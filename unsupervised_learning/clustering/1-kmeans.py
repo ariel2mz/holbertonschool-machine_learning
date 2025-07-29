@@ -58,7 +58,7 @@ def kmeans(X, k, iterations=1000):
         # ====================================
 
         # asigna a cada dato cual es el cluster mas cercano que tiene
-        clss = np.argmin(distances, axis=1)
+        clss = np.argmin(distances ** 2, axis=1)
 
         # guarda el clustering para comparar si cambio, para cortar
         # la iteracion antes de tiempo
@@ -80,7 +80,7 @@ def kmeans(X, k, iterations=1000):
                 nuevocents[j] = initialize(X, 1)
 
         # si ningun centro cambio, paras la  iteracion porque no tiene sentido
-        if np.array_equal(cents, nuevocents):
+        if np.all(cents == nuevocents):
             break
         cents = nuevocents
 
