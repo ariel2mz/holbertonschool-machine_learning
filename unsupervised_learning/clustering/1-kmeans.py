@@ -75,6 +75,9 @@ def kmeans(X, k, iterations=1000):
         # si ningun centro cambio, paras la  iteracion porque no tiene sentido
         if np.all(cents == nuevocents):
             break
-        cents = nuevocents
+
+        diff = X[:, np.newaxis, :] - cents
+        distances = np.sum(diff**2, axis=2)
+        clss = np.argmin(distances, axis=1)
 
     return cents, clss
