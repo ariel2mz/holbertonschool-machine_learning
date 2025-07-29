@@ -15,7 +15,6 @@ def initialize(X, k):
     no, d = X.shape
     minvals = np.min(X, axis=0)
     maxvals = np.max(X, axis=0)
-    np.random.seed(0)
 
     try:
         cent = np.random.uniform(low=minvals, high=maxvals, size=(k, d))
@@ -48,7 +47,7 @@ def kmeans(X, k, iterations=1000):
     for i in range(iterations):
 
         # calcula la distancia de cada dato a cada cluster
-        distances = np.linalg.norm(X[:, np.newaxis] - cents, axis=2)
+        distances = np.sum((X[:, np.newaxis] - cents) ** 2, axis=2)
 
         # asigna a cada dato cual es el cluster mas cercano que tiene
         clss = np.argmin(distances, axis=1)
