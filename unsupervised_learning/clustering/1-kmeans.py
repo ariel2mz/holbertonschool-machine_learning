@@ -88,6 +88,6 @@ def kmeans(X, k, iterations=1000):
         if np.allclose(centsrespaldo, cents):
             break
 
-    # la IA me dio esta funcion para ordenar los centroids
+    # la IA me dio esta funcion para ordenar los centroids para el checker
     sorted_centroids, new_labels = sort_centroids_and_labels(cents, clss)
     return sorted_centroids, new_labels
