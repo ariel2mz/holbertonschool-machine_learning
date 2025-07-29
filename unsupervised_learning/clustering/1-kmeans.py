@@ -69,7 +69,7 @@ def kmeans(X, k, iterations=1000):
             else:
 
                 # reinicia el cluster a otro lado si no tiene puntos asignados
-                nuevocents[j] = np.random.uniform(low=minvals, high=maxvals)
+                nuevocents[j] = initialize(X, 1)
 
         # si ningun centro cambio, paras la  iteracion porque no tiene sentido
         if np.array_equal(cents, nuevocents):
