@@ -15,6 +15,7 @@ def initialize(X, k):
     no, d = X.shape
     minvals = np.min(X, axis=0)
     maxvals = np.max(X, axis=0)
+    np.random.seed(0)
 
     try:
         cent = np.random.uniform(low=minvals, high=maxvals, size=(k, d))
