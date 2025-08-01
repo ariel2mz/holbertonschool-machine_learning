@@ -19,10 +19,8 @@ def initialize(X, k):
     try:
         cent = np.random.uniform(low=minvals, high=maxvals, size=(k, d))
         return cent
-
     except Exception:
         return None
-
 
 
 def kmeans(X, k, iterations=1000):
@@ -47,34 +45,33 @@ def kmeans(X, k, iterations=1000):
 
     for i in range(iterations):
 
-        diff = X[:, np.newaxis, :] - cents
-        distances = np.sum(diff**2, axis=2)
+        # vectoriza restando cada punto con cada centroide
+        X_vectors = np.repeat(X[:, np.newaxis], k, axis=1)  # (n, k, d)
+        C_vectors = np.tile(cents[np.newaxis, :], (n, 1, 1))  # (n, k, d)
+
+        # calcula la distancia euclidea entre cada punto y cada centro
+        distances = np.linalg.norm(X_vectors - C_vectors, axis=2)
 
         # asigna a cada dato cual es el cluster mas cercano que tiene
         clss = np.argmin(distances, axis=1)
 
         # guarda el clustering para comparar si cambio, para cortar
         # la iteracion antes de tiempo
-        nuevocents = np.zeros_like(cents)
+        nuevocents = np.copy(cents)
 
-        # recorre cada centro (cluster)
         for j in range(k):
-
-            # guarda en points todos los puntos del centro actual j
+            # puntos del centro j
             points = X[clss == j]
-
             if points.shape[0] > 0:
-                # pone el centro en el medio de todos los puntos
                 nuevocents[j] = np.mean(points, axis=0)
-
             else:
+                # si esta vacio, reinicializa ese cluster
+                nuevocents[j] = np.random.uniform(low=minvals, high=maxvals, size=(d,))
 
-                # reinicia el cluster a otro lado si no tiene puntos asignados
-                nuevocents[j] = initialize(X, 1)
-
-        # si ningun centro cambio, paras la  iteracion porque no tiene sentido
+        # si ningun centro cambio, paras la iteracion
         if np.all(cents == nuevocents):
             return cents, clss
+
         cents = nuevocents
 
     return cents, clss
