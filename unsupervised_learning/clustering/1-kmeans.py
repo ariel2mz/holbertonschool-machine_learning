@@ -19,8 +19,10 @@ def initialize(X, k):
     try:
         cent = np.random.uniform(low=minvals, high=maxvals, size=(k, d))
         return cent
+
     except Exception:
         return None
+
 
 
 def kmeans(X, k, iterations=1000):
@@ -45,33 +47,34 @@ def kmeans(X, k, iterations=1000):
 
     for i in range(iterations):
 
-        Xv = np.repeat(X[:, np.newaxis], k, axis=1)
-        Xv = np.reshape(Xv, (X.shape[0], k, X.shape[1]))
-        Cv = np.tile(cents[np.newaxis, :], (X.shape[0], 1, 1))
-        Cv = np.reshape(Cv, (X.shape[0], k, X.shape[1]))
-        distances = np.linalg.norm(Xv - Cv, axis=2)
+        diff = X[:, np.newaxis, :] - cents
+        distances = np.sum(diff**2, axis=2)
+
+        # asigna a cada dato cual es el cluster mas cercano que tiene
         clss = np.argmin(distances, axis=1)
 
         # guarda el clustering para comparar si cambio, para cortar
         # la iteracion antes de tiempo
-        nuevocents = np.copy(cents)
+        nuevocents = np.zeros_like(cents)
 
+        # recorre cada centro (cluster)
         for j in range(k):
-            # puntos del centro j
-            points = X[clss == j]
-            if points.shape[0] > 0:
-                nuevocents[j] = np.mean(points, axis=0)
-            else:
-                # si esta vacio, reinicializa ese cluster
-                nuevocents[j] = np.random.uniform(low=minvals, high=maxvals, size=(d,))
 
-        # si ningun centro cambio, paras la iteracion
+            # guarda en points todos los puntos del centro actual j
+            points = X[clss == j]
+
+            if points.shape[0] > 0:
+                # pone el centro en el medio de todos los puntos
+                nuevocents[j] = np.mean(points, axis=0)
+
+            else:
+
+                # reinicia el cluster a otro lado si no tiene puntos asignados
+                nuevocents[j] = initialize(X, 1)
+
+        # si ningun centro cambio, paras la  iteracion porque no tiene sentido
         if np.all(cents == nuevocents):
             return cents, clss
-
-    Cv = np.tile(cents, (X.shape[0], 1))
-    Cv = Cv.reshape(X.shape[0], k, X.shape[1])
-    distance = np.linalg.norm(Xv - cents, axis=2)
-    clss = np.argmin(distance ** 2, axis=1)
+        cents = nuevocents
 
     return cents, clss
