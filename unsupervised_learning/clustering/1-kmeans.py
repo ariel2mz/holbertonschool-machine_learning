@@ -47,7 +47,7 @@ def kmeans(X, k, iterations=1000):
 
         Xv = np.repeat(X[:, np.newaxis], k, axis=1)
         Xv = np.reshape(Xv, (X.shape[0], k, X.shape[1]))
-        Cv = np.tile(C[np.newaxis, :], (X.shape[0], 1, 1))
+        Cv = np.tile(cents[np.newaxis, :], (X.shape[0], 1, 1))
         Cv = np.reshape(Cv, (X.shape[0], k, X.shape[1]))
         distances = np.linalg.norm(Xv - Cv, axis=2)
         clss = np.argmin(distances, axis=1)
