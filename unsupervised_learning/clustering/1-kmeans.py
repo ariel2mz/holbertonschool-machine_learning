@@ -45,14 +45,11 @@ def kmeans(X, k, iterations=1000):
 
     for i in range(iterations):
 
-        # vectoriza restando cada punto con cada centroide
-        X_vectors = np.repeat(X[:, np.newaxis], k, axis=1)  # (n, k, d)
-        C_vectors = np.tile(cents[np.newaxis, :], (n, 1, 1))  # (n, k, d)
-
-        # calcula la distancia euclidea entre cada punto y cada centro
-        distances = np.linalg.norm(X_vectors - C_vectors, axis=2)
-
-        # asigna a cada dato cual es el cluster mas cercano que tiene
+        Xv = np.repeat(X[:, np.newaxis], k, axis=1)
+        Xv = np.reshape(Xv, (X.shape[0], k, X.shape[1]))
+        Cv = np.tile(C[np.newaxis, :], (X.shape[0], 1, 1))
+        Cv = np.reshape(Cv, (X.shape[0], k, X.shape[1]))
+        distances = np.linalg.norm(Xv - Cv, axis=2)
         clss = np.argmin(distances, axis=1)
 
         # guarda el clustering para comparar si cambio, para cortar
@@ -72,6 +69,9 @@ def kmeans(X, k, iterations=1000):
         if np.all(cents == nuevocents):
             return cents, clss
 
-        cents = nuevocents
+    Cv = np.tile(cents, (X.shape[0], 1))
+    Cv = Cv.reshape(X.shape[0], k, X.shape[1])
+    distance = np.linalg.norm(Xv - cents, axis=2)
+    clss = np.argmin(distance ** 2, axis=1)
 
     return cents, clss
