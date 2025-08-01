@@ -9,7 +9,7 @@ def pdf(X, m, S):
     """
     if (not isinstance(X, np.ndarray) or len(X.shape) != 2 or
             not isinstance(m, np.ndarray) or len(m.shape) != 1 or
-                not isinstance(S, np.ndarray) or len(S.shape) != 2):
+            not isinstance(S, np.ndarray) or len(S.shape) != 2):
         return None
 
     noseusa, d = X.shape
@@ -27,7 +27,6 @@ def pdf(X, m, S):
 
     normc = 1 / np.sqrt(((2 * np.pi) ** d) * det)
     diff = X - m
-
 
     exponent = -0.5 * np.sum(diff @ inv * diff, axis=1)
     P = normc * np.exp(exponent)
