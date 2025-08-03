@@ -19,4 +19,3 @@ if __name__ == '__main__':
     print(pi)
     print(m)
     print(S)
-alexa@ubuntu-xenial:0x01-cluster
