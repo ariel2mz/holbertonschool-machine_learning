@@ -18,31 +18,38 @@ def expectation_maximization(X, k, iterations=1000, tol=1e-5, verbose=False):
             not isinstance(verbose, bool)):
         return None, None, None, None, None
 
+    # inicializamos los parámetros
     pi, m, S = initialize(X, k)
     if pi is None or m is None or S is None:
         return None, None, None, None, None
-    g, lant = expectation(X, pi, m, S)
-    if g is None or lant is None:
+
+    # paso E inicial
+    g, lprev = expectation(X, pi, m, S)
+    if g is None or lprev is None:
         return None, None, None, None, None
 
-    for i in range(iterations):
-        # paso M: actualizamos pi, m, S usando g
+    if verbose:
+        print(f"Log Likelihood after 0 iterations: {lprev:.5f}")
+
+    for i in range(1, iterations + 1):
+        # paso M
         pi, m, S = maximization(X, g)
         if pi is None or m is None or S is None:
             return None, None, None, None, None
 
-        # paso E: obtenemos nuevo g y nueva log likelihood
-        g, lact = expectation(X, pi, m, S)
-        if g is None or lact is None:
+        # paso E
+        g, lcurr = expectation(X, pi, m, S)
+        if g is None or lcurr is None:
             return None, None, None, None, None
 
-        if verbose and (i % 10 == 0 or i == iterations - 1):
-            print(f"Log Likelihood after {i} iterations: {lact:.5f}")
-        if abs(lact - lant) <= tol:
+        if verbose and (i % 10 == 0 or i == iterations):
+            print(f"Log Likelihood after {i} iterations: {lcurr:.5f}")
+
+        if abs(lcurr - lprev) <= tol:
             if verbose and i % 10 != 0:
-                print(f"Log Likelihood after {i} iterations: {lact:.5f}")
+                print(f"Log Likelihood after {i} iterations: {lcurr:.5f}")
             break
 
-        lant = lact
+        lprev = lcurr
 
-    return pi, m, S, g, lact
+    return pi, m, S, g, lcurr
