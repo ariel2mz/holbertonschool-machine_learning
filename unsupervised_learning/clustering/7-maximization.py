@@ -22,8 +22,8 @@ def maximization(X, g):
     if not np.allclose(colsum, 1):
         return None, None, None
     # sumamos todas las responsabilidades por cluster
-    nk = np.sum(g, axis=1) 
-    
+    nk = np.sum(g, axis=1)
+
     # si algún cluster no tiene responsabilidad
     if np.any(nk == 0):
         return None, None, None
