@@ -15,9 +15,15 @@ def maximization(X, g):
     if n != n2:
         return None, None, None
 
+    # chequeamos que no haya NaNs ni infinitos
+    if not np.isfinite(g).all():
+        return None, None, None
+    colsum = np.sum(g, axis=0)
+    if not np.allclose(colsum, 1):
+        return None, None, None
     # sumamos todas las responsabilidades por cluster
     nk = np.sum(g, axis=1) 
-
+    
     # si algún cluster no tiene responsabilidad
     if np.any(nk == 0):
         return None, None, None
