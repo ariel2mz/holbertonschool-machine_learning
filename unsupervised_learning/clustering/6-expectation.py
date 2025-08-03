@@ -10,9 +10,9 @@ def expectation(X, pi, m, S):
     Hace el paso de expectativa del algoritmo EM para un GMM
     """
     if (not isinstance(X, np.ndarray) or len(X.shape) != 2 or
-        not isinstance(pi, np.ndarray) or len(pi.shape) != 1 or
-        not isinstance(m, np.ndarray) or len(m.shape) != 2 or
-        not isinstance(S, np.ndarray) or len(S.shape) != 3):
+            not isinstance(pi, np.ndarray) or len(pi.shape) != 1 or
+            not isinstance(m, np.ndarray) or len(m.shape) != 2 or
+            not isinstance(S, np.ndarray) or len(S.shape) != 3):
         return None, None
     n, d = X.shape
     k = pi.shape[0]
@@ -46,10 +46,10 @@ def expectation(X, pi, m, S):
         # Normalizamos: dividimos cada responsabilidad por el total del punto
         g /= total
 
-        # Calculamos el log likelihood total (nos sirve para saber si convergió)
-        l = np.sum(np.log(total))
+        # Calculamos el log likelihood total
+        like = np.sum(np.log(total))
 
-        return g, l
+        return g, like
 
     except Exception:
         return None, None
