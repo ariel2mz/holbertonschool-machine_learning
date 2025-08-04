@@ -22,30 +22,30 @@ def BIC(X, kmin=1, kmax=None, iterations=1000, tol=1e-5, verbose=False):
     if kmax is None:
         kmax = n
 
-    likelihoods = []
+    likes = []
     bics = []
-    results = []
+    totales = []
 
     for k in range(kmin, kmax + 1):
-        pi, m, S, g, log_likelihood = expectation_maximization(
+        pi, m, S, g, loglike = expectation_maximization(
             X, k, iterations=iterations, tol=tol, verbose=verbose)
 
-        if pi is None or m is None or S is None or g is None or log_likelihood is None:
+        if pi is None or m is None or S is None or g is None or loglike is None:
             return None, None, None, None
 
         p = k * d + k * d * (d + 1) / 2 + (k - 1)
 
-        bic = p * np.log(n) - 2 * log_likelihood
+        bic = p * np.log(n) - 2 * loglike
 
-        results.append((pi, m, S))
-        likelihoods.append(log_likelihood)
+        totales.append((pi, m, S))
+        likes.append(loglike)
         bics.append(bic)
 
-    likelihoods = np.array(likelihoods)
+    likes = np.array(likes)
     bics = np.array(bics)
 
-    best_idx = np.argmin(bics)
-    best_k = kmin + best_idx
-    best_result = results[best_idx]
+    bid = np.argmin(bics)
+    bk = kmin + bid
+    bresult = totales[bid]
 
-    return best_k, best_result, likelihoods, bics
+    return bk, bresult, likes, bics
