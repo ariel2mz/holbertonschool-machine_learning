@@ -1,4 +1,7 @@
+#!/usr/bin/env python3
+"""sadasdas"""
 import sklearn.cluster
+
 
 def kmeans(X, k):
     """
