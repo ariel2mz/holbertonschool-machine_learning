@@ -8,7 +8,7 @@ def markov_chain(P, s, t=1):
     asdfghjkjgfd
     """
     if (not isinstance(P, np.ndarray) or not isinstance(s, np.ndarray) or
-        P.ndim != 2 or s.ndim != 2):
+            P.ndim != 2 or s.ndim != 2):
         return None
     n = P.shape[0]
     if P.shape[1] != n or s.shape != (1, n):
