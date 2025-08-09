@@ -15,6 +15,13 @@ def regular(P):
     if not np.allclose(P.sum(axis=1), 1):
         return None
 
+    try:
+        ppower = np.linalg.matrix_power(P, n**2)
+        if not np.all(ppower > 0):
+            return None
+    except Exception:
+        return None
+
     A = np.vstack([P.T - np.eye(n), np.ones(n)])
     b = np.zeros(n + 1)
     b[-1] = 1
