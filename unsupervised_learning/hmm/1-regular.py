@@ -12,6 +12,8 @@ def regular(P):
     n = P.shape[0]
     if P.shape[1] != n:
         return None
+    if not np.allclose(P.sum(axis=1), 1):
+        return None
 
     A = np.vstack([P.T - np.eye(n), np.ones(n)])
     b = np.zeros(n + 1)
