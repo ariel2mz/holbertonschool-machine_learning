@@ -19,13 +19,12 @@ def absorbing(P):
     for i in range(n):
         if np.isclose(P[i, i], 1.0) and np.allclose(P[i], np.eye(n)[i]):
             AS.append(i)
-    
+
     if not AS:
         return False
 
     reach = np.zeros((n, n), dtype=bool)
     reach[P > 0] = True
-
 
     for k in range(n):
         for i in range(n):
@@ -43,5 +42,5 @@ def absorbing(P):
                 break
         if not reachAbs:
             return False
-    
+
     return True
