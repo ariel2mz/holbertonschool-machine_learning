@@ -35,7 +35,6 @@ def absorbing(P):
                     reach[i, j] = True
 
     for i in range(n):
-        can_reach_absorbing = False
         for a in AS:
             if reach[i, a]:
                 reachAbs = True
