@@ -54,13 +54,14 @@ def viterbi(Observation, Emission, Transition, Initial):
     last_state = np.argmax(delta[:, T-1])
     path[T-1] = last_state
 
-    # Inicializa la probabilidad más alta de empezar en cada estado (delta) 
-    # usando la probabilidad inicial y la de emitir la primera observación.
-    # Luego, para cada tiempo t, calcula para cada estado j cuál es el estado anterior i
-    # que maximiza la probabilidad de llegar hasta ahí (maxprob) usando delta y la Tm.
-    # Guarda también el "camino" más probable en psi para poder reconstruirlo después.
-    # Al final, busca el estado final con mayor probabilidad y retrocede usando psi
-    # para obtener la secuencia completa de estados más probable (path).
+    # Inicia la prob más alta de empezar en cada estado (delta)
+    # usando la prob inicial y la de emitir la primera observación.
+    # luego, para cada tiempo t, calcula para cada
+    # estado j cuál es el estado anterior i
+    # que maximiza la prob de llegar hasta ahí (maxprob) usando delta y la Tm.
+    # guarda el "camino" más prob en psi para poder reconstruirlo después.
+    # busca el estado final con mayor prob y retrocede usando psi
+    # para obtener la secuencia completa de estados más prob (path).
 
     for t in range(T-2, -1, -1):
         path[t] = psi[path[t+1], t+1]
