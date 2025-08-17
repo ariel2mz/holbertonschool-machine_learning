@@ -26,8 +26,9 @@ class BayesianOptimization:
         """
         asdasdasdsadsa
         """
-        mu, sigma = self.gp.predict(self.X_s)
-        sigma = sigma**0.5
+        mu, var = self.gp.predict(self.X_s)
+        sigma = np.sqrt(var)
+
         if self.minimize:
             best = np.min(self.gp.Y)
             imp = best - mu - self.xsi
@@ -35,16 +36,17 @@ class BayesianOptimization:
             best = np.max(self.gp.Y)
             imp = mu - best - self.xsi
 
-        Z = np.zeros_like(mu)
-        with np.errstate(divide='warn'):
-            Z = np.where(sigma > 0, imp / sigma, 0)
+        with np.errstate(divide='ignore'):
+            Z = np.zeros_like(mu)
+            mask = sigma > 0
+            Z[mask] = imp[mask] / sigma[mask]
 
-        EI = np.where(
-            sigma > 0,
-            imp * norm.cdf(Z) + sigma * norm.pdf(Z),
-            0
-        )
+        EI = np.zeros_like(mu)
+        abv = sigma[mask] * norm.pdf(Z[mask])
+        EI[mask] = imp[mask] * norm.cdf(Z[mask]) + abv
 
-        next = self.X_s[np.argmax(EI)]
+        EI = np.maximum(EI, 0)
 
-        return next, EI
+        Xnext = self.X_s[np.argmax(EI)].reshape(1,)
+
+        return Xnext, EI
