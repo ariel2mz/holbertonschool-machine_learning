@@ -27,15 +27,15 @@ class GaussianProcess:
 
     def predict(self, X_s):
         """
-        asdasdsadasd
+        sadsadsadas
         """
 
-        Ks = self.kernel(X_s, self.X)
+        Ks = self.kernel(self.X, X_s)
         Kss = self.kernel(X_s, X_s)
-        mu = Ks @ self.K_inv @ self.Y
-        mu = mu.reshape(-1)
+        Kinv = np.linalg.inv(self.K)
 
-        sigsquared = np.diag(Kss - Ks @ self.K_inv @ Ks.T)
-        sigma = np.sqrt(sigsquared)
+        mu = Ks.T.dot(Kinv).dot(self.Y).reshape(-1)
 
-        return mu, sigma
+        covs = Kss - Ks.T.dot(Kinv).dot(Ks)
+
+        return mu, np.diag(covs)
