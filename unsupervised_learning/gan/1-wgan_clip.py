@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+"""
+asdasdsa
+"""
 import tensorflow as tf
 from tensorflow import keras
 import numpy as np
@@ -6,6 +9,9 @@ import matplotlib.pyplot as plt
 
 
 class WGAN_clip(keras.Model):
+    """
+    asdasdasdas
+    """
     def __init__(
         self, generator, discriminator, latent_generator, real_examples,
         batch_size=200, disc_iter=2, learning_rate=.005
@@ -45,6 +51,9 @@ class WGAN_clip(keras.Model):
         )
 
     def get_fake_sample(self, size=None, training=False):
+        """
+        sadasdasdas
+        """
         if not size:
             size = self.batch_size
         return self.generator(
@@ -52,6 +61,9 @@ class WGAN_clip(keras.Model):
         )
 
     def get_real_sample(self, size=None):
+        """
+        asdasdsa
+        """
         if not size:
             size = self.batch_size
         sorted_indices = tf.range(tf.shape(self.real_examples)[0])
@@ -59,6 +71,9 @@ class WGAN_clip(keras.Model):
         return tf.gather(self.real_examples, random_indices)
 
     def train_step(self, useless_argument):
+        """
+        asdasdsad
+        """
         for _ in range(self.disc_iter):
             with tf.GradientTape() as tape:
                 reals = self.get_real_sample()
