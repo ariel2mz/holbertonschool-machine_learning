@@ -25,7 +25,6 @@ class WGAN_GP(keras.Model):
             learning_rate=learning_rate, beta_1=0.5, beta_2=0.9
         )
 
-
     def replace_weights(self, gen_h5, disc_h5):
         """asdsadsadsa"""
         self.generator.load_weights(gen_h5)
@@ -60,7 +59,6 @@ class WGAN_GP(keras.Model):
         norm = tf.sqrt(tf.reduce_sum(tf.square(grads), axis=[1, 2, 3]))
         gp = tf.reduce_mean((norm - 1.0) ** 2)
         return gp
-
 
     def train_step(self, _):
         """sadsadsadsadas"""
