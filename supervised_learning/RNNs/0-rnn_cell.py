@@ -6,6 +6,9 @@ import numpy as np
 
 
 class RNNCell:
+    """
+    sadadasdsa
+    """
     def __init__(self, i, h, o):
         """
         <zxsdfghjkl
