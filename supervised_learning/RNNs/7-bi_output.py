@@ -41,13 +41,21 @@ class BidirectionalCell:
 
     def output(self, H):
         """
-        sadsadsa
+        sdadasdsadsa
         """
         t, m, _ = H.shape
-        Y = softmax(H @ self.Wy + self.by)
-        return Y
 
-def softmax(x):
-    """softmax"""
-    exp_x = np.exp(x - np.max(x, axis=1, keepdims=True))
-    return exp_x / np.sum(exp_x, axis=1, keepdims=True)
+        Y = []
+        for time_step in range(t):
+
+            hconcat = H[time_step]
+
+            output = hconcat @ self.Wy + self.by
+
+            expoutput = np.exp(output - np.max(output, axis=1, keepdims=True))
+            softmaxoutput = expoutput / np.sum(expoutput, axis=1, keepdims=True)
+            
+            Y.append(softmaxoutput)
+
+        Y = np.array(Y)
+        return Y
