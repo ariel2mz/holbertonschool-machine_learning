@@ -52,9 +52,9 @@ class BidirectionalCell:
 
             output = hconcat @ self.Wy + self.by
 
-            expoutput = np.exp(output - np.max(output, axis=1, keepdims=True))
-            softmaxoutput = expoutput / np.sum(expoutput, axis=1, keepdims=True)
-            
+            expout = np.exp(output - np.max(output, axis=1, keepdims=True))
+            softmaxoutput = expout / np.sum(expout, axis=1, keepdims=True)
+
             Y.append(softmaxoutput)
 
         Y = np.array(Y)
