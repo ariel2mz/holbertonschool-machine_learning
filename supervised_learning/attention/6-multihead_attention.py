@@ -10,7 +10,7 @@ class MultiHeadAttention(tf.keras.layers.Layer):
     """
     aasdasdasdas
     """
-    
+
     def __init__(self, dm, h):
         """
         asdadsadasdas
@@ -25,14 +25,14 @@ class MultiHeadAttention(tf.keras.layers.Layer):
         self.Wv = tf.keras.layers.Dense(dm)
 
         self.linear = tf.keras.layers.Dense(dm)
-    
+
     def split_heads(self, x, batch_size):
         """
         asdasdasddsa
         """
         x = tf.reshape(x, (batch_size, -1, self.h, self.depth))
         return tf.transpose(x, perm=[0, 2, 1, 3])
-    
+
     def call(self, Q, K, V, mask):
         """
         aasdasdasdasdas
@@ -52,5 +52,5 @@ class MultiHeadAttention(tf.keras.layers.Layer):
         concatout = tf.reshape(output, (batch_size, -1, self.dm))
 
         output = self.linear(concatout)
-        
+
         return output, weights
