@@ -10,7 +10,7 @@ class RNNDecoder(tf.keras.layers.Layer):
     """
     sadasdsadsa
     """
-    
+
     def __init__(self, vocab, embedding, units, batch):
         """
         sadsadsadsa
@@ -26,7 +26,7 @@ class RNNDecoder(tf.keras.layers.Layer):
         self.F = tf.keras.layers.Dense(vocab)
 
         self.attention = SelfAttention(units)
-    
+
     def call(self, x, s_prev, hidden_states):
         """
         sadsadsad
