@@ -25,7 +25,7 @@ class SelfAttention(tf.keras.layers.Layer):
         asdsasa
         """
 
-        s_prev_expanded = tf.expand_dims(s_prev, axis=1)
+        s_prev_expanded = tf.expand_dims(s_prev)
 
         score_hidden = self.U(hidden_states)
         score_decoder = self.W(s_prev_expanded)
