@@ -36,5 +36,5 @@ class EncoderBlock(tf.keras.layers.Layer):
         ffn_output = self.dense_output(ffn_output)
         ffn_output = self.dropout2(ffn_output, training=training)
         out2 = self.layernorm2(out1 + ffn_output)
-        
+
         return out2
