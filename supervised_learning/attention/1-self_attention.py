@@ -15,6 +15,7 @@ class SelfAttention(tf.keras.layers.Layer):
         """
         super(SelfAttention, self).__init__()
 
+        self.units = units
         self.W = tf.keras.layers.Dense(units)
         self.U = tf.keras.layers.Dense(units)
         self.V = tf.keras.layers.Dense(1)
