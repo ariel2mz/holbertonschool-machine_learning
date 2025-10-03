@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import tensorflow as tf
 import tensorflow_datasets as tfds
-from transformers import AutoTokenizer
+import transformers
 
 
 class Dataset:
@@ -24,8 +24,8 @@ class Dataset:
         """
             a ver si esto es lo q quiere el cehker
         """
+        abv = "neuralmind/bert-base-portuguese-cased"
+        tpt = transformers.AutoTokenizer.from_pretrained(abv)
+        ten = transformers.AutoTokenizer.from_pretrained("bert-base-uncased")
 
-        tokenizer_pt = AutoTokenizer.from_pretrained("neuralmind/bert-base-portuguese-cased")
-        tokenizer_en = AutoTokenizer.from_pretrained("bert-base-uncased")
-
-        return tokenizer_pt, tokenizer_en
+        return tpt, ten
