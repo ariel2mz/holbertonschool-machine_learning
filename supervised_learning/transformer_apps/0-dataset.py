@@ -19,8 +19,8 @@ class Dataset:
 
         self.data_train = examples['train']
         self.data_valid = examples['validation']
-
-        self.tokenizer_pt, self.tokenizer_en = self.tokenize_dataset(self.data_train)
+        a, b = self.tokenize_dataset(self.data_train)
+        self.tokenizer_pt, self.tokenizer_en = a, b
 
     def tokenize_dataset(self, data):
         """
