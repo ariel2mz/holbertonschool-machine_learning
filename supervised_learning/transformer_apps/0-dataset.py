@@ -29,6 +29,9 @@ class Dataset:
 
         tpt.model_max_length = 2**13
         ten.model_max_length = 2**13
-
+        
+        # Try explicitly setting the tokenizer settings that affect output formatting
+        tpt.clean_up_tokenization_spaces = False
+        ten.clean_up_tokenization_spaces = False
+        
         return tpt, ten
-
