@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+"""
+qeweqwewq
+"""
 import tensorflow_datasets as tfds
 import transformers
 
@@ -17,19 +20,20 @@ class Dataset:
         self.data_train = examples['train']
         self.data_valid = examples['validation']
 
-        self.tokenizer_pt, self.tokenizer_en = self.tokenize_dataset(self.data_train)
+        self.tpt, self.ten = self.tokenize_dataset(self.data_train)
 
     def tokenize_dataset(self, data):
         """
             adsasd
         """
 
-        tokenizer_pt = transformers.AutoTokenizer.from_pretrained("neuralmind/bert-base-portuguese-cased")
-        tokenizer_en = transformers.AutoTokenizer.from_pretrained("bert-base-uncased")
+        abv = "neuralmind/bert-base-portuguese-cased"
+        tpt = transformers.AutoTokenizer.from_pretrained(abv)
+        ten = transformers.AutoTokenizer.from_pretrained("bert-base-uncased")
 
         pt_sentences = []
         en_sentences = []
-        
+
         for pt, en in data:
             pt_sentences.append(pt.numpy().decode('utf-8'))
             en_sentences.append(en.numpy().decode('utf-8'))
