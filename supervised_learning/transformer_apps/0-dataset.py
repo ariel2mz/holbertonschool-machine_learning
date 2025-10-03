@@ -30,5 +30,5 @@ class Dataset:
         tpt.model_max_length = 2**13
         ten.model_max_length = 2**13
 
-        return tpt, ten, abv
+        return tpt, ten
 
