@@ -8,7 +8,7 @@ class Dataset:
         """
             asdasd
         """
-        examples, metadata = tfds.load(
+        examples, _ = tfds.load(
             'ted_hrlr_translate/pt_to_en',
             as_supervised=True,
             with_info=True
@@ -27,4 +27,8 @@ class Dataset:
         tpt = transformers.AutoTokenizer.from_pretrained(abv)
         ten = transformers.AutoTokenizer.from_pretrained("bert-base-uncased")
 
-        return tpt, ten
+        tpt.model_max_length = 2**13
+        ten.model_max_length = 2**13
+
+        return tpt, ten, abv
+
