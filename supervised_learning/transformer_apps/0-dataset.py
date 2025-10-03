@@ -38,14 +38,14 @@ class Dataset:
             pt_sentences.append(pt.numpy().decode('utf-8'))
             en_sentences.append(en.numpy().decode('utf-8'))
 
-        tokenizer_pt = tokenizer_pt.train_new_from_iterator(
-            pt_sentences, 
+        tpt = tpt.train_new_from_iterator(
+            pt_sentences,
             vocab_size=2**13
         )
 
-        tokenizer_en = tokenizer_en.train_new_from_iterator(
+        ten = ten.train_new_from_iterator(
             en_sentences,
             vocab_size=2**13
         )
 
-        return tokenizer_pt, tokenizer_en
+        return tpt, ten
