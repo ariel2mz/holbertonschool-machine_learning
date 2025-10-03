@@ -6,7 +6,7 @@ import transformers
 class Dataset:
     def __init__(self):
         """
-            asdasd
+            Isadasd
         """
         examples, _ = tfds.load(
             'ted_hrlr_translate/pt_to_en',
@@ -21,17 +21,27 @@ class Dataset:
 
     def tokenize_dataset(self, data):
         """
-            a ver si esto es lo q quiere el cehker
+            adsasd
         """
-        abv = "neuralmind/bert-base-portuguese-cased"
-        tpt = transformers.AutoTokenizer.from_pretrained(abv)
-        ten = transformers.AutoTokenizer.from_pretrained("bert-base-uncased")
 
-        tpt.model_max_length = 2**13
-        ten.model_max_length = 2**13
+        tokenizer_pt = transformers.AutoTokenizer.from_pretrained("neuralmind/bert-base-portuguese-cased")
+        tokenizer_en = transformers.AutoTokenizer.from_pretrained("bert-base-uncased")
+
+        pt_sentences = []
+        en_sentences = []
         
-        # Try explicitly setting the tokenizer settings that affect output formatting
-        tpt.clean_up_tokenization_spaces = False
-        ten.clean_up_tokenization_spaces = False
-        
-        return tpt, ten
+        for pt, en in data:
+            pt_sentences.append(pt.numpy().decode('utf-8'))
+            en_sentences.append(en.numpy().decode('utf-8'))
+
+        tokenizer_pt = tokenizer_pt.train_new_from_iterator(
+            pt_sentences, 
+            vocab_size=2**13
+        )
+
+        tokenizer_en = tokenizer_en.train_new_from_iterator(
+            en_sentences,
+            vocab_size=2**13
+        )
+
+        return tokenizer_pt, tokenizer_en
