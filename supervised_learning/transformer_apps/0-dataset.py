@@ -1,15 +1,18 @@
 #!/usr/bin/env python3
 """
-qeweqwewq
+qeweqwewq asdasd
 """
 import tensorflow_datasets as tfds
 import transformers
+"""
+adsadsad asdasdas
+"""
 
 
 class Dataset:
     def __init__(self):
         """
-            Isadasd
+            Isadasd asdasdsa
         """
         examples, _ = tfds.load(
             'ted_hrlr_translate/pt_to_en',
@@ -24,7 +27,7 @@ class Dataset:
 
     def tokenize_dataset(self, data):
         """
-            adsasd
+            adsasd sadasdsa
         """
 
         abv = "neuralmind/bert-base-portuguese-cased"
