@@ -37,7 +37,7 @@ class Dataset:
         ptsen = []
         ensen = []
         
-        for pt, en in data.take(1000):
+        for pt, en in data.take(10000):
             ptsen.append(pt.numpy().decode('utf-8'))
             ensen.append(en.numpy().decode('utf-8'))
         
