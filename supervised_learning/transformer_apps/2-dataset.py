@@ -31,13 +31,13 @@ class Dataset:
         sadsads
         """
         abv = "neuralmind/bert-base-portuguese-cased"
-        tpt = transformers.AutoTokenizer.from_pretrained(abv)
-        ten = transformers.AutoTokenizer.from_pretrained("bert-base-uncased")
+        tpt = transformers.AutoTokenizer.from_pretrained(abv, use_fast=True)
+        ten = transformers.AutoTokenizer.from_pretrained("bert-base-uncased", use_fast=True)
         
         ptsen = []
         ensen = []
         
-        for pt, en in data.take(10000):
+        for pt, en in data:
             ptsen.append(pt.numpy().decode('utf-8'))
             ensen.append(en.numpy().decode('utf-8'))
         
@@ -53,8 +53,8 @@ class Dataset:
         pttxt = pt.numpy().decode('utf-8')
         entxt = en.numpy().decode('utf-8')
         
-        pttok = self.tokenizerpt.encode(pttxt)
-        entok = self.tokenizeren.encode(entxt)
+        pttok = self.tokenizerpt.encode(pttxt, add_special_tokens=False)
+        entok = self.tokenizeren.encode(entxt, add_special_tokens=False)
         
         vspt = self.tokenizerpt.vocab_size
         vsen = self.tokenizeren.vocab_size
