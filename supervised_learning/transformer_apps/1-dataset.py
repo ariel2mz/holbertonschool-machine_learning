@@ -2,6 +2,7 @@
 import tensorflow_datasets as tfds
 import transformers
 import numpy as np
+import tensorflow as tf
 
 
 class Dataset:
@@ -22,6 +23,9 @@ class Dataset:
         self.datavalid = examples['validation']
         a, b = self.tokenizedataset(self.datatrain)
         self.tokenizerpt, self.tokenizeren = a, b
+        
+        self.datatrain = self.datatrain.map(self.tfencode)
+        self.datavalid = self.datavalid.map(self.tfencode)
 
     def tokenizedataset(self, data):
         """
@@ -63,3 +67,17 @@ class Dataset:
         entok = np.concatenate([[vsen], entok, [vsen + 1]])
         
         return pttok, entok
+
+    def tfencode(self, pt, en):
+        """
+        sadsadsa
+        """
+        resultpt, resulten = tf.py_function(
+            self.encode,
+            [pt, en],
+            [tf.int64, tf.int64]
+        )
+        resultpt.set_shape([None])
+        resulten.set_shape([None])
+        
+        return resultpt, resulten
