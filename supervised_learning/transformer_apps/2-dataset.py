@@ -12,34 +12,37 @@ class Dataset:
         """
         sadasdsadsa
         """
-        train = tfds.load('ted_hrlr_translate/pt_to_en', split='train', as_supervised=True)
-        valid = tfds.load('ted_hrlr_translate/pt_to_en', split='validation', as_supervised=True)
-        
-        self.datatrain = train
-        self.datavalid = valid
-        a, b = self.tokenizedataset(self.datatrain)
-        self.tokenizerpt, self.tokenizeren = a, b
-        
-        self.datatrain = self.datatrain.map(self.tfencode)
-        self.datavalid = self.datavalid.map(self.tfencode)
+        train = tfds.load(
+            'ted_hrlr_translate/pt_to_en', split='train',
+            as_supervised=True)
+        validate = tfds.load(
+            'ted_hrlr_translate/pt_to_en', split='validation',
+            as_supervised=True)
+        self.tokenizerpt, self.tokenizeren = self.tokenizedataset(
+           train)
+        self.datavalid = validate.map(self.tfencode)
+        self.datatrain = train.map(self.tfencode)
 
     def tokenizedataset(self, data):
         """
         sadsads
         """
-        abv = "neuralmind/bert-base-portuguese-cased"
-        tpt = transformers.AutoTokenizer.from_pretrained(abv)
-        ten = transformers.AutoTokenizer.from_pretrained("bert-base-uncased")
-        
         ptsen = []
         ensen = []
-        
         for pt, en in data:
             ptsen.append(pt.numpy().decode('utf-8'))
             ensen.append(en.numpy().decode('utf-8'))
-        
-        tpt = tpt.train_new_from_iterator(ptsen, vocab_size=2**13)
-        ten = ten.train_new_from_iterator(ensen, vocab_size=2**13)
+        tpt = transformers.AutoTokenizer.from_pretrained(
+            'neuralmind/bert-base-portuguese-cased',
+            clean_up_tokenization_spaces=True, use_fast=True)
+        ten = transformers.AutoTokenizer.from_pretrained(
+            'bert-base-uncased',
+            clean_up_tokenization_spaces=True, use_fast=True)
+
+        tpt = tpt.train_new_from_iterator(
+            ptsen, 2**13)
+        ten = ten.train_new_from_iterator(
+            ensen, 2**13)
 
         return tpt, ten
 
@@ -47,18 +50,15 @@ class Dataset:
         """
         sadsadsa
         """
-        pttxt = pt.numpy().decode('utf-8')
-        entxt = en.numpy().decode('utf-8')
-        
-        pttok = self.tokenizerpt.encode(pttxt)
-        entok = self.tokenizeren.encode(entxt)
-        
-        vspt = self.tokenizerpt.vocab_size
         vsen = self.tokenizeren.vocab_size
-        
+        vspt = self.tokenizerpt.vocab_size
+        pttok = self.tokenizerpt.encode(
+            pt.numpy().decode('utf-8'), add_special_tokens=False)
+        entok = self.tokenizeren.encode(
+            en.numpy().decode('utf-8'), add_special_tokens=False)
         pttok = [vspt] + pttok + [vspt + 1]
         entok = [vsen] + entok + [vsen + 1]
-        
+
         return pttok, entok
 
     def tfencode(self, pt, en):
@@ -66,11 +66,9 @@ class Dataset:
         sadsadsa
         """
         resultpt, resulten = tf.py_function(
-            self.encode,
-            [pt, en],
-            [tf.int64, tf.int64]
-        )
+            self.encode, [pt, en], [tf.int64, tf.int64])
+
         resultpt.set_shape([None])
         resulten.set_shape([None])
-        
+
         return resultpt, resulten
