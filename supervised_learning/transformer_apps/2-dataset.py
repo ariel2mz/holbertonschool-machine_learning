@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 import tensorflow_datasets as tfds
 import transformers
-import numpy as np
 import tensorflow as tf
 
 
@@ -57,14 +56,11 @@ class Dataset:
         pttok = self.tokenizerpt.encode(pttxt)
         entok = self.tokenizeren.encode(entxt)
         
-        pttok = np.array(pttok)
-        entok = np.array(entok)
-        
         vspt = self.tokenizerpt.vocabsize
         vsen = self.tokenizeren.vocabsize
         
-        pttok = np.concatenate([[vspt], pttok, [vspt + 1]])
-        entok = np.concatenate([[vsen], entok, [vsen + 1]])
+        pttok = [vspt] + pttok + [vspt + 1]
+        entok = [vsen] + entok + [vsen + 1]
         
         return pttok, entok
 
@@ -79,5 +75,5 @@ class Dataset:
         )
         resultpt.set_shape([None])
         resulten.set_shape([None])
-
+        
         return resultpt, resulten
