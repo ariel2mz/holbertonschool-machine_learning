@@ -12,14 +12,11 @@ class Dataset:
         """
         sadasdsadsa
         """
-        examples, _ = tfds.load(
-            'ted_hrlr_translate/pt_to_en',
-            as_supervised=True,
-            with_info=True
-        )
-
-        self.datatrain = examples['train']
-        self.datavalid = examples['validation']
+        train = tfds.load('ted_hrlr_translate/pt_to_en', split='train', as_supervised=True)
+        valid = tfds.load('ted_hrlr_translate/pt_to_en', split='validation', as_supervised=True)
+        
+        self.datatrain = train
+        self.datavalid = valid
         a, b = self.tokenizedataset(self.datatrain)
         self.tokenizerpt, self.tokenizeren = a, b
         
@@ -31,8 +28,8 @@ class Dataset:
         sadsads
         """
         abv = "neuralmind/bert-base-portuguese-cased"
-        tpt = transformers.AutoTokenizer.from_pretrained(abv, use_fast=True)
-        ten = transformers.AutoTokenizer.from_pretrained("bert-base-uncased", use_fast=True)
+        tpt = transformers.AutoTokenizer.from_pretrained(abv)
+        ten = transformers.AutoTokenizer.from_pretrained("bert-base-uncased")
         
         ptsen = []
         ensen = []
@@ -53,8 +50,8 @@ class Dataset:
         pttxt = pt.numpy().decode('utf-8')
         entxt = en.numpy().decode('utf-8')
         
-        pttok = self.tokenizerpt.encode(pttxt, add_special_tokens=False)
-        entok = self.tokenizeren.encode(entxt, add_special_tokens=False)
+        pttok = self.tokenizerpt.encode(pttxt)
+        entok = self.tokenizeren.encode(entxt)
         
         vspt = self.tokenizerpt.vocab_size
         vsen = self.tokenizeren.vocab_size
