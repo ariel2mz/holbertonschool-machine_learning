@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
+"""
+afsfsafasf
+"""
 import numpy as np
 
 
 def monte_carlo(env, V, policy, episodes=5000, max_steps=100, alpha=0.1, gamma=0.99):
     """
-    asasgasfsagsa
+    safsafsa
     """
-    for _ in range(episodes):
+    for ep in range(episodes):
         sta, _ = env.reset()
         epi = []
 
@@ -18,12 +21,13 @@ def monte_carlo(env, V, policy, episodes=5000, max_steps=100, alpha=0.1, gamma=0
             if term or trunc:
                 break
 
-        vis = set()
         G = 0
-        for sta, rew in reversed(epi):
+        epi = np.array(epi, dtype=int)
+
+        for t in range(len(epi) - 1, -1, -1):
+            sta, rew = epi[t]
             G = rew + gamma * G
-            if sta not in vis:
+            if sta not in epi[:t, 0]:
                 V[sta] = V[sta] + alpha * (G - V[sta])
-                vis.add(sta)
 
     return V
