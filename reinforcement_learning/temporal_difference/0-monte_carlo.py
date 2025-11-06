@@ -6,7 +6,7 @@ def monte_carlo(env, V, policy, episodes=5000, max_steps=100, alpha=0.1, gamma=0
     """
     asasgasfsagsa
     """
-    for i in range(episodes):
+    for _ in range(episodes):
         sta, _ = env.reset()
         epi = []
 
