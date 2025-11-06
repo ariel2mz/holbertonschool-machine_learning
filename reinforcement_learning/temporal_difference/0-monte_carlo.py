@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+"""
+safsagfasfsaf
+"""
 import numpy as np
 
 
@@ -7,12 +10,12 @@ def monte_carlo(env, V, policy, episodes=5000, max_steps=100, alpha=0.1, gamma=0
     asasgasfsagsa
     """
     for i in range(episodes):
-        sta, i = env.reset()
+        sta, _ = env.reset()
         epi = []
 
-        for i in range(max_steps):
+        for _ in range(max_steps):
             act = policy(sta)
-            nexsta, rew, term, trunc, i = env.step(act)
+            nextsta, rew, term, trunc, _ = env.step(act)
             epi.append((sta, rew))
             sta = nextsta
             if term or trunc:
