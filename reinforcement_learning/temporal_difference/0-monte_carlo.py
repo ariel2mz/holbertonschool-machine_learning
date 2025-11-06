@@ -1,7 +1,4 @@
 #!/usr/bin/env python3
-"""
-safsagfasfsaf
-"""
 import numpy as np
 
 
@@ -21,9 +18,12 @@ def monte_carlo(env, V, policy, episodes=5000, max_steps=100, alpha=0.1, gamma=0
             if term or trunc:
                 break
 
+        vis = set()
         G = 0
         for sta, rew in reversed(epi):
             G = rew + gamma * G
-            V[sta] = V[sta] + alpha * (G - V[sta])
+            if sta not in vis:
+                V[sta] = V[sta] + alpha * (G - V[sta])
+                vis.add(sta)
 
     return V
