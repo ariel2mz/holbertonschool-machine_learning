@@ -32,7 +32,8 @@ def monte_carlo(env, V, policy, episodes=5000, max_steps=100, alpha=0.1,
                     first_visit = False
                     break
             
-            if first_visit:
+            # Only update if first visit AND state is not a terminal state (hole)
+            if first_visit and V[sta] != -1:
                 V[sta] += alpha * (G - V[sta])
 
     return V
