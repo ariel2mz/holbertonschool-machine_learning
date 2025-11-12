@@ -10,7 +10,7 @@ def policy(matrix, weight):
     askaslkfasklfsa
     """
     z = matrix.dot(weight)
-    exp_z = np.exp(z - np.max(z, axis=1, keepdims=True))
-    prob = exp_z / np.sum(exp_z, axis=1, keepdims=True)
+    expz = np.exp(z - np.max(z, axis=1, keepdims=True))
+    prob = expz / np.sum(expz, axis=1, keepdims=True)
 
     return prob
