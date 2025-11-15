@@ -20,15 +20,16 @@ def policy_gradient(state, weight):
     safsafsafsa
     """
 
-    state = state.reshape(1, -1)
+    # ∇logπ(a|s) = φ(s) * (1(a=a') - π(a'|s))
+    prob = policy(state, weight)
 
-    probs = policy(state, weight)
+    action = np.random.choice(len(prob[0]), p=prob[0])
 
-    act = np.random.choice(probs.shape[1])
+    grad = np.zeros_like(weight)
 
-    ones = np.zero(prob.shape[1])
-    ones[act] = 1
+    grad[:, action] = state
 
-    grad = state.T @ (ones - prob)
-    
+    for a in range(weight.shape[1]):
+        grad[:, a] -= prob[0][a] * state
+
     return int(act), grad
