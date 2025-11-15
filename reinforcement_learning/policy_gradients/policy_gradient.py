@@ -31,4 +31,4 @@ def policy_gradient(state, weight):
 
     grad = state.T.dot(onest - probs)
     
-    return act, grad
+    return int(act), grad
