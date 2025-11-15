@@ -17,6 +17,7 @@ def policy(matrix, weight):
 
     return prob
 
+
 def policy_gradient(state, weight):
     """
     fsafsafsafsa
@@ -32,7 +33,7 @@ def policy_gradient(state, weight):
     onehot[act] = 1
 
     grad = state.T @ (onehot - prob)
-    
+
     return int(act), grad
 
     """
