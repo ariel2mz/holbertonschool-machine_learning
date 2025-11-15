@@ -5,7 +5,7 @@ afsfsafsa
 import numpy as np
 
 
-def train(env, nb_episodes, alpha=0.000045, gamma=0.98):
+def train(env, nb_episodes, alpha=0.000045, gamma=0.98, show_result=False):
     """
     asfgsasafsa
     """
@@ -22,6 +22,8 @@ def train(env, nb_episodes, alpha=0.000045, gamma=0.98):
         state, _ = env.reset()
         eprew = []
         done = False
+        if show_result and ep % 1000 == 0:
+            env.render()
 
         while not done:
 
