@@ -26,14 +26,14 @@ def policy_gradient(state, weight):
 
     prob = policy(state, weight)
 
-    action = np.random.choice(prob.shape[1], p=prob[0])
+    act = np.random.choice(prob.shape[1], p=prob[0])
 
-    one_hot = np.zeros(prob.shape[1])
-    one_hot[action] = 1
+    onehot = np.zeros(prob.shape[1])
+    onehot[act] = 1
 
-    grad = state.T @ (one_hot - prob)
+    grad = state.T @ (onehot - prob)
     
-    return int(action), grad
+    return int(act), grad
 
     """
     Esta función ayuda a un agente de inteligencia
