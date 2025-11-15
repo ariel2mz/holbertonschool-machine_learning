@@ -9,28 +9,31 @@ def policy(matrix, weight):
     """
     askaslkfasklfsa
     """
-    z = matrix.dot(weight)
-    expz = np.exp(z - np.max(z, axis=1, keepdims=True))
-    prob = expz / np.sum(expz, axis=1, keepdims=True)
+    z = matrix @ weight
+
+    exp = np.exp(z - np.max(z))
+
+    prob = exp / np.sum(exp)
 
     return prob
 
 def policy_gradient(state, weight):
     """
-    safsafsafsa
+    fsafsafsafsa
     """
 
-    # ∇logπ(a|s) = φ(s) * (1(a=a') - π(a'|s))
+    state = state.reshape(1, -1)
+
     prob = policy(state, weight)
 
-    act = np.random.choice(len(prob), p=prob)
+    action = np.random.choice(prob.shape[1], p=prob[0])
 
-    grad = np.zeros_like(weight)
+    one_hot = np.zeros(prob.shape[1])
+    one_hot[action] = 1
 
-    grad[:, act] = state
-
-    for a in range(weight.shape[1]):
-        grad[:, a] -= prob[a] * state
+    grad = state.T @ (one_hot - prob)
+    
+    return int(action), grad
 
     """
     Esta función ayuda a un agente de inteligencia
@@ -59,4 +62,3 @@ def policy_gradient(state, weight):
     vez tengas más probabilidades de elegir buenos movimientos y menos
     de elegir malos".
     """
-    return act, grad
