@@ -38,5 +38,5 @@ def train(env, nb_episodes, alpha=0.000045, gamma=0.98):
         scores.append(score)
 
         print("Episode: {} Score: {}".format(ep, score))
-    
+
     return scores
