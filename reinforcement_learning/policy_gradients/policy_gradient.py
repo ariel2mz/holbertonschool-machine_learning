@@ -29,13 +29,11 @@ def policy_gradient(state, weight):
 
     grad[:, action] = state
 
-    for a in range(weight.shape[1]):
-        aprob = prob[a]
-        bprob = aprob * state
-        grad[:, a] = grad[:, a] - bprob
 
     prob = policy(state, weight)
     action = np.random.choice(len(prob), p=prob)
 
+    for a in range(weight.shape[1]):
+        grad[:, a] -= prob[a] * state
 
     return act, grad
