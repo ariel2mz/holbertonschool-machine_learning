@@ -24,11 +24,11 @@ def policy_gradient(state, weight):
 
     probs = policy(state, weight)
 
-    act = np.random.choice(probs.shape[1], p=probs[0])
+    act = np.random.choice(probs.shape[1])
 
-    ones = np.zeros_like(probs)
-    ones[0, act] = 1
+    ones = np.zero(prob.shape[1])
+    ones[act] = 1
 
-    grad = state.T.dot(onest - probs)
+    grad = state.T @ (ones - prob)
     
     return int(act), grad
