@@ -10,7 +10,7 @@ def rename(df):
     sfsafsafsa
     """
     df = df.rename(columns={"Timestamp": "Datetime"})
-    df["Datetime"] = pd.to_datetime(df["Datetime"])
+    df["Datetime"] = pd.to_datetime(df["Datetime"], unit='ms')
     df = df[["Datetime", "Close"]]
 
     return df
