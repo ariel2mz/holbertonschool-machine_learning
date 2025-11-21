@@ -9,6 +9,6 @@ def from_numpy(array):
     """
     sfasafsafsaf
     """
-    cols = list(string.ascii_uppercase[:array.shape[1]])
-
+    n_cols = array.shape[1]
+    cols = [chr(65 + i) for i in range(n_cols)]
     return pd.DataFrame(array, columns=cols)
