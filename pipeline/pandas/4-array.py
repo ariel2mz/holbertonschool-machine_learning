@@ -2,7 +2,6 @@
 """
 asgsagsagsaa
 """
-import pandas as pd
 
 
 def array(df):
