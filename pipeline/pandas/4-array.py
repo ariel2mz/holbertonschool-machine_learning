@@ -11,5 +11,5 @@ def array(df):
     selected = df[["High", "Close"]].tail(10)
 
     arr = selected.to_numpy()
-    
+
     return arr
