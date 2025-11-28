@@ -1,23 +1,35 @@
-#!/usr/bin/node
+#!/usr/bin/env python3
+"""
+asgsagsagsaa
+"""
+import requests
 
-const request = require('request');
-const movieId = process.argv[2];
-const apiUrl = `https://swapi-api.alx-tools.com/api/films/${movieId}/`;
 
-request(apiUrl, function (error, response, body) {
-  if (error) return;
-  const filmData = JSON.parse(body);
-  const characterUrls = filmData.characters;
-
-  function getCharacter(index) {
-    if (index >= characterUrls.length) return;
+def availableShips(passengerCount):
+    """
+    kaklsksaklsl aklslka
+    """
+    url = "https://swapi.dev/api/starships/"
+    ships_list = []
     
-    request(characterUrls[index], function (err, res, charBody) {
-      if (err) return;
-      console.log(JSON.parse(charBody).name);
-      getCharacter(index + 1);
-    });
-  }
-
-  getCharacter(0);
-});
+    while url:
+        response = requests.get(url)
+        data = response.json()
+        
+        for ship in data['results']:
+            passengers = ship.get('passengers', '0')
+            
+            if passengers == 'unknown' or passengers == 'n/a' or not passengers:
+                continue
+            
+            passengers = passengers.replace(',', '')
+            
+            try:
+                if int(passengers) >= passengerCount:
+                    ships_list.append(ship['name'])
+            except ValueError:
+                continue
+        
+        url = data.get('next')
+    
+    return ships_list
