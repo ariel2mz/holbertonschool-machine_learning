@@ -17,15 +17,15 @@ def availableShips(passengerCount):
         data = response.json()
 
         for ship in data['results']:
-            passengers = ship.get('passengers', '0')
+            pas = ship.get('passengers', '0')
 
-            if passengers == 'unknown' or passengers == 'n/a' or not passengers:
+            if pas == 'unknown' or pas == 'n/a' or not pas:
                 continue
 
-            passengers = passengers.replace(',', '')
+            pas = pas.replace(',', '')
 
             try:
-                if int(passengers) >= passengerCount:
+                if int(pas) >= passengerCount:
                     ships_list.append(ship['name'])
             except ValueError:
                 continue
