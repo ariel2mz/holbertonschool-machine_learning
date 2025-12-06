@@ -1,5 +1,5 @@
 // gsagsagas
-db.school.updateMany(
+printjson(db.school.updateMany(
     { "name": "Holberton school" },
     { $set: { "address": "972 Mission street" } }
-);
+));
