@@ -14,10 +14,10 @@ class Dataset:
 
         self.raw_data_train = examples['train']
         self.raw_data_valid = examples['validation']
-        
+
         a, b = self.tokenize_dataset(self.raw_data_train)
         self.tokenizer_pt, self.tokenizer_en = a, b
-        
+
         self.data_train = self.raw_data_train.map(self.tf_encode)
         self.data_valid = self.raw_data_valid.map(self.tf_encode)
 
@@ -48,17 +48,18 @@ class Dataset:
     def encode(self, pt, en):
         pt_text = pt.numpy().decode('utf-8')
         en_text = en.numpy().decode('utf-8')
-        
+
         pt_tokens = self.tokenizer_pt.encode(pt_text)
         en_tokens = self.tokenizer_en.encode(en_text)
-        
+
         start_token = 2**13
         end_token = 2**13 + 1
-        
+
         pt_tokens = [start_token] + pt_tokens + [end_token]
         en_tokens = [start_token] + en_tokens + [end_token]
-        
-        return tf.convert_to_tensor(pt_tokens, dtype=tf.int64), tf.convert_to_tensor(en_tokens, dtype=tf.int64)
+
+        return tf.convert_to_tensor(pt_tokens, dtype=tf.int64),
+        tf.convert_to_tensor(en_tokens, dtype=tf.int64)
 
     def tf_encode(self, pt, en):
         pt_result, en_result = tf.py_function(
@@ -66,8 +67,8 @@ class Dataset:
             inp=[pt, en],
             Tout=[tf.int64, tf.int64]
         )
-        
+
         pt_result.set_shape([None])
         en_result.set_shape([None])
-        
+
         return pt_result, en_result
