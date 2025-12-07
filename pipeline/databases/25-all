@@ -1,1 +1,2 @@
+// asfksalfksakl
 db.school.find().forEach(doc => printjson(doc))
