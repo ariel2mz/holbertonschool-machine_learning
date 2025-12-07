@@ -1,11 +1,20 @@
 #!/usr/bin/env python3
+"""
+safasfsafa
+"""
 import tensorflow as tf
 import tensorflow_datasets as tfds
 import transformers
 
 
 class Dataset:
+    """
+    asfafsagsa
+    """
     def __init__(self):
+        """
+        asffsafas
+        """
         examples, _ = tfds.load(
             'ted_hrlr_translate/pt_to_en',
             as_supervised=True,
@@ -22,6 +31,9 @@ class Dataset:
         self.data_valid = self.raw_data_valid.map(self.tf_encode)
 
     def tokenize_dataset(self, data):
+        """
+        afsfasfsa
+        """
         abv = "neuralmind/bert-base-portuguese-cased"
         tpt = transformers.AutoTokenizer.from_pretrained(abv)
         ten = transformers.AutoTokenizer.from_pretrained("bert-base-uncased")
@@ -46,6 +58,9 @@ class Dataset:
         return tpt, ten
 
     def encode(self, pt, en):
+        """
+        fasfsafsa
+        """
         pt_text = pt.numpy().decode('utf-8')
         en_text = en.numpy().decode('utf-8')
 
@@ -62,6 +77,9 @@ class Dataset:
         tf.convert_to_tensor(en_tokens, dtype=tf.int64)
 
     def tf_encode(self, pt, en):
+        """
+        afsfas
+        """
         pt_result, en_result = tf.py_function(
             func=self.encode,
             inp=[pt, en],
