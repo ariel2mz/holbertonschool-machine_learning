@@ -1,69 +1,100 @@
 #!/usr/bin/env python3
+"""
+qeweqwewq asdasd
+"""
+import tensorflow as tf
 import tensorflow_datasets as tfds
 import transformers
-import tensorflow as tf
+import numpy as np
+"""
+adsadsad asdasdas
+"""
 
 
 class Dataset:
     """
-    sadsadsadsadsa
+    asdsadsada
     """
     def __init__(self):
         """
-        sadasdsadsa
+            Isadasd asdasdsa
         """
-        self.datatrain = tfds.load(
-            'ted_hrlr_translate/pt_to_en', split='train',
-            as_supervised=True)
-        self.datavalid = tfds.load(
-            'ted_hrlr_translate/pt_to_en', split='validation',
-            as_supervised=True)
-        a, b = self.tokenizedataset(self.datatrain)
-        self.tokenizerpt, self.tokenizeren = a, b
+        examples, _ = tfds.load(
+            'ted_hrlr_translate/pt_to_en',
+            as_supervised=True,
+            with_info=True
+        )
+
+        # Store original datasets
+        self.raw_data_train = examples['train']
+        self.raw_data_valid = examples['validation']
         
-        self.datatrain = self.datatrain.map(self.tfencode)
-        self.datavalid = self.datavalid.map(self.tfencode)
+        # Tokenize datasets
+        a, b = self.tokenize_dataset(self.raw_data_train)
+        self.tokenizer_pt, self.tokenizer_en = a, b
+        
+        # Create tokenized datasets
+        self.data_train = self.raw_data_train.map(self.tf_encode)
+        self.data_valid = self.raw_data_valid.map(self.tf_encode)
 
-    def tokenizedataset(self, data):
+    def tokenize_dataset(self, data):
         """
-        sadsads
+            adsasd sadasdsa
         """
-        ptsen = []
-        ensen = []
+
+        abv = "neuralmind/bert-base-portuguese-cased"
+        tpt = transformers.AutoTokenizer.from_pretrained(abv)
+        ten = transformers.AutoTokenizer.from_pretrained("bert-base-uncased")
+
+        pt_sentences = []
+        en_sentences = []
+
         for pt, en in data:
-            ptsen.append(pt.numpy().decode('utf-8'))
-            ensen.append(en.numpy().decode('utf-8'))
-        tpt = transformers.AutoTokenizer.from_pretrained(
-            'neuralmind/bert-base-portuguese-cased')
-        ten = transformers.AutoTokenizer.from_pretrained(
-            'bert-base-uncased')
+            pt_sentences.append(pt.numpy().decode('utf-8'))
+            en_sentences.append(en.numpy().decode('utf-8'))
 
-        tpt = tpt.train_new_from_iterator(ptsen, 2**13)
-        ten = ten.train_new_from_iterator(ensen, 2**13)
+        tpt = tpt.train_new_from_iterator(
+            pt_sentences,
+            vocab_size=2**13
+        )
+
+        ten = ten.train_new_from_iterator(
+            en_sentences,
+            vocab_size=2**13
+        )
 
         return tpt, ten
 
     def encode(self, pt, en):
         """
-        sadsadsa
+        asffsafas
         """
-        vspt = self.tokenizerpt.vocab_size
-        vsen = self.tokenizeren.vocab_size
-        pttok = self.tokenizerpt.encode(pt.numpy().decode('utf-8'))
-        entok = self.tokenizeren.encode(en.numpy().decode('utf-8'))
-        pttok = [vspt] + pttok + [vspt + 1]
-        entok = [vsen] + entok + [vsen + 1]
 
-        return pttok, entok
+        pt_text = pt.numpy().decode('utf-8')
+        en_text = en.numpy().decode('utf-8')
 
-    def tfencode(self, pt, en):
+        pt_tokens = self.tokenizer_pt.encode(pt_text)
+        en_tokens = self.tokenizer_en.encode(en_text)
+
+        start_token = 2**13
+        end_token = 2**13 + 1
+        pt_tokens = [start_token] + pt_tokens + [end_token]
+        en_tokens = [start_token] + en_tokens + [end_token]
+        
+        return np.array(pt_tokens), np.array(en_tokens)
+
+    def tf_encode(self, pt, en):
         """
-        sadsadsa
+        asfasfas
         """
-        resultpt, resulten = tf.py_function(
-            self.encode, [pt, en], [tf.int64, tf.int64])
 
-        resultpt.set_shape([None])
-        resulten.set_shape([None])
+        pt_result, en_result = tf.py_function(
+            func=self.encode,
+            inp=[pt, en],
+            Tout=[tf.int64, tf.int64]
+        )
 
-        return resultpt, resulten
+        pt_result.set_shape([None])
+        en_result.set_shape([None])
+        
+        return pt_result, en_result
