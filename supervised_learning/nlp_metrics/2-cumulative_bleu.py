@@ -37,22 +37,11 @@ def ngram_precision(references, sentence, n):
 
 def cumulative_bleu(references, sentence, n):
     """
-    Calculates cumulative n-gram BLEU score
+    calculates the cumulative BLEU score for a sentence
     """
-    precisions = []
-
+    bleus = []
     for i in range(1, n + 1):
-        p = ngram_precision(references, sentence, i)
+        bleu = ngram_bleu(references, sentence, i)
+        bleus.append(bleu)
 
-        if p == 0:
-            p = 1e-16
-        precisions.append(p)
-
-    log_precisions = [math.log(p) for p in precisions]
-    g
-    sent_len = len(sentence)
-    ref_lens = [len(ref) for ref in references]
-    crlen = min(ref_lens, key=lambda rl: (abs(rl - sent_len), rl))
-    bp = 1.0 if sent_len > crlen else math.exp(1 - crlen / sent_len)
-
-    return bp * geo_mean
+    return np.prod(bleus) ** (1 / n)
