@@ -7,6 +7,10 @@ import string
 
 
 def bag_of_words(sentences, vocab=None):
+    """
+    asfafsafsa
+    safasfsa
+    """
     processed = []
     for sent in sentences:
         sent = sent.lower()
