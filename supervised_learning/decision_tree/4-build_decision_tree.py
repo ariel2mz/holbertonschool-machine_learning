@@ -56,10 +56,8 @@ class Node:
         count = 0
         if not only_leaves:
             count += 1
-        if self.left_child:
-            count += self.left_child.count_nodes_below(only_leaves)
-        if self.right_child:
-            count += self.right_child.count_nodes_below(only_leaves)
+        count += self.left_child.count_nodes_below(only_leaves)
+        count += self.right_child.count_nodes_below(only_leaves)
         return count
 
     def right_child_add_prefix(self, text):
@@ -75,7 +73,7 @@ class Node:
         lines = text.split("\n")
         new_text = "    +--" + lines[0] + "\n"
         for x in lines[1:]:
-            new_text += "       " + x + "\n"
+            new_text += ("       " + x + "\n")
         return new_text
 
     def left_child_add_prefix(self, text):
@@ -91,7 +89,7 @@ class Node:
         lines = text.split("\n")
         new_text = "    +--" + lines[0] + "\n"
         for x in lines[1:]:
-            new_text += "    |  " + x + "\n"
+            new_text += ("    |  " + x + "\n")
         return new_text
 
     def __str__(self):
@@ -119,10 +117,8 @@ class Node:
             list: List of Leaf instances.
         """
         leaves = []
-        if self.left_child:
-            leaves.extend(self.left_child.get_leaves_below())
-        if self.right_child:
-            leaves.extend(self.right_child.get_leaves_below())
+        leaves.extend(self.left_child.get_leaves_below())
+        leaves.extend(self.right_child.get_leaves_below())
         return leaves
 
     def update_bounds_below(self):
