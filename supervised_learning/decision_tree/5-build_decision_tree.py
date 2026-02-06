@@ -12,6 +12,7 @@ Requirements:
 """
 import numpy as np
 
+
 class Node:
     """
     Defines an internal node in a decision tree.

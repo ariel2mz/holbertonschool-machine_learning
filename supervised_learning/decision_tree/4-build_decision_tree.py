@@ -5,20 +5,22 @@ split strategies, limiting tree depth, and setting a minimum
 node sample size for splitting.
 
 Contains `Node` and `Leaf` classes for representing tree structure,
-and a `Decision_Tree` class to manage the construction and configuration.
+and a `Decision_Tree` class to manage the construction and
+configuration.
 
 Requirements:
 - numpy
 """
 import numpy as np
 
+
 class Node:
     """
     Defines an internal node in a decision tree.
     """
 
-    def __init__(self, feature=None, threshold=None,
-                 left_child=None, right_child=None, is_root=False, depth=0):
+    def __init__(self, feature=None, threshold=None, left_child=None,
+                 right_child=None, is_root=False, depth=0):
         self.feature = feature
         self.threshold = threshold
         self.left_child = left_child
@@ -60,11 +62,14 @@ class Node:
         return new_text
 
     def __str__(self):
-        result = f"{'root' if self.is_root else '-> node'} [feature={self.feature}, threshold={self.threshold}]\n"
+        result = (f"{'root' if self.is_root else '-> node'} "
+                  f"[feature={self.feature}, threshold={self.threshold}]\n")
         if self.left_child:
-            result += self.left_child_add_prefix(self.left_child.__str__().strip())
+            result += self.left_child_add_prefix(
+                self.left_child.__str__().strip())
         if self.right_child:
-            result += self.right_child_add_prefix(self.right_child.__str__().strip())
+            result += self.right_child_add_prefix(
+                self.right_child.__str__().strip())
         return result
 
     def get_leaves_below(self):
@@ -128,8 +133,8 @@ class Decision_Tree:
     Basic classifier using a decision tree structure.
     """
 
-    def __init__(self, max_depth=10, min_pop=1,
-                 seed=0, split_criterion="random", root=None):
+    def __init__(self, max_depth=10, min_pop=1, seed=0,
+                 split_criterion="random", root=None):
         self.rng = np.random.default_rng(seed)
         self.root = root if root else Node(is_root=True)
         self.explanatory = None
