@@ -1,93 +1,91 @@
 #!/usr/bin/env python3
-"""bayes_opt"""
+"""Bayesian Optimization Module"""
 import numpy as np
 GP = __import__('2-gp').GaussianProcess
 
 
 class BayesianOptimization:
     """
-    Performs Bayesian optimization on a 1D Gaussian process
-    without noise. Uses Expected Improvement for acquisition.
+    Performs Bayesian optimization on a noiseless 1D Gaussian process
     """
     def __init__(self, f, X_init, Y_init, bounds, ac_samples,
                  l=1, sigma_f=1, xsi=0.01, minimize=True):
         """
-        f: black-box function to optimize
-        X_init: numpy.ndarray of shape (t, 1), initial sample inputs
-        Y_init: numpy.ndarray of shape (t, 1), initial sample outputs
-        bounds: tuple (min, max) of search space
-        ac_samples: number of candidate points for acquisition
-        l, sigma_f: Gaussian Process hyperparameters
-        xsi: exploration-exploitation parameter
-        minimize: True for minimization, False for maximization
+        Initialize Bayesian Optimization
+        
+        Args:
+            f: Black-box function to optimize
+            X_init: Initial sampled inputs (t, 1)
+            Y_init: Outputs for X_init (t, 1)
+            bounds: Tuple (min, max) of search space
+            ac_samples: Number of acquisition samples
+            l: Kernel length parameter
+            sigma_f: Kernel output std deviation
+            xsi: Exploration-exploitation factor
+            minimize: True for minimization, False for maximization
         """
         self.f = f
         self.gp = GP(X_init, Y_init, l, sigma_f)
         self.X_s = np.linspace(bounds[0], bounds[1], ac_samples).reshape(-1, 1)
         self.xsi = xsi
         self.minimize = minimize
-
-    def _norm_pdf(self, x):
-        """Standard normal probability density function"""
-        return (1 / np.sqrt(2 * np.pi)) * np.exp(-0.5 * x**2)
-
-    def _norm_cdf(self, x):
-        """Standard normal cumulative density function using erf"""
-        return 0.5 * (1 + np.erf(x / np.sqrt(2)))
+        self.best = np.min(Y_init) if minimize else np.max(Y_init)
 
     def acquisition(self):
         """
-        Computes the Expected Improvement (EI) for each candidate point
-        and selects the next point to sample.
+        Calculate the next best sample location using Expected Improvement
+        
         Returns:
-            X_next: numpy.ndarray of shape (1,)
-            EI: numpy.ndarray of shape (ac_samples,)
+            X_next: Next sample point to evaluate
+            EI: Expected Improvement values across the search space
         """
+        from scipy.stats import norm
+
         mu, sigma = self.gp.predict(self.X_s)
-        sigma = sigma.reshape(-1, 1)
 
-        # Determine current best based on minimize/maximize
         if self.minimize:
-            best = np.min(self.gp.Y)
-            improvement = best - mu - self.xsi
+            improvement = self.best - mu - self.xsi
         else:
-            best = np.max(self.gp.Y)
-            improvement = mu - best - self.xsi
+            improvement = mu - self.best - self.xsi
 
-        # Avoid division by zero
-        EI = np.zeros_like(improvement)
-        mask = sigma > 0
-        Z = np.zeros_like(improvement)
-        Z[mask] = improvement[mask] / sigma[mask]
-        EI[mask] = improvement[mask] * self._norm_cdf(Z[mask]) + sigma[mask] * self._norm_pdf(Z[mask])
+        Z = improvement / sigma
+        EI = improvement * norm.cdf(Z) + sigma * norm.pdf(Z)
+
+        EI[sigma == 0.0] = 0.0
 
         X_next = self.X_s[np.argmax(EI)]
-        return X_next, EI.ravel()
+        return X_next, EI
 
     def optimize(self, iterations=100):
         """
-        Runs Bayesian optimization for a maximum number of iterations.
-        Stops early if a proposed point has already been sampled.
+        Run Bayesian optimization for specified number of iterations
+        
+        Args:
+            iterations: Number of optimization steps
+            
         Returns:
-            X_opt: numpy.ndarray of shape (1,) optimal input
-            Y_opt: numpy.ndarray of shape (1,) optimal output
+            X_opt: Optimal input found
+            Y_opt: Optimal output found
         """
         for _ in range(iterations):
+
             X_next, _ = self.acquisition()
 
-            # Stop if X_next was already sampled
-            if np.any(np.isclose(self.gp.X, X_next)):
-                break
-
             Y_next = self.f(X_next)
+
             self.gp.update(X_next, Y_next)
 
-        # Find optimal sampled point
-        if self.minimize:
-            idx = np.argmin(self.gp.Y)
-        else:
-            idx = np.argmax(self.gp.Y)
+            if self.minimize:
+                self.best = min(self.best, Y_next)
+            else:
+                self.best = max(self.best, Y_next)
 
-        X_opt = self.gp.X[idx].reshape(1,)
-        Y_opt = self.gp.Y[idx].reshape(1,)
+        if self.minimize:
+            opt_idx = np.argmin(self.gp.Y)
+        else:
+            opt_idx = np.argmax(self.gp.Y)
+        
+        X_opt = self.gp.X[opt_idx]
+        Y_opt = self.gp.Y[opt_idx]
+        
         return X_opt, Y_opt
