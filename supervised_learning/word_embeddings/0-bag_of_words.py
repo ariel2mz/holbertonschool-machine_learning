@@ -6,9 +6,6 @@ import numpy as np
 import string
 
 def bag_of_words(sentences, vocab=None):
-    """
-    asfasfas
-    """
     processed = []
     for sentence in sentences:
         sentence = sentence.lower()
@@ -18,13 +15,10 @@ def bag_of_words(sentences, vocab=None):
         processed.append(tokens)
 
     if vocab is None:
-        vocab = []
-        seen = set()
+        all_words = []
         for tokens in processed:
-            for token in tokens:
-                if token not in seen:
-                    seen.add(token)
-                    vocab.append(token)
+            all_words.extend(tokens)
+        vocab = sorted(set(all_words))
 
     features = np.array(vocab)
 
