@@ -2,7 +2,7 @@
 """
 asfgasgas
 """
-from gensim.models import FastText
+import gensim
 
 
 def fasttext_model(sentences, vector_size=100, min_count=5, negative=5,
@@ -26,7 +26,7 @@ def fasttext_model(sentences, vector_size=100, min_count=5, negative=5,
     """
     sg = 0 if cbow else 1
 
-    model = FastText(
+    model = gensim.models.FastText(
         sentences=sentences,
         vector_size=vector_size,
         window=window,
@@ -37,5 +37,8 @@ def fasttext_model(sentences, vector_size=100, min_count=5, negative=5,
         seed=seed,
         epochs=epochs
     )
+
+    model.build_vocab(sentences)
+    model.train(sentences, total_examples=model.corpus_count, epochs=epochs)
 
     return model
