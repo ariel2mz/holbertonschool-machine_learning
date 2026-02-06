@@ -2,8 +2,7 @@
 """
 asfgasgas
 """
-from tensorflow.keras.layers import Embedding
-import numpy as np
+import tensorflow as tf
 
 
 def gensim_to_keras(model):
@@ -19,7 +18,7 @@ def gensim_to_keras(model):
     weights = model.wv.vectors
     vocab_size, embedding_dim = weights.shape
 
-    embedding_layer = Embedding(
+    embedding_layer = tf.keras.layers.Embedding(
         input_dim=vocab_size,
         output_dim=embedding_dim,
         weights=[weights],
