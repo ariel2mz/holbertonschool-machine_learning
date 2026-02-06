@@ -33,7 +33,6 @@ class Node:
         self.indicator = None
 
     def max_depth_below(self):
-
         left = self.left_child.max_depth_below()
         right = self.right_child.max_depth_below()
         return max(left, right)
@@ -75,6 +74,8 @@ class Node:
         """
         safsafsafsafsa
         """
+        if self.is_leaf:
+            return f"-> leaf [value={self.value}]"
         result = (f"{'root' if self.is_root else '-> node'} "
                   f"[feature={self.feature}, threshold={self.threshold}]\n")
         if self.left_child:
@@ -101,20 +102,21 @@ class Node:
         safsafsafsafsa
         """
         if self.is_root:
-            self.lower = {0: -np.inf}
             self.upper = {0: np.inf}
+            self.lower = {0: -np.inf}
 
         for child in [self.left_child, self.right_child]:
             if child:
-                child.lower = self.lower.copy()
                 child.upper = self.upper.copy()
+                child.lower = self.lower.copy()
                 if child == self.left_child:
-                    child.upper[self.feature] = self.threshold
-                elif child == self.right_child:
-                    child.lower[self.feature] = self.threshold
-
-        for child in [self.left_child, self.right_child]:
-            if child:
+                    child.lower[self.feature] = min(
+                        child.upper.get(self.feature, np.inf),
+                        self.threshold)
+                else:
+                    child.upper[self.feature] = max(
+                        child.lower.get(self.feature, -np.inf),
+                        self.threshold)
                 child.update_bounds_below()
 
     def update_indicator(self):
@@ -122,16 +124,10 @@ class Node:
         safsafsafsafsa
         """
         def is_large_enough(A):
-        """
-        safsafsafsafsa
-        """
             return np.all(np.array([A[:, key] > self.lower[key]
                                     for key in self.lower.keys()]), axis=0)
 
         def is_small_enough(A):
-        """
-        safsafsafsafsa
-        """
             return np.all(np.array([A[:, key] <= self.upper[key]
                                     for key in self.upper.keys()]), axis=0)
 
@@ -192,16 +188,10 @@ class Leaf(Node):
         safsafsafsafsa
         """
         def is_large_enough(A):
-        """
-        safsafsafsafsa
-        """
             return np.all(np.array([A[:, key] > self.lower[key]
                                     for key in self.lower.keys()]), axis=0)
 
         def is_small_enough(A):
-        """
-        safsafsafsafsa
-        """
             return np.all(np.array([A[:, key] <= self.upper[key]
                                     for key in self.upper.keys()]), axis=0)
 
