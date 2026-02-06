@@ -27,12 +27,15 @@ def bag_of_words(sentences, vocab=None):
         processed.append(tokens)
     
     if vocab is None:
-        all_words = []
+        vocab = []
+        seen = set()
         for tokens in processed:
-            all_words.extend(tokens)
-        vocab = sorted(set(all_words))
-    
-    features = np.array(sorted(vocab))
+            for token in tokens:
+                if token not in seen:
+                    seen.add(token)
+                    vocab.append(token)
+
+    features = np.array(vocab)
     
     s = len(sentences)
     f = len(features)
