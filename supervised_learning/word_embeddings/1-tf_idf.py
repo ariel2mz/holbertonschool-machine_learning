@@ -8,17 +8,12 @@ import math
 
 
 def tf_idf(sentences, vocab=None):
-    """
-    asfasfsafas
-    fasfasfsa
-    """
     processed = []
     for sent in sentences:
         sent = sent.lower()
         sent = sent.replace("'s", "")
         sent = sent.translate(str.maketrans('', '', string.punctuation))
-        tokens = sent.split()
-        processed.append(tokens)
+        processed.append(sent.split())
 
     if vocab is None:
         all_words = []
@@ -31,8 +26,6 @@ def tf_idf(sentences, vocab=None):
     f = len(features)
 
     tf = np.zeros((s, f), dtype=float)
-    df = np.zeros(f, dtype=int)
-
     feature_to_index = {word: i for i, word in enumerate(features)}
 
     for i, tokens in enumerate(processed):
@@ -40,20 +33,18 @@ def tf_idf(sentences, vocab=None):
             if token in feature_to_index:
                 tf[i, feature_to_index[token]] += 1
 
+    df = np.zeros(f, dtype=float)
     for j in range(f):
-        for i in range(s):
-            if tf[i, j] > 0:
-                df[j] += 1
+        df[j] = np.count_nonzero(tf[:, j])
 
-    idf = np.zeros(f)
-    for j in range(f):
-        if df[j] > 0:
-            idf[j] = math.log((s + 1) / (df[j] + 1)) + 1
+    idf = 1.0 + np.log((1.0 + s) / (1.0 + df))
 
     tf_idf_matrix = tf * idf
+
+    norms = np.linalg.norm(tf_idf_matrix, axis=1)
     for i in range(s):
-        norm = np.linalg.norm(tf_idf_matrix[i])
-        if norm > 0:
-            tf_idf_matrix[i] /= norm
+        if norms[i] != 0:
+            tf_idf_matrix[i] /= norms[i]
 
     return tf_idf_matrix, features
+
