@@ -103,7 +103,7 @@ class Node:
         """
         if self.is_leaf:
             return f"-> leaf [value={self.value}]"
-        
+
         result = (f"{'root' if self.is_root else '-> node'} "
                   f"[feature={self.feature}, threshold={self.threshold}]\n")
         if self.left_child:
@@ -140,16 +140,16 @@ class Node:
             if child:
                 child.upper = self.upper.copy()
                 child.lower = self.lower.copy()
-                
+
                 if child == self.left_child:
                     child.lower[self.feature] = min(
-                        child.upper.get(self.feature, np.inf), 
+                        child.upper.get(self.feature, np.inf),
                         self.threshold)
                 else:
                     child.upper[self.feature] = max(
-                        child.lower.get(self.feature, -np.inf), 
+                        child.lower.get(self.feature, -np.inf),
                         self.threshold)
-                
+
                 child.update_bounds_below()
 
 
