@@ -22,7 +22,7 @@ class Node:
     def __init__(self, feature=None, threshold=None, left_child=None,
                  right_child=None, is_root=False, depth=0):
         """
-        safsafsafsafsa
+        Initialize an internal node with optional children and settings.
         """
         self.feature = feature
         self.threshold = threshold
@@ -37,7 +37,7 @@ class Node:
 
     def max_depth_below(self):
         """
-        safsafsafsafsa
+        Return the maximum depth beneath this node.
         """
         left = self.left_child.max_depth_below()
         right = self.right_child.max_depth_below()
@@ -45,7 +45,13 @@ class Node:
 
     def count_nodes_below(self, only_leaves=False):
         """
-        safsafsafsafsa
+        Count nodes or leaves below this node.
+
+        Args:
+            only_leaves (bool): Count only leaves if True.
+
+        Returns:
+            int: Number of nodes or leaves below.
         """
         count = 0
         if not only_leaves:
@@ -58,7 +64,13 @@ class Node:
 
     def right_child_add_prefix(self, text):
         """
-        safsafsafsafsa
+        Format right child subtree for printing.
+
+        Args:
+            text (str): Subtree string.
+
+        Returns:
+            str: Formatted subtree with right-child prefix.
         """
         lines = text.split("\n")
         new_text = "    +--" + lines[0] + "\n"
@@ -68,7 +80,13 @@ class Node:
 
     def left_child_add_prefix(self, text):
         """
-        safsafsafsafsa
+        Format left child subtree for printing.
+
+        Args:
+            text (str): Subtree string.
+
+        Returns:
+            str: Formatted subtree with left-child prefix.
         """
         lines = text.split("\n")
         new_text = "    +--" + lines[0] + "\n"
@@ -78,7 +96,10 @@ class Node:
 
     def __str__(self):
         """
-        safsafsafsafsa
+        Return a formatted string of this node and its subtree.
+
+        Returns:
+            str: Node and subtree description.
         """
         result = (f"{'root' if self.is_root else '-> node'} "
                   f"[feature={self.feature}, threshold={self.threshold}]\n")
@@ -92,7 +113,10 @@ class Node:
 
     def get_leaves_below(self):
         """
-        safsafsafsafsa
+        Return a list of all leaves under this node.
+
+        Returns:
+            list: List of Leaf instances.
         """
         leaves = []
         if self.left_child:
@@ -103,7 +127,7 @@ class Node:
 
     def update_bounds_below(self):
         """
-        safsafsafsafsa
+        Recursively update lower and upper bounds of each node below.
         """
         if self.is_root:
             self.lower = {0: -np.inf}
@@ -130,7 +154,7 @@ class Leaf(Node):
 
     def __init__(self, value, depth=None):
         """
-        safsafsafsafsa
+        Initialize a leaf node with a value and optional depth.
         """
         super().__init__()
         self.value = value
@@ -141,31 +165,43 @@ class Leaf(Node):
 
     def max_depth_below(self):
         """
-        safsafsafsafsa
+        Return the depth of this leaf.
         """
         return self.depth
 
     def count_nodes_below(self, only_leaves=False):
         """
-        safsafsafsafsa
+        Return count for this leaf (always 1).
+
+        Args:
+            only_leaves (bool): Ignored.
+
+        Returns:
+            int: Always 1.
         """
         return 1
 
     def __str__(self):
         """
-        safsafsafsafsa
+        Return a string representing this leaf.
+
+        Returns:
+            str: Leaf description with its value.
         """
         return f"-> leaf [value={self.value}]"
 
     def get_leaves_below(self):
         """
-        safsafsafsafsa
+        Return this leaf in a single-element list.
+
+        Returns:
+            list: [self]
         """
         return [self]
 
     def update_bounds_below(self):
         """
-        safsafsafsafsa
+        Placeholder for leaf bounds update (does nothing).
         """
         pass
 
@@ -178,7 +214,7 @@ class Decision_Tree:
     def __init__(self, max_depth=10, min_pop=1, seed=0,
                  split_criterion="random", root=None):
         """
-        safsafsafsafsa
+        Initialize a decision tree with optional root node.
         """
         self.rng = np.random.default_rng(seed)
         self.root = root if root else Node(is_root=True)
@@ -191,30 +227,45 @@ class Decision_Tree:
 
     def depth(self):
         """
-        safsafsafsafsa
+        Return the maximum depth of the tree.
+
+        Returns:
+            int: Maximum depth from root to leaves.
         """
         return self.root.max_depth_below()
 
     def count_nodes(self, only_leaves=False):
         """
-        safsafsafsafsa
+        Count nodes or leaves in the tree.
+
+        Args:
+            only_leaves (bool): Count only leaves if True.
+
+        Returns:
+            int: Number of nodes or leaves.
         """
         return self.root.count_nodes_below(only_leaves=only_leaves)
 
     def __str__(self):
         """
-        safsafsafsafsa
+        Return a string representation of the entire tree.
+
+        Returns:
+            str: Tree as formatted string.
         """
         return self.root.__str__()
 
     def get_leaves(self):
         """
-        safsafsafsafsa
+        Return all leaves of the tree.
+
+        Returns:
+            list: List of Leaf instances.
         """
         return self.root.get_leaves_below()
 
     def update_bounds(self):
         """
-        safsafsafsafsa
+        Update lower and upper bounds for all nodes in the tree.
         """
         self.root.update_bounds_below()
