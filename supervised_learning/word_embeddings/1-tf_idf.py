@@ -9,20 +9,13 @@ import math
 
 def tf_idf(sentences, vocab=None):
     """
-    Creates a TF-IDF embedding matrix
-
-    Args:
-        sentences: list of sentences to analyze
-        vocab: list of vocabulary words to use for analysis
-               If None, all words within sentences should be used
-
-    Returns:
-        embeddings: numpy.ndarray of shape (s, f)
-        features: list of the features used for embeddings
+    asfasfsafsa
+    safasfsaf
     """
     processed = []
     for sent in sentences:
         sent = sent.lower()
+        sent = sent.replace("'s", "")
         sent = sent.translate(str.maketrans('', '', string.punctuation))
         tokens = sent.split()
         processed.append(tokens)
@@ -34,11 +27,13 @@ def tf_idf(sentences, vocab=None):
         vocab = sorted(set(all_words))
 
     features = list(vocab)
+
     s = len(sentences)
     f = len(features)
 
     tf_matrix = np.zeros((s, f), dtype=float)
     df = np.zeros(f, dtype=int)
+
     feature_to_index = {word: i for i, word in enumerate(features)}
 
     for i, tokens in enumerate(processed):
@@ -48,10 +43,9 @@ def tf_idf(sentences, vocab=None):
                 word_count[token] = word_count.get(token, 0) + 1
 
         for word, count in word_count.items():
-            idx = feature_to_index[word]
-            tf_matrix[i, idx] = count / len(tokens)
+            tf_matrix[i, feature_to_index[word]] = count / len(tokens)
 
-    for j, word in enumerate(features):
+    for j in range(f):
         for i in range(s):
             if tf_matrix[i, j] > 0:
                 df[j] += 1
