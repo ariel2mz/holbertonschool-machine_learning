@@ -5,13 +5,14 @@ afsfasfsafsafasfsa
 import numpy as np
 import string
 
+
 def bag_of_words(sentences, vocab=None):
     processed = []
-    for sentence in sentences:
-        sentence = sentence.lower()
-        sentence = sentence.replace("'s", "")
-        sentence = sentence.translate(str.maketrans('', '', string.punctuation))
-        tokens = sentence.split()
+    for sent in sentences:
+        sent = sent.lower()
+        sent = sent.replace("'s", "")
+        sent = sent.translate(str.maketrans('', '', string.punctuation))
+        tokens = sent.split()
         processed.append(tokens)
 
     if vocab is None:
