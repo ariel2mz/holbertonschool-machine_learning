@@ -5,7 +5,6 @@ afsfasfsafsafasfsa
 import numpy as np
 import string
 
-
 def bag_of_words(sentences, vocab=None):
     """
     Creates a bag of words embedding matrix
@@ -20,10 +19,11 @@ def bag_of_words(sentences, vocab=None):
         features: list of the features used for embeddings
     """
     processed = []
-    for sent in sentences:
-        sent = sent.lower()
-        sent = sent.translate(str.maketrans('', '', string.punctuation))
-        tokens = sent.split()
+    for sentence in sentences:
+        sentence = sentence.lower()
+        sentence = sentence.replace("'s", "")
+        sentence = sentence.translate(str.maketrans('', '', string.punctuation))
+        tokens = sentence.split()
         processed.append(tokens)
 
     if vocab is None:
