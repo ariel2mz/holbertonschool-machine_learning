@@ -38,4 +38,7 @@ def word2vec_model(sentences, vector_size=100, min_count=5, window=5,
         epochs=epochs
     )
 
+    model.build_vocab(sentences)
+    model.train(sentences, total_examples=model.corpus_count, epochs=epochs)
+
     return model
