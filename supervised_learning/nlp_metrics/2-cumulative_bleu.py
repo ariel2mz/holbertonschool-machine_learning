@@ -4,6 +4,7 @@ Calculates the cumulative n-gram BLEU score
 """
 import math
 from collections import Counter
+import numpy as np
 
 
 def ngram(sequence, n):
@@ -41,7 +42,7 @@ def cumulative_bleu(references, sentence, n):
     """
     bleus = []
     for i in range(1, n + 1):
-        bleu = ngram_bleu(references, sentence, i)
+        bleu = ngram_precision(references, sentence, i)
         bleus.append(bleu)
 
     return np.prod(bleus) ** (1 / n)
