@@ -20,9 +20,6 @@ class Node:
 
     def __init__(self, feature=None, threshold=None, left_child=None,
                  right_child=None, is_root=False, depth=0):
-        """
-        safsafsafsafsa
-        """
         self.feature = feature
         self.threshold = threshold
         self.left_child = left_child
@@ -36,9 +33,7 @@ class Node:
         self.indicator = None
 
     def max_depth_below(self):
-        """
-        safsafsafsafsa
-        """
+
         left = self.left_child.max_depth_below()
         right = self.right_child.max_depth_below()
         return max(left, right)
