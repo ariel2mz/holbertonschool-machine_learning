@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-"""sadasdsadsa"""
+"""fghkl"""
 import numpy as np
+GP = __import__('2-gp').GaussianProcess
 
 
 class GaussianProcess:
@@ -47,3 +48,4 @@ class GaussianProcess:
         self.X = np.vstack((self.X, X_new.reshape(-1, 1)))
         self.Y = np.vstack((self.Y, Y_new.reshape(-1, 1)))
         self.K = self.kernel(self.X, self.X)
+    
