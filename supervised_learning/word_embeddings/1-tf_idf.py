@@ -48,7 +48,7 @@ def tf_idf(sentences, vocab=None):
     idf = np.zeros(f)
     for j in range(f):
         if df[j] > 0:
-            idf[j] = math.log(s / df[j])
+            idf[j] = math.log((s + 1) / (df[j] + 1)) + 1
 
     tf_idf_matrix = tf * idf
     for i in range(s):
