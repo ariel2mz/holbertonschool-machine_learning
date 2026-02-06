@@ -5,7 +5,6 @@ Defines the Decoder class for a Transformer.
 """
 
 import tensorflow as tf
-import numpy as np
 
 positional_encoding = __import__('4-positional_encoding').positional_encoding
 DecoderBlock = __import__('8-transformer_decoder_block').DecoderBlock
@@ -39,12 +38,6 @@ class Decoder(tf.keras.layers.Layer):
         x += self.positional_encoding[:seq_len, :]
         x = self.dropout(x, training=training)
         for block in self.blocks:
-            x = block(
-                x,
-                encoder_output,
-                training,
-                look_ahead_mask,
-                padding_mask
-            )
+            x = block(x, encoder_output, training, look_ahead_mask, padding_mask)
 
         return x
