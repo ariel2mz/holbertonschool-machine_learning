@@ -101,6 +101,9 @@ class Node:
         Returns:
             str: Node and subtree description.
         """
+        if self.is_leaf:
+            return f"-> leaf [value={self.value}]"
+        
         result = (f"{'root' if self.is_root else '-> node'} "
                   f"[feature={self.feature}, threshold={self.threshold}]\n")
         if self.left_child:
@@ -130,20 +133,23 @@ class Node:
         Recursively update lower and upper bounds of each node below.
         """
         if self.is_root:
-            self.lower = {0: -np.inf}
             self.upper = {0: np.inf}
+            self.lower = {0: -np.inf}
 
         for child in [self.left_child, self.right_child]:
             if child:
-                child.lower = self.lower.copy()
                 child.upper = self.upper.copy()
+                child.lower = self.lower.copy()
+                
                 if child == self.left_child:
-                    child.upper[self.feature] = self.threshold
-                elif child == self.right_child:
-                    child.lower[self.feature] = self.threshold
-
-        for child in [self.left_child, self.right_child]:
-            if child:
+                    child.lower[self.feature] = min(
+                        child.upper.get(self.feature, np.inf), 
+                        self.threshold)
+                else:
+                    child.upper[self.feature] = max(
+                        child.lower.get(self.feature, -np.inf), 
+                        self.threshold)
+                
                 child.update_bounds_below()
 
 
