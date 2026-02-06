@@ -8,6 +8,9 @@ import math
 
 
 def tf_idf(sentences, vocab=None):
+    """
+    asfasfasfsaf
+    """
     processed = []
     for sent in sentences:
         sent = sent.lower()
@@ -21,7 +24,7 @@ def tf_idf(sentences, vocab=None):
             all_words.extend(tokens)
         vocab = sorted(set(all_words))
 
-    features = list(vocab)
+    features = np.array(vocab)
     s = len(sentences)
     f = len(features)
 
@@ -47,4 +50,3 @@ def tf_idf(sentences, vocab=None):
             tf_idf_matrix[i] /= norms[i]
 
     return tf_idf_matrix, features
-
