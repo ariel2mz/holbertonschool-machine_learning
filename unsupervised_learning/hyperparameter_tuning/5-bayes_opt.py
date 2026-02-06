@@ -1,5 +1,7 @@
-from scipy.stats import norm
+#!/usr/bin/env python3
+"""fghkl"""
 import numpy as np
+GP = __import__('2-gp').GaussianProcess
 
 class BayesianOptimization:
     """
@@ -17,6 +19,14 @@ class BayesianOptimization:
         self.xsi = xsi
         self.minimize = minimize
 
+    def _norm_pdf(self, x):
+        """Standard normal PDF"""
+        return (1.0 / np.sqrt(2 * np.pi)) * np.exp(-0.5 * x**2)
+
+    def _norm_cdf(self, x):
+        """Standard normal CDF using erf"""
+        return 0.5 * (1 + np.erf(x / np.sqrt(2)))
+
     def acquisition(self):
         """
         Calculates the next best sample location using the Expected Improvement (EI) method.
@@ -24,7 +34,6 @@ class BayesianOptimization:
             X_next: numpy.ndarray of shape (1,) representing the next best sample point
             EI: numpy.ndarray of shape (ac_samples,) containing the expected improvement
         """
-
         mu, sigma = self.gp.predict(self.X_s)
         sigma = sigma.reshape(-1, 1)
 
@@ -36,11 +45,14 @@ class BayesianOptimization:
             improvement = mu - Y_best - self.xsi
 
         with np.errstate(divide='warn'):
-            Z = improvement / sigma
-            EI = improvement * norm.cdf(Z) + sigma * norm.pdf(Z)
-            EI[sigma == 0.0] = 0.0
-        X_next = self.X_s[np.argmax(EI)]
+            Z = np.zeros_like(improvement)
+            mask = sigma != 0
+            Z[mask] = improvement[mask] / sigma[mask]
 
+            EI = np.zeros_like(improvement)
+            EI[mask] = improvement[mask] * self._norm_cdf(Z[mask]) + sigma[mask] * self._norm_pdf(Z[mask])
+
+        X_next = self.X_s[np.argmax(EI)]
         return X_next, EI.ravel()
 
     def optimize(self, iterations=100):

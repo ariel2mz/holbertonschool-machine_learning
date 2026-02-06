@@ -48,4 +48,3 @@ class GaussianProcess:
         self.X = np.vstack((self.X, X_new.reshape(-1, 1)))
         self.Y = np.vstack((self.Y, Y_new.reshape(-1, 1)))
         self.K = self.kernel(self.X, self.X)
-    
